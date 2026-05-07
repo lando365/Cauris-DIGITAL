@@ -1,58 +1,70 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import { Linkedin } from 'lucide-react';
+import { Linkedin, Trophy, Users, Target, Handshake, Globe2, Globe } from 'lucide-react';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
 import FinalCTA from '@/components/sections/FinalCTA';
+import { VALUES } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'À propos',
+  title: 'À propos de CAURIS DIGITAL — Incubateur numérique, Yaoundé, Cameroun',
   description:
-    'Découvrez CAURIS DIGITAL : notre histoire, notre mission, notre équipe et notre vision pour l\'innovation numérique en Afrique francophone.',
+    'Découvrez CAURIS DIGITAL, son histoire, sa mission et l\'équipe qui accompagne les entrepreneurs tech africains depuis Yaoundé, avec un mentorat mondial en ligne.',
 };
 
+const VALUE_ICONS = {
+  Trophy,
+  Users,
+  Target,
+  Handshake,
+  Globe2,
+  Globe,
+} as const;
+
+/**
+ * Équipe (Textes_Site_v1 — bios à personnaliser via CMS)
+ * Les noms commençant par "[Prénom NOM]" sont des placeholders à remplacer.
+ */
 const TEAM = [
   {
-    name: 'Jean-Pierre M.',
-    role: 'CEO & Co-fondateur',
+    name: '[Prénom NOM]',
+    role: 'Directeur Général & Co-fondateur',
     photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+    bio: 'Entrepreneur numérique avec [X] ans d\'expérience dans l\'accompagnement de startups africaines. Diplômé en [discipline] de [université]. Passionné par l\'impact de la technologie sur les économies émergentes.',
     linkedin: '#',
   },
   {
-    name: 'Aïcha B.',
-    role: 'COO & Co-fondatrice',
+    name: '[Prénom NOM]',
+    role: 'Directrice des Programmes',
     photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80',
+    bio: 'Spécialiste de l\'innovation et de l\'accompagnement entrepreneurial. [X] ans d\'expérience dans le secteur de l\'incubation en Afrique centrale. Co-fondatrice de [projet]. Diplômée de [université].',
     linkedin: '#',
   },
   {
-    name: 'Samuel T.',
-    role: 'Directeur des programmes',
+    name: '[Prénom NOM]',
+    role: 'Responsable Mentorat & Communauté',
     photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
+    bio: 'Construit des ponts entre entrepreneurs et experts. Ancien fondateur de [startup]. Expert en développement communautaire et accompagnement de porteurs de projets tech.',
     linkedin: '#',
   },
   {
-    name: 'Marie-Claire N.',
-    role: 'Head of Partnerships',
+    name: '[Prénom NOM]',
+    role: 'Chargée de Communication & Partenariats',
     photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80',
+    bio: 'Experte en communication digitale et en relations institutionnelles. [X] ans d\'expérience dans la promotion de l\'écosystème tech africain. Passionnée par le storytelling et la visibilité des startups africaines.',
     linkedin: '#',
   },
 ];
 
+/**
+ * Conseil d'Administration (Textes_Site_v1 — placeholders à remplacer)
+ */
 const BOARD = [
-  { name: 'Pr. Ahmadou Diallo', institution: 'Université de Yaoundé I' },
-  { name: 'Mme Christelle Kouam', institution: 'Banque Africaine de Développement' },
-  { name: 'M. Boris Manga', institution: 'Orange Digital Center' },
-  { name: 'Pr. Fatima El-Hassani', institution: 'Polytechnique Montréal' },
-  { name: 'M. Patrick Ngono', institution: 'CEMAC – Direction Innovation' },
-  { name: 'Mme Yvette Tchakounté', institution: 'Ministère de l\'Économie Numérique' },
-];
-
-const VALUES = [
-  { title: 'Excellence', description: 'Standards professionnels internationaux dans tout ce que nous faisons.' },
-  { title: 'Inclusion', description: 'Accessibilité pour tous les profils de fondateurs, sans discrimination.' },
-  { title: 'Impact', description: 'Mesure concrète des résultats sur les communautés et l\'économie.' },
-  { title: 'Collaboration', description: 'Co-construction entre startups, experts et partenaires.' },
-  { title: 'Enracinement', description: 'Solutions adaptées aux contextes africains, par et pour les Africains.' },
+  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
+  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
+  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
+  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
+  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
+  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
 ];
 
 export default function AboutPage() {
@@ -66,55 +78,60 @@ export default function AboutPage() {
               À propos de CAURIS DIGITAL
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              L&apos;Afrique numérique se construit ici.
+              Qui nous sommes
             </h1>
             <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Depuis 2021, CAURIS DIGITAL accompagne les fondateurs les plus ambitieux du continent
-              pour faire émerger une nouvelle génération de champions tech africains.
+              Un incubateur africain construit par des Africains, pour des Africains —
+              et ouvert au monde entier.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Qui sommes-nous */}
+      {/* Notre histoire */}
       <section id="qui-sommes-nous" className="section">
         <div className="container-cauris">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start">
             <div className="lg:col-span-3">
               <Reveal>
                 <SectionTitle
-                  eyebrow="Qui sommes-nous"
-                  title="Une ambition continentale, des racines locales"
+                  eyebrow="Notre histoire"
+                  title="L'incubateur né d'un constat simple"
                   align="left"
                 />
                 <div className="mt-8 space-y-5 text-cauris-gray-text leading-relaxed">
                   <p>
-                    CAURIS DIGITAL est né en 2021 à Douala d&apos;une conviction simple : l&apos;Afrique
-                    francophone dispose d&apos;un vivier de talents tech extraordinaire, mais manque
-                    d&apos;infrastructures d&apos;accompagnement à la hauteur de ses ambitions. Inspirés
-                    du modèle Centech (Montréal) — incubateur universitaire de référence mondiale —
-                    nous avons construit un dispositif pensé pour les réalités du continent : durée
-                    de programme adaptée, mentors locaux et internationaux, accès à un réseau de
-                    partenaires actifs au Cameroun, dans la zone CEMAC et au-delà.
+                    CAURIS DIGITAL est né d&apos;un constat simple : l&apos;Afrique regorge de talents
+                    technologiques, d&apos;idées brillantes et d&apos;entrepreneurs courageux. Ce qui
+                    manque, c&apos;est un écosystème structuré pour les faire grandir.
                   </p>
                   <p>
-                    Notre nom — Cauris — fait référence au coquillage utilisé comme monnaie d&apos;échange
-                    en Afrique précoloniale. Symbole de richesse, de circulation et de connexion. Trois
-                    valeurs qui structurent notre approche : l&apos;innovation comme richesse à créer,
-                    le réseau comme circulation à animer, l&apos;écosystème comme connexion à tisser
-                    entre l&apos;Afrique et le reste du monde.
+                    Fondé à Yaoundé, au cœur du Cameroun, CAURIS DIGITAL a été créé pour combler ce
+                    vide. Notre nom est un symbole : le cauris, cette petite coquillage qui a servi
+                    de monnaie d&apos;échange à travers toute l&apos;Afrique pendant des siècles,
+                    représente la valeur, la connexion et l&apos;échange — exactement ce que nous
+                    facilitons entre entrepreneurs, mentors, investisseurs et marchés.
                   </p>
                   <p>
-                    Aujourd&apos;hui, CAURIS DIGITAL c&apos;est plus de 80 startups accompagnées par an,
-                    300+ emplois créés, 2M$ de capitaux levés par nos diplômés, et un classement
-                    parmi les 10 meilleurs incubateurs africains.
+                    Depuis notre création, nous avons accompagné des dizaines d&apos;entrepreneurs
+                    dans les secteurs de la Fintech, de l&apos;Agritech, de l&apos;Edtech et de la
+                    Healthtech. Notre modèle hybride — ancrage local à Yaoundé, mentorat accessible
+                    en ligne partout dans le monde — nous permet de toucher des fondateurs à Douala,
+                    Dakar, Abidjan, Kinshasa, Paris ou Montréal, sans compromis sur la qualité de
+                    l&apos;accompagnement.
+                  </p>
+                  <p>
+                    Nous nous inspirons des meilleurs incubateurs mondiaux — Centech à Montréal,
+                    Y Combinator à San Francisco, Station F à Paris — pour construire quelque chose
+                    d&apos;unique : un modèle d&apos;incubation calibré pour les réalités africaines,
+                    avec des solutions conçues pour les marchés africains.
                   </p>
                 </div>
               </Reveal>
             </div>
 
             <Reveal delay={150} className="lg:col-span-2">
-              <div className="space-y-4">
+              <div className="space-y-6 lg:sticky lg:top-28">
                 <div className="aspect-[4/5] rounded-card overflow-hidden shadow-card-hover">
                   <img
                     src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&q=80"
@@ -139,29 +156,69 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Mission & Vision */}
+      <section className="section bg-cauris-cream/40">
+        <div className="container-cauris">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-10 max-w-5xl mx-auto">
+            <Reveal>
+              <article className="card bg-white p-8 lg:p-10 h-full border border-gray-100">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange mb-3">
+                  Notre mission
+                </p>
+                <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black mb-4">
+                  Faire éclore les talents tech d&apos;Afrique francophone
+                </h2>
+                <p className="text-cauris-gray-text leading-relaxed">
+                  Stimuler l&apos;entrepreneuriat numérique en Afrique francophone en formant,
+                  incubant et connectant les entrepreneurs tech de demain — de la conceptualisation
+                  jusqu&apos;à la commercialisation de leur produit.
+                </p>
+              </article>
+            </Reveal>
+            <Reveal delay={100}>
+              <article className="card bg-cauris-orange text-white p-8 lg:p-10 h-full">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-white/80 mb-3">
+                  Notre vision
+                </p>
+                <h2 className="font-heading font-bold text-2xl lg:text-3xl mb-4">
+                  Une Afrique productrice — pas consommatrice — de tech
+                </h2>
+                <p className="leading-relaxed text-white/95">
+                  Faire de l&apos;Afrique francophone un continent producteur de solutions
+                  technologiques mondiales — et non un simple consommateur de technologies importées.
+                </p>
+              </article>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* Valeurs */}
       <section className="section bg-cauris-gray-bg">
         <div className="container-cauris">
           <SectionTitle
             eyebrow="Nos valeurs fondatrices"
-            title="Cinq principes qui guident chaque décision"
+            title="Six principes qui guident chaque décision"
           />
-          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
-            {VALUES.map((value, i) => (
-              <Reveal key={value.title} delay={i * 80}>
-                <div className="card bg-white p-6 h-full border border-gray-100">
-                  <div className="w-10 h-10 rounded-lg bg-cauris-orange/10 text-cauris-orange flex items-center justify-center font-heading font-bold mb-4">
-                    {i + 1}
+          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {VALUES.map((value, i) => {
+              const Icon = VALUE_ICONS[value.icon as keyof typeof VALUE_ICONS];
+              return (
+                <Reveal key={value.id} delay={i * 80}>
+                  <div className="card bg-white p-7 h-full border border-gray-100">
+                    <div className="w-12 h-12 rounded-xl bg-cauris-orange/10 text-cauris-orange flex items-center justify-center mb-5">
+                      {Icon && <Icon className="w-6 h-6" aria-hidden="true" />}
+                    </div>
+                    <h3 className="font-heading font-bold text-lg text-cauris-black mb-2">
+                      {value.title}
+                    </h3>
+                    <p className="text-sm text-cauris-gray-text leading-relaxed">
+                      {value.description}
+                    </p>
                   </div>
-                  <h3 className="font-heading font-bold text-lg text-cauris-black mb-2">
-                    {value.title}
-                  </h3>
-                  <p className="text-sm text-cauris-gray-secondary leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -171,13 +228,13 @@ export default function AboutPage() {
         <div className="container-cauris">
           <SectionTitle
             eyebrow="Notre équipe"
-            title="Les femmes et hommes derrière CAURIS DIGITAL"
-            description="Une équipe pluridisciplinaire qui combine expertise tech, expérience entrepreneuriale et ancrage continental."
+            title="L'équipe qui vous accompagne"
+            description="Des professionnels qui ont eux-mêmes entrepris, construit, raté et réussi — avant de se mettre au service des autres."
           />
 
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+          <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {TEAM.map((member, i) => (
-              <Reveal key={member.name} delay={i * 80}>
+              <Reveal key={`${member.name}-${i}`} delay={i * 80}>
                 <article className="group">
                   <div className="aspect-square rounded-card overflow-hidden mb-4 shadow-card group-hover:shadow-card-hover transition-shadow">
                     <img
@@ -190,8 +247,8 @@ export default function AboutPage() {
                   <h3 className="font-heading font-bold text-lg text-cauris-black">
                     {member.name}
                   </h3>
-                  <div className="flex items-center justify-between mt-1">
-                    <p className="text-sm text-cauris-gray-secondary">{member.role}</p>
+                  <div className="flex items-center justify-between mt-1 mb-3">
+                    <p className="text-sm text-cauris-orange font-medium">{member.role}</p>
                     <a
                       href={member.linkedin}
                       target="_blank"
@@ -202,10 +259,15 @@ export default function AboutPage() {
                       <Linkedin className="w-4 h-4" />
                     </a>
                   </div>
+                  <p className="text-xs text-cauris-gray-text leading-relaxed">{member.bio}</p>
                 </article>
               </Reveal>
             ))}
           </div>
+          <p className="mt-10 text-xs text-cauris-gray-secondary italic max-w-2xl">
+            Note : les noms et bios ci-dessus sont des modèles à personnaliser. Les membres réels
+            de l&apos;équipe seront ajoutés via le CMS lors du lancement.
+          </p>
         </div>
       </section>
 
@@ -215,12 +277,12 @@ export default function AboutPage() {
           <SectionTitle
             eyebrow="Gouvernance"
             title="Notre Conseil d'Administration"
-            description="Un conseil composé d'institutions de référence garantissant la qualité et l'impartialité de notre démarche."
+            description="Notre conseil d'administration est composé de personnalités reconnues du monde académique, institutionnel et entrepreneurial — garantes de la gouvernance et de l'orientation stratégique de CAURIS DIGITAL."
           />
 
           <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {BOARD.map((member, i) => (
-              <Reveal key={member.name} delay={i * 60}>
+              <Reveal key={`${member.name}-${i}`} delay={i * 60}>
                 <div className="bg-white rounded-card p-5 border border-gray-100 hover:border-cauris-orange/30 transition-colors">
                   <p className="font-semibold text-cauris-black">{member.name}</p>
                   <p className="text-sm text-cauris-gray-secondary mt-0.5">{member.institution}</p>
