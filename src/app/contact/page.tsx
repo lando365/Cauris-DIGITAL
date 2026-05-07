@@ -132,17 +132,25 @@ export default function ContactPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* Carte */}
+      {/* Carte — Yaoundé, Cameroun (siège social) */}
       <section className="bg-cauris-gray-bg pb-20">
         <div className="container-cauris">
           <div className="rounded-card overflow-hidden shadow-card aspect-[16/9] sm:aspect-[21/9] bg-gray-200 relative">
             <iframe
-              title="Localisation CAURIS DIGITAL"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=9.6%2C3.95%2C9.85%2C4.15&amp;layer=mapnik&amp;marker=4.05%2C9.7"
+              title="Localisation CAURIS DIGITAL — Yaoundé, Cameroun"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=11.45%2C3.80%2C11.60%2C3.92&amp;layer=mapnik&amp;marker=3.848%2C11.502"
               className="w-full h-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
+            <a
+              href="https://www.openstreetmap.org/?mlat=3.848&mlon=11.502#map=13/3.848/11.502"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute bottom-3 right-3 bg-white/95 backdrop-blur px-3 py-1.5 rounded-btn text-xs font-medium text-cauris-black hover:bg-white shadow-card transition-colors"
+            >
+              Voir en grand →
+            </a>
           </div>
         </div>
       </section>
