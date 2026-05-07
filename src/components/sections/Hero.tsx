@@ -38,17 +38,23 @@ export default function Hero() {
           </h1>
 
           <p className="text-base sm:text-lg lg:text-xl text-white/85 leading-relaxed max-w-2xl mb-10">
-            CAURIS DIGITAL stimule l&apos;entrepreneuriat tech et forme les entrepreneurs numériques de demain en Afrique francophone.
+            CAURIS DIGITAL stimule l&apos;entrepreneuriat tech et forme les entrepreneurs numériques de demain.
+            Basé à Yaoundé, actif partout dans le monde.
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <Button href="/contact" size="lg">
+            <Button href="/contact?objet=candidature" size="lg">
               Déposer ma candidature
               <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button href="/a-propos" variant="secondary" size="lg" className="text-white border-white/40 hover:bg-white hover:text-cauris-black">
+            <Button
+              href="#programmes"
+              variant="secondary"
+              size="lg"
+              className="text-white border-white/40 hover:bg-white hover:text-cauris-black"
+            >
               <Play className="w-4 h-4" />
-              Découvrir CAURIS
+              Découvrir nos programmes
             </Button>
           </div>
         </div>

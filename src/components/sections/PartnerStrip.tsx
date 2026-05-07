@@ -13,7 +13,7 @@ export default function PartnerStrip() {
     <section className="py-10 lg:py-12 bg-white border-y border-gray-100" aria-label="Nos partenaires">
       <div className="container-cauris mb-6">
         <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-cauris-gray-secondary">
-          Avec la confiance de nos partenaires institutionnels
+          Ils nous font confiance
         </p>
       </div>
       <div className="mask-fade-x overflow-hidden">

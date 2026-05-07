@@ -1,17 +1,17 @@
 import CountUp from '@/components/ui/CountUp';
 import Reveal from '@/components/ui/Reveal';
+import { KEY_NUMBERS } from '@/lib/constants';
 
 /**
- * Chiffres clés animés (CDC §2.1).
+ * Chiffres clés animés (CDC §2.1 + Textes_Site_v1).
+ * Source unique : constants.ts → KEY_NUMBERS
  */
-const NUMBERS = [
-  { end: 5, suffix: '+', label: "années d'expérience en accompagnement tech" },
-  { end: 80, suffix: '+', label: 'entreprises accompagnées par an' },
-  { end: 2, suffix: 'M$', label: 'en capitaux levés par nos startups' },
-  { end: 300, suffix: '+', label: 'emplois créés par nos diplômés' },
-  { end: 40, suffix: '+', label: 'experts, coachs et mentors en résidence' },
-  { end: 10, prefix: 'TOP ', label: 'des incubateurs africains' },
-];
+const NUMBERS = KEY_NUMBERS.map((n) => ({
+  end: n.value,
+  prefix: 'prefix' in n ? n.prefix : undefined,
+  suffix: 'suffix' in n ? n.suffix : undefined,
+  label: n.label,
+}));
 
 export default function KeyNumbers() {
   return (

@@ -1,4 +1,4 @@
-import { Sprout, Banknote, GraduationCap } from 'lucide-react';
+import { Sprout, Banknote, GraduationCap, HeartPulse, Building2 } from 'lucide-react';
 import { SECTORS } from '@/lib/constants';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
@@ -7,10 +7,12 @@ const ICONS = {
   Sprout,
   Banknote,
   GraduationCap,
+  HeartPulse,
+  Building2,
 } as const;
 
 /**
- * Secteurs d'activité (CDC §2.1).
+ * Secteurs d'activité (Textes_Site_v1 — 5 secteurs).
  */
 export default function Sectors() {
   return (
@@ -18,11 +20,11 @@ export default function Sectors() {
       <div className="container-cauris">
         <SectionTitle
           eyebrow="Nos secteurs d'activité"
-          title="Là où nous concentrons notre expertise"
-          description="Trois verticales prioritaires où l'impact tech répond aux enjeux structurants du continent."
+          title="Nous accompagnons les solutions à fort impact"
+          description="CAURIS DIGITAL s'intéresse aux projets technologiques qui répondent à des enjeux concrets du continent africain. Nous sélectionnons des startups à fort potentiel de croissance et d'impact social."
         />
 
-        <div className="mt-14 grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {SECTORS.map((sector, i) => {
             const Icon = ICONS[sector.icon as keyof typeof ICONS];
             return (

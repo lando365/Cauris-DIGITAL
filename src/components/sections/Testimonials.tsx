@@ -22,7 +22,7 @@ export default function Testimonials() {
       <div className="container-cauris">
         <SectionTitle
           eyebrow="Témoignages"
-          title="Ils ont fait le choix de CAURIS"
+          title="Ils ont fait confiance à CAURIS DIGITAL"
         />
 
         <div className="mt-14 max-w-3xl mx-auto">
@@ -38,7 +38,10 @@ export default function Testimonials() {
                 </div>
                 <div>
                   <p className="font-semibold text-cauris-black">{current.name}</p>
-                  <p className="text-sm text-cauris-gray-secondary">Fondateur·rice — {current.startup}</p>
+                  <p className="text-sm text-cauris-gray-secondary">
+                    Fondateur·rice — {current.startup}
+                    {current.location && <span className="ml-1">· {current.location}</span>}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
