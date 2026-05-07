@@ -96,7 +96,7 @@ export default function Header() {
           {/* CTA + hamburger */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:block">
-              <Button href="/contact" size="sm">
+              <Button href="/contact?objet=candidature" size="sm">
                 Candidater
               </Button>
             </div>
@@ -167,7 +167,7 @@ export default function Header() {
             );
           })}
           <div className="mt-6">
-            <Button href="/contact" className="w-full">
+            <Button href="/contact?objet=candidature" className="w-full">
               Candidater
             </Button>
           </div>

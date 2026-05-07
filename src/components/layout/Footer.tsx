@@ -22,11 +22,11 @@ export default function Footer() {
               <Logo variant="light" size={44} />
             </div>
             <p className="text-sm text-white/70 leading-relaxed mb-6">
-              Où l&apos;innovation numérique africaine prend son essor.
+              Propulser l&apos;innovation numérique africaine — depuis Yaoundé, pour le monde.
             </p>
             <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide">Newsletter</h3>
             <p className="text-xs text-white/60 mb-3">
-              Recevez les actualités de l&apos;écosystème tech africain.
+              Restez informé de nos actualités et événements.
             </p>
             <NewsletterForm />
           </div>
@@ -66,8 +66,8 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-white/80 mb-6">
               <li><Link href="/mentions-legales" className="hover:text-cauris-orange transition-colors">Mentions légales</Link></li>
-              <li><Link href="/confidentialite" className="hover:text-cauris-orange transition-colors">Politique de confidentialité</Link></li>
-              <li><Link href="/cookies" className="hover:text-cauris-orange transition-colors">Gestion des cookies</Link></li>
+              <li><Link href="/politique-de-confidentialite" className="hover:text-cauris-orange transition-colors">Politique de confidentialité</Link></li>
+              <li><Link href="/politique-de-confidentialite#cookies" className="hover:text-cauris-orange transition-colors">Utilisation des cookies</Link></li>
               <li><Link href="/contact" className="hover:text-cauris-orange transition-colors">Contact</Link></li>
               <li><Link href="/faq" className="hover:text-cauris-orange transition-colors">FAQ</Link></li>
             </ul>
@@ -123,7 +123,7 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} CAURIS DIGITAL — Tous droits réservés
           </p>
-          <p>Siège social : {SITE_CONFIG.address}</p>
+          <p>Siège social : {SITE_CONFIG.fullAddress}</p>
         </div>
       </div>
     </footer>
