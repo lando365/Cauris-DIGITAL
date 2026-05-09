@@ -213,12 +213,15 @@ export const PARTNERS = [
  * Startups vedettes (placeholder — à remplacer via CMS)
  */
 export const FEATURED_STARTUPS = [
-  { name: 'FarmTrack', sector: 'Agritech', country: '🇨🇲', status: 'Diplômée' as const, year: 2024, tagline: 'Traçabilité agricole pour petits producteurs.' },
-  { name: 'PayEasy', sector: 'Fintech', country: '🇨🇲', status: 'En incubation' as const, year: 2025, tagline: 'Paiement digital pour PME africaines.' },
-  { name: 'MédikAfrique', sector: 'Healthtech', country: '🇨🇬', status: 'Alumni' as const, year: 2023, tagline: 'Téléconsultation médicale accessible.' },
-  { name: 'EduConnect', sector: 'Edtech', country: '🇸🇳', status: 'Diplômée' as const, year: 2024, tagline: 'Plateforme d\'apprentissage mobile-first.' },
-  { name: 'AgriPredict', sector: 'Agritech', country: '🇧🇫', status: 'En incubation' as const, year: 2025, tagline: 'IA prédictive pour l\'agriculture.' },
-  { name: 'CryptoSahel', sector: 'Fintech', country: '🇲🇱', status: 'Diplômée' as const, year: 2023, tagline: 'Microfinance via blockchain.' },
+  { name: 'FarmTrack', sector: 'Agritech', country: '🇨🇲', countryName: 'Cameroun', status: 'Diplômée' as const, year: 2024, tagline: 'Traçabilité agricole pour petits producteurs.', description: 'Plateforme de traçabilité de la chaîne agricole pour les coopératives camerounaises. Permet aux petits producteurs de prouver l\'origine et la qualité de leurs récoltes.' },
+  { name: 'PayEasy', sector: 'Fintech', country: '🇨🇲', countryName: 'Cameroun', status: 'En incubation' as const, year: 2025, tagline: 'Paiement digital pour PME africaines.', description: 'Solution de paiement multi-moyens (Mobile Money, carte, virement) pour les PME camerounaises et CEMAC.' },
+  { name: 'MédikAfrique', sector: 'Healthtech', country: '🇨🇬', countryName: 'Congo-Brazzaville', status: 'Alumni' as const, year: 2023, tagline: 'Téléconsultation médicale accessible.', description: 'App de téléconsultation médicale connectant 12 000 utilisateurs actifs aux médecins certifiés en Afrique centrale.' },
+  { name: 'EduConnect', sector: 'Edtech', country: '🇸🇳', countryName: 'Sénégal', status: 'Diplômée' as const, year: 2024, tagline: 'Plateforme d\'apprentissage mobile-first.', description: 'LMS mobile-first pour les écoles primaires et secondaires. Optimisé pour les zones à faible connectivité.' },
+  { name: 'AgriPredict', sector: 'Agritech', country: '🇧🇫', countryName: 'Burkina Faso', status: 'En incubation' as const, year: 2025, tagline: 'IA prédictive pour l\'agriculture.', description: 'Modèles d\'IA prédictive pour anticiper les rendements agricoles et optimiser les semis selon les conditions climatiques.' },
+  { name: 'CryptoSahel', sector: 'Fintech', country: '🇲🇱', countryName: 'Mali', status: 'Diplômée' as const, year: 2023, tagline: 'Microfinance via blockchain.', description: 'Plateforme de microfinance basée sur la blockchain, opérationnelle au Mali et en cours d\'expansion en Afrique de l\'Ouest.' },
+  { name: 'GreenWatt', sector: 'Smart Cities', country: '🇨🇮', countryName: 'Côte d\'Ivoire', status: 'En incubation' as const, year: 2025, tagline: 'Énergie solaire connectée pour les ménages.', description: 'Kits solaires intelligents avec paiement à l\'usage pour les ménages non raccordés au réseau électrique.' },
+  { name: 'TaxiSafe', sector: 'Smart Cities', country: '🇨🇲', countryName: 'Cameroun', status: 'Alumni' as const, year: 2022, tagline: 'Mobilité urbaine sécurisée.', description: 'Service de transport urbain avec géolocalisation, paiement digital et notation des chauffeurs. Présent à Yaoundé et Douala.' },
+  { name: 'LingaLearn', sector: 'Edtech', country: '🇨🇩', countryName: 'RDC', status: 'En incubation' as const, year: 2025, tagline: 'Apprendre les langues africaines en ligne.', description: 'Plateforme d\'apprentissage des langues africaines (Lingala, Swahili, Wolof, Bambara) avec leçons audio et professeurs natifs.' },
 ];
 
 /**
