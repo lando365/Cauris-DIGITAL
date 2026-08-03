@@ -1,0 +1,91 @@
+{
+  "Header": {
+    "menu": {
+      "about": "À propos",
+      "startups": "Startups",
+      "innovationCorporative": "Innovation Corporative",
+      "events": "Événements",
+      "news": "Actualités",
+      "partners": "Partenaires",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "submenu": {
+      "whoWeAre": "Qui sommes-nous ?",
+      "ourTeam": "Notre équipe",
+      "board": "Conseil d'administration",
+      "incubation": "Programme Incubation",
+      "acceleration": "Programme Accélération",
+      "ourStartups": "Nos startups",
+      "residentEntrepreneurs": "Entrepreneurs en résidence",
+      "innovationLab": "Lab d'innovation",
+      "corporatePrograms": "Programmes corporatifs"
+    },
+    "applyButton": "Candidater",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "Hero": {
+    "badge": "Candidatures ouvertes — Promo 2026",
+    "titleStart": "Où l'innovation numérique",
+    "titleAccent": "africaine",
+    "titleEnd": "prend son essor",
+    "subtitle": "CAURIS DIGITAL stimule l'entrepreneuriat tech et forme les entrepreneurs numériques de demain. Basé à Yaoundé, actif partout dans le monde.",
+    "applyCTA": "Déposer ma candidature",
+    "discoverPrograms": "Découvrir nos programmes"
+  },
+  "Footer": {
+    "slogan": "Propulser l'innovation numérique africaine — depuis Yaoundé, pour le monde.",
+    "newsletterTitle": "Newsletter",
+    "newsletterDescription": "Restez informé de nos actualités et événements.",
+    "newsletterPlaceholder": "votre@email.com",
+    "newsletterSubmit": "S'abonner",
+    "columns": {
+      "about": "À propos",
+      "programs": "Programmes",
+      "legal": "Mentions légales",
+      "follow": "Suivez-nous"
+    },
+    "links": {
+      "whoWeAre": "Qui sommes-nous",
+      "ourTeam": "Notre équipe",
+      "board": "Conseil d'administration",
+      "news": "Actualités",
+      "events": "Événements",
+      "incubation": "Programme Incubation",
+      "acceleration": "Programme Accélération",
+      "startups": "Nos startups",
+      "innovationCorporative": "Innovation corporative",
+      "partners": "Partenaires",
+      "legalNotice": "Mentions légales",
+      "privacy": "Politique de confidentialité",
+      "cookies": "Utilisation des cookies",
+      "contact": "Contact",
+      "faq": "FAQ"
+    },
+    "copyright": "© {year} CAURIS DIGITAL — Tous droits réservés",
+    "headOffice": "Siège social : {address}"
+  },
+  "CookieBanner": {
+    "title": "Cookies et confidentialité",
+    "description": "Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. En continuant à naviguer, vous acceptez notre",
+    "policyLink": "politique de cookies",
+    "accept": "J'accepte",
+    "refuse": "Refuser les non-essentiels",
+    "learnMore": "En savoir plus sur nos cookies",
+    "closeButton": "Fermer le bandeau cookies"
+  },
+  "LanguageSwitcher": {
+    "label": "Langue",
+    "french": "Français",
+    "english": "Anglais",
+    "currentLanguage": "Langue actuelle : {lang}",
+    "switchTo": "Changer en {lang}"
+  },
+  "Common": {
+    "loading": "Chargement…",
+    "readMore": "Lire la suite",
+    "viewAll": "Voir tout",
+    "backToHome": "Retour à l'accueil"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "Header": {
+    "menu": {
+      "about": "About",
+      "startups": "Startups",
+      "innovationCorporative": "Corporate Innovation",
+      "events": "Events",
+      "news": "News",
+      "partners": "Partners",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "submenu": {
+      "whoWeAre": "Who we are",
+      "ourTeam": "Our team",
+      "board": "Board of directors",
+      "incubation": "Incubation Program",
+      "acceleration": "Acceleration Program",
+      "ourStartups": "Our startups",
+      "residentEntrepreneurs": "Entrepreneurs in residence",
+      "innovationLab": "Innovation Lab",
+      "corporatePrograms": "Corporate programs"
+    },
+    "applyButton": "Apply",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "Hero": {
+    "badge": "Applications open — 2026 Cohort",
+    "titleStart": "Where",
+    "titleAccent": "African",
+    "titleEnd": "digital innovation takes flight",
+    "subtitle": "CAURIS DIGITAL fosters tech entrepreneurship and trains the digital entrepreneurs of tomorrow. Based in Yaoundé, active worldwide.",
+    "applyCTA": "Submit my application",
+    "discoverPrograms": "Discover our programs"
+  },
+  "Footer": {
+    "slogan": "Powering African digital innovation — from Yaoundé, for the world.",
+    "newsletterTitle": "Newsletter",
+    "newsletterDescription": "Stay informed about our news and events.",
+    "newsletterPlaceholder": "your@email.com",
+    "newsletterSubmit": "Subscribe",
+    "columns": {
+      "about": "About",
+      "programs": "Programs",
+      "legal": "Legal",
+      "follow": "Follow us"
+    },
+    "links": {
+      "whoWeAre": "Who we are",
+      "ourTeam": "Our team",
+      "board": "Board of directors",
+      "news": "News",
+      "events": "Events",
+      "incubation": "Incubation Program",
+      "acceleration": "Acceleration Program",
+      "startups": "Our startups",
+      "innovationCorporative": "Corporate Innovation",
+      "partners": "Partners",
+      "legalNotice": "Legal notice",
+      "privacy": "Privacy policy",
+      "cookies": "Cookie policy",
+      "contact": "Contact",
+      "faq": "FAQ"
+    },
+    "copyright": "© {year} CAURIS DIGITAL — All rights reserved",
+    "headOffice": "Head office: {address}"
+  },
+  "CookieBanner": {
+    "title": "Cookies and privacy",
+    "description": "We use cookies to improve your experience and analyze our traffic. By continuing to browse, you accept our",
+    "policyLink": "cookie policy",
+    "accept": "Accept",
+    "refuse": "Refuse non-essential",
+    "learnMore": "Learn more about our cookies",
+    "closeButton": "Close cookie banner"
+  },
+  "LanguageSwitcher": {
+    "label": "Language",
+    "french": "French",
+    "english": "English",
+    "currentLanguage": "Current language: {lang}",
+    "switchTo": "Switch to {lang}"
+  },
+  "Common": {
+    "loading": "Loading…",
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "backToHome": "Back to home"
+  }
+}
