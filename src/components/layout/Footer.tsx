@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { Linkedin, Twitter, Youtube, Facebook } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';

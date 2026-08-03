@@ -108,7 +108,7 @@ const EVENTS: Event[] = [
 
 const TYPE_COLORS: Record<EventType, string> = {
   'Demo Day': 'bg-cauris-orange text-white',
-  Atelier: 'bg-cauris-success/15 text-cauris-success',
+  Atelier: 'bg-cauris-success/15 text-cauris-success-text',
   Conférence: 'bg-cauris-black text-white',
   Hackathon: 'bg-purple-100 text-purple-700',
   Webinaire: 'bg-blue-100 text-blue-700',
@@ -163,7 +163,7 @@ export default function EventsExplorer() {
                 : 'text-cauris-gray-secondary hover:text-cauris-black'
             }`}
           >
-            À venir <span className="ml-1 opacity-60">({upcoming.length})</span>
+            À venir <span className="ml-1">({upcoming.length})</span>
           </button>
           <button
             type="button"
@@ -176,7 +176,7 @@ export default function EventsExplorer() {
                 : 'text-cauris-gray-secondary hover:text-cauris-black'
             }`}
           >
-            Passés <span className="ml-1 opacity-60">({past.length})</span>
+            Passés <span className="ml-1">({past.length})</span>
           </button>
         </div>
 

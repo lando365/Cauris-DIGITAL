@@ -1,7 +1,7 @@
 'use client';
 
 import Script from 'next/script';
-import { usePathname } from 'next/navigation';
+import { usePathname } from '@/i18n/navigation';
 
 /**
  * Charge le SDK Google reCAPTCHA v3 — UNIQUEMENT sur les pages qui en ont besoin.

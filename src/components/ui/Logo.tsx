@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
@@ -56,8 +56,11 @@ export default function Logo({
 
   if (!asLink) return content;
 
+  // Pas de aria-label ici : le texte visible "CAURIS.DIGITAL" (showWordmark)
+  // sert déjà de nom accessible. Un aria-label différent du texte affiché
+  // viole la règle WCAG 2.5.3 (Label in Name) — voir audit Lighthouse.
   return (
-    <Link href="/" aria-label="CAURIS DIGITAL — Accueil" className="inline-flex">
+    <Link href="/" className="inline-flex">
       {content}
     </Link>
   );

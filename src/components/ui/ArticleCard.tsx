@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Calendar, Clock, User } from 'lucide-react';
 import { ARTICLE_CATEGORY_COLORS, type Article } from '@/lib/constants';
 

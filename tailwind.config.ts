@@ -19,16 +19,28 @@ const config: Config = {
     extend: {
       colors: {
         // Charte graphique CAURIS DIGITAL (CDC §5.1)
+        // Orange légèrement assombri par rapport au #E8640A d'origine du CDC :
+        // le ton exact ne passait le contraste WCAG AA (4.5:1) sur aucune
+        // combinaison réellement utilisée (texte sur blanc/crème/gris clair,
+        // badges teintés, texte blanc sur fond orange). #B54E08 reste
+        // visuellement la même teinte "orange CAURIS" tout en respectant
+        // l'accessibilité partout où elle sert de texte.
         cauris: {
-          orange: '#E8640A',
-          'orange-dark': '#C9540A',
+          orange: '#B04C08',
+          'orange-dark': '#974107',
           'orange-light': '#F58A3D',
           black: '#1A1A2E',
           cream: '#FFF5EE',
           'gray-text': '#333333',
-          'gray-secondary': '#6C757D',
+          // Légèrement assombri (#6C757D → #697179) pour atteindre 4.5:1 sur fond blanc/crème/gris clair
+          'gray-secondary': '#697179',
           'gray-bg': '#F5F5F5',
           success: '#2ECC71',
+          // Variante assombrie de `success`, réservée au texte sur fond clair
+          // teinté (badges "bg-success/10-15"). `success` reste inchangé car
+          // il sert aussi de texte sur fond noir (NewsletterForm) où le vert
+          // clair d'origine est nécessaire pour le contraste.
+          'success-text': '#1D8147',
           error: '#E74C3C',
         },
       },

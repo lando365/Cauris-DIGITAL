@@ -2,16 +2,18 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useState, useTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Globe, Check } from 'lucide-react';
 import { LOCALES, LOCALE_LABELS, type Locale } from '@/i18n/config';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 
 /**
- * Switcher de langue FR/EN.
+ * Switcher de langue FR/EN (CDC §6.6 — URLs /fr/ et /en/).
  *
- * Au clic :
- *  1. POST /api/locale pour persister le cookie côté serveur
- *  2. Refresh hard du navigateur pour relire les traductions SSR
+ * Au clic : navigue vers l'équivalent /en/... ou /fr/... de la page courante
+ * (préserve la query string, ex. /contact?objet=candidature) via le routeur
+ * next-intl, sans rechargement complet de page.
  *
  * Deux variantes d'affichage :
  *  - `inline` (par défaut) : juste `FR | EN` minimal pour le Header desktop
@@ -25,24 +27,19 @@ interface Props {
 export default function LanguageSwitcher({ variant = 'inline', className }: Props) {
   const t = useTranslations('LanguageSwitcher');
   const currentLocale = useLocale() as Locale;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
   const switchTo = (newLocale: Locale) => {
     if (newLocale === currentLocale || isPending) return;
 
-    startTransition(async () => {
-      try {
-        await fetch('/api/locale', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ locale: newLocale }),
-        });
-        // Recharge complète pour que tout le contenu SSR se mette à jour
-        window.location.reload();
-      } catch (err) {
-        console.error('[LanguageSwitcher] Erreur lors du changement de langue:', err);
-      }
+    startTransition(() => {
+      const query = searchParams.toString();
+      const href = query ? `${pathname}?${query}` : pathname;
+      router.replace(href, { locale: newLocale });
     });
   };
 

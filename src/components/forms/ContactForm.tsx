@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
-import Link from 'next/link';
-import { Send, Check, AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
+import { useMemo, useState, type FormEvent } from 'react';
+import { Link } from '@/i18n/navigation';
+import { Send, Check, AlertCircle, Loader2, ShieldCheck, Paperclip, X } from 'lucide-react';
 import { useRecaptcha } from '@/lib/hooks/useRecaptcha';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -21,6 +21,25 @@ const SUBJECTS = [
   { value: 'evenement', label: 'Invitation à un événement' },
   { value: 'autre', label: 'Autre' },
 ];
+
+// Sujets qui déclenchent les champs additionnels "Candidature startup" (CDC §6.1)
+const STARTUP_APPLICATION_SUBJECTS = new Set([
+  'candidature',
+  'candidature-incubation',
+  'candidature-acceleration',
+]);
+const CORPORATE_SUBJECT = 'partenariat-corporate';
+
+const STARTUP_SECTORS = ['Agritech', 'Fintech', 'Edtech', 'Healthtech', 'Smart Cities', 'Autre'];
+
+const STARTUP_STAGES = [
+  'Idée / Concept',
+  'Prototype',
+  'MVP avec premiers utilisateurs',
+  'Déjà lancé — génère des revenus',
+];
+
+const MAX_PITCH_DECK_MB = 5;
 
 /**
  * Pays prioritaires en haut, puis liste alphabétique courte (FR/Afrique).
@@ -54,14 +73,35 @@ const COUNTRIES = [
 export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: string }) {
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [subject, setSubject] = useState(defaultSubject);
+  const [pitchDeckError, setPitchDeckError] = useState('');
+  const [pitchDeckName, setPitchDeckName] = useState('');
   const { getToken: getRecaptchaToken, isEnabled: recaptchaEnabled } = useRecaptcha();
+
+  const isStartupApplication = STARTUP_APPLICATION_SUBJECTS.has(subject);
+  const isCorporate = subject === CORPORATE_SUBJECT;
+
+  const messageLabel = useMemo(() => {
+    if (isStartupApplication) return 'Pitch de votre projet';
+    return 'Message';
+  }, [isStartupApplication]);
+
+  const validatePitchDeck = (file: File | undefined): string => {
+    if (!file || file.size === 0) return '';
+    if (file.type !== 'application/pdf') return 'Le fichier doit être un PDF.';
+    if (file.size > MAX_PITCH_DECK_MB * 1024 * 1024) {
+      return `Le fichier dépasse ${MAX_PITCH_DECK_MB} Mo.`;
+    }
+    return '';
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMessage('');
 
-    const formData = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const formData = new FormData(formEl);
 
     // Honeypot anti-spam (CDC §6.1)
     if (formData.get('website')) {
@@ -69,28 +109,39 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
       return;
     }
 
-    const payload: Record<string, FormDataEntryValue | string> = Object.fromEntries(
-      formData.entries(),
-    );
+    const pitchDeck = formData.get('pitchDeck');
+    const pitchDeckFile = pitchDeck instanceof File ? pitchDeck : undefined;
+    const fileError = validatePitchDeck(pitchDeckFile);
+    if (fileError) {
+      setPitchDeckError(fileError);
+      setStatus('error');
+      setErrorMessage(fileError);
+      return;
+    }
+    // Ne pas envoyer un champ file vide (certains navigateurs l'incluent quand même)
+    if (!pitchDeckFile || pitchDeckFile.size === 0) {
+      formData.delete('pitchDeck');
+    }
 
-    // Génère un token reCAPTCHA v3 si configuré (sinon null = mode dev)
+    // Génère un token reCAPTCHA v3 si configuré (sinon absent = mode dev)
     if (recaptchaEnabled) {
       const recaptchaToken = await getRecaptchaToken('contact_form');
       if (recaptchaToken) {
-        payload.recaptchaToken = recaptchaToken;
+        formData.set('recaptchaToken', recaptchaToken);
       }
     }
 
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: formData,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Erreur lors de l\'envoi.');
       setStatus('success');
-      (e.target as HTMLFormElement).reset();
+      formEl.reset();
+      setSubject(defaultSubject);
+      setPitchDeckName('');
     } catch (err) {
       setStatus('error');
       setErrorMessage(err instanceof Error ? err.message : 'Une erreur est survenue.');
@@ -214,7 +265,8 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           id="subject"
           name="subject"
           required
-          defaultValue={defaultSubject}
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
           className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
         >
           <option value="">Sélectionnez un objet…</option>
@@ -226,9 +278,155 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
         </select>
       </div>
 
+      {/* Champs additionnels — Candidature startup (CDC §6.1) */}
+      {isStartupApplication && (
+        <div className="space-y-5 p-5 rounded-card bg-cauris-cream/40 border border-cauris-orange/20">
+          <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange">
+            Votre projet
+          </p>
+          <div>
+            <label htmlFor="startupName" className="block text-sm font-medium text-cauris-black mb-2">
+              Nom de la startup <span className="text-cauris-error">*</span>
+            </label>
+            <input
+              id="startupName"
+              name="startupName"
+              type="text"
+              required={isStartupApplication}
+              className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
+            />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label htmlFor="sector" className="block text-sm font-medium text-cauris-black mb-2">
+                Secteur <span className="text-cauris-error">*</span>
+              </label>
+              <select
+                id="sector"
+                name="sector"
+                required={isStartupApplication}
+                defaultValue=""
+                className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
+              >
+                <option value="" disabled>
+                  Sélectionnez…
+                </option>
+                {STARTUP_SECTORS.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="stage" className="block text-sm font-medium text-cauris-black mb-2">
+                Stade du projet <span className="text-cauris-error">*</span>
+              </label>
+              <select
+                id="stage"
+                name="stage"
+                required={isStartupApplication}
+                defaultValue=""
+                className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
+              >
+                <option value="" disabled>
+                  Sélectionnez…
+                </option>
+                {STARTUP_STAGES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="pitchDeck" className="block text-sm font-medium text-cauris-black mb-2">
+              Pitch deck (PDF)
+            </label>
+            <label
+              htmlFor="pitchDeck"
+              className="flex items-center gap-2 w-full px-4 py-3 border border-dashed border-gray-300 rounded-btn bg-white text-sm text-cauris-gray-secondary hover:border-cauris-orange cursor-pointer transition-colors"
+            >
+              <Paperclip className="w-4 h-4 shrink-0" aria-hidden="true" />
+              <span className="truncate">
+                {pitchDeckName || 'Joindre un fichier PDF (facultatif, max 5 Mo)'}
+              </span>
+              {pitchDeckName && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const input = document.getElementById('pitchDeck') as HTMLInputElement | null;
+                    if (input) input.value = '';
+                    setPitchDeckName('');
+                    setPitchDeckError('');
+                  }}
+                  className="ml-auto text-cauris-gray-secondary hover:text-cauris-error"
+                  aria-label="Retirer le fichier"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </label>
+            <input
+              id="pitchDeck"
+              name="pitchDeck"
+              type="file"
+              accept="application/pdf"
+              className="sr-only"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                setPitchDeckError(validatePitchDeck(file));
+                setPitchDeckName(file?.name ?? '');
+              }}
+            />
+            {pitchDeckError && (
+              <p className="mt-1 text-xs text-cauris-error">{pitchDeckError}</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Champs additionnels — Partenariat corporate (CDC §6.1) */}
+      {isCorporate && (
+        <div className="space-y-5 p-5 rounded-card bg-cauris-cream/40 border border-cauris-orange/20">
+          <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange">
+            Votre entreprise
+          </p>
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label htmlFor="company" className="block text-sm font-medium text-cauris-black mb-2">
+                Société <span className="text-cauris-error">*</span>
+              </label>
+              <input
+                id="company"
+                name="company"
+                type="text"
+                required={isCorporate}
+                className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-cauris-black mb-2">
+                Téléphone <span className="text-cauris-error">*</span>
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required={isCorporate}
+                autoComplete="tel"
+                className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-cauris-black mb-2">
-          Message <span className="text-cauris-error">*</span>
+          {messageLabel} <span className="text-cauris-error">*</span>
         </label>
         <textarea
           id="message"
@@ -237,7 +435,11 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           rows={6}
           minLength={20}
           className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors resize-y"
-          placeholder="Décrivez votre demande en quelques lignes…"
+          placeholder={
+            isStartupApplication
+              ? 'Problème résolu, solution, marché visé, traction actuelle…'
+              : 'Décrivez votre demande en quelques lignes…'
+          }
         />
         <p className="mt-1 text-xs text-cauris-gray-secondary">Minimum 20 caractères.</p>
       </div>

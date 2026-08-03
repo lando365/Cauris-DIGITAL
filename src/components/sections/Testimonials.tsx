@@ -65,18 +65,23 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Pagination dots */}
-          <div className="flex justify-center gap-2 mt-6">
+          {/* Pagination dots — zone cliquable ≥24×24px (WCAG 2.5.8), indicateur visuel plus petit à l'intérieur */}
+          <div className="flex justify-center gap-1 mt-6">
             {TESTIMONIALS.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => setIndex(i)}
-                className={`h-2 rounded-full transition-all ${
-                  i === index ? 'w-8 bg-cauris-orange' : 'w-2 bg-gray-300 hover:bg-gray-400'
-                }`}
+                className="p-2.5 flex items-center justify-center"
                 aria-label={`Aller au témoignage ${i + 1}`}
-              />
+              >
+                <span
+                  className={`inline-block h-2 rounded-full transition-all ${
+                    i === index ? 'w-8 bg-cauris-orange' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
             ))}
           </div>
         </div>

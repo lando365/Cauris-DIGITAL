@@ -25,7 +25,7 @@ export default function KeyNumbers() {
       <div className="container-cauris relative">
         <Reveal>
           <div className="text-center mb-14">
-            <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
+            <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange-light">
               Notre impact en chiffres
             </p>
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl">
