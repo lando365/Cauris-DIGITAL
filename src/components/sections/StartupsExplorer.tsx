@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Search, X, ExternalLink, Linkedin } from 'lucide-react';
+import { Link } from '@/i18n/navigation';
+import { Search, X, ArrowRight } from 'lucide-react';
 import { FEATURED_STARTUPS } from '@/lib/constants';
 
 type Status = 'all' | 'En incubation' | 'Diplômée' | 'Alumni';
@@ -197,14 +198,17 @@ export default function StartupsExplorer() {
             {filtered.map((s) => {
               const statusColor =
                 s.status === 'Diplômée'
-                  ? 'bg-cauris-success/10 text-cauris-success'
+                  ? 'bg-cauris-success/10 text-cauris-success-text'
                   : s.status === 'Alumni'
                     ? 'bg-cauris-black/5 text-cauris-black'
                     : 'bg-cauris-orange/10 text-cauris-orange';
+              // Pas de aria-label : le nom accessible se compose déjà à
+              // partir de tout le texte visible de la carte (WCAG 2.5.3)
               return (
-                <article
-                  key={s.name}
-                  className="card group p-6 lg:p-7 border border-gray-100 h-full flex flex-col bg-white"
+                <Link
+                  key={s.slug}
+                  href={`/startups/${s.slug}`}
+                  className="card group p-6 lg:p-7 border border-gray-100 h-full flex flex-col bg-white hover:border-cauris-orange/30 transition-all"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-xl">
@@ -217,38 +221,24 @@ export default function StartupsExplorer() {
                     </span>
                   </div>
 
-                  <h3 className="font-heading font-bold text-xl text-cauris-black mb-1">
+                  <h3 className="font-heading font-bold text-xl text-cauris-black mb-1 group-hover:text-cauris-orange transition-colors">
                     {s.name} <span className="text-base">{s.country}</span>
                   </h3>
                   <p className="text-xs text-cauris-gray-secondary uppercase tracking-wider mb-3">
                     {s.sector} · {s.countryName} · Promo {s.year}
                   </p>
                   <p className="text-cauris-orange font-medium text-sm mb-3">{s.tagline}</p>
-                  <p className="text-sm text-cauris-gray-text leading-relaxed flex-1 mb-5">
+                  <p className="text-sm text-cauris-gray-text leading-relaxed flex-1 mb-5 line-clamp-3">
                     {s.description}
                   </p>
 
-                  <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
-                    {/* Boutons désactivés visuellement tant que les URL ne sont pas renseignées */}
-                    <span
-                      className="text-cauris-gray-secondary/40 cursor-not-allowed inline-flex"
-                      aria-label={`Site web de ${s.name} bientôt disponible`}
-                      title="Site web à venir"
-                    >
-                      <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                    </span>
-                    <span
-                      className="text-cauris-gray-secondary/40 cursor-not-allowed inline-flex"
-                      aria-label={`LinkedIn de ${s.name} bientôt disponible`}
-                      title="LinkedIn à venir"
-                    >
-                      <Linkedin className="w-4 h-4" aria-hidden="true" />
-                    </span>
-                    <span className="text-[10px] text-cauris-gray-secondary/60 italic ml-1">
-                      Liens à venir
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-cauris-orange">
+                      Découvrir
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                     </span>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>
