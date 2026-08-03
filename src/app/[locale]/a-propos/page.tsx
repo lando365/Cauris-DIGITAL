@@ -143,7 +143,7 @@ export default function AboutPage() {
                   />
                 </div>
                 <div className="bg-cauris-black text-white p-6 rounded-card">
-                  <p className="text-sm font-semibold uppercase tracking-wider text-cauris-orange mb-2">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-cauris-orange-light mb-2">
                     Notre mission
                   </p>
                   <p className="text-base leading-relaxed">

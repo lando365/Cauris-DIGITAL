@@ -200,16 +200,231 @@ export const TESTIMONIALS = [
 /**
  * Startups vedettes (placeholder — à remplacer via CMS)
  */
-export const FEATURED_STARTUPS = [
-  { name: 'FarmTrack', sector: 'Agritech', country: '🇨🇲', countryName: 'Cameroun', status: 'Diplômée' as const, year: 2024, tagline: 'Traçabilité agricole pour petits producteurs.', description: 'Plateforme de traçabilité de la chaîne agricole pour les coopératives camerounaises. Permet aux petits producteurs de prouver l\'origine et la qualité de leurs récoltes.' },
-  { name: 'PayEasy', sector: 'Fintech', country: '🇨🇲', countryName: 'Cameroun', status: 'En incubation' as const, year: 2025, tagline: 'Paiement digital pour PME africaines.', description: 'Solution de paiement multi-moyens (Mobile Money, carte, virement) pour les PME camerounaises et CEMAC.' },
-  { name: 'MédikAfrique', sector: 'Healthtech', country: '🇨🇬', countryName: 'Congo-Brazzaville', status: 'Alumni' as const, year: 2023, tagline: 'Téléconsultation médicale accessible.', description: 'App de téléconsultation médicale connectant 12 000 utilisateurs actifs aux médecins certifiés en Afrique centrale.' },
-  { name: 'EduConnect', sector: 'Edtech', country: '🇸🇳', countryName: 'Sénégal', status: 'Diplômée' as const, year: 2024, tagline: 'Plateforme d\'apprentissage mobile-first.', description: 'LMS mobile-first pour les écoles primaires et secondaires. Optimisé pour les zones à faible connectivité.' },
-  { name: 'AgriPredict', sector: 'Agritech', country: '🇧🇫', countryName: 'Burkina Faso', status: 'En incubation' as const, year: 2025, tagline: 'IA prédictive pour l\'agriculture.', description: 'Modèles d\'IA prédictive pour anticiper les rendements agricoles et optimiser les semis selon les conditions climatiques.' },
-  { name: 'CryptoSahel', sector: 'Fintech', country: '🇲🇱', countryName: 'Mali', status: 'Diplômée' as const, year: 2023, tagline: 'Microfinance via blockchain.', description: 'Plateforme de microfinance basée sur la blockchain, opérationnelle au Mali et en cours d\'expansion en Afrique de l\'Ouest.' },
-  { name: 'GreenWatt', sector: 'Smart Cities', country: '🇨🇮', countryName: 'Côte d\'Ivoire', status: 'En incubation' as const, year: 2025, tagline: 'Énergie solaire connectée pour les ménages.', description: 'Kits solaires intelligents avec paiement à l\'usage pour les ménages non raccordés au réseau électrique.' },
-  { name: 'TaxiSafe', sector: 'Smart Cities', country: '🇨🇲', countryName: 'Cameroun', status: 'Alumni' as const, year: 2022, tagline: 'Mobilité urbaine sécurisée.', description: 'Service de transport urbain avec géolocalisation, paiement digital et notation des chauffeurs. Présent à Yaoundé et Douala.' },
-  { name: 'LingaLearn', sector: 'Edtech', country: '🇨🇩', countryName: 'RDC', status: 'En incubation' as const, year: 2025, tagline: 'Apprendre les langues africaines en ligne.', description: 'Plateforme d\'apprentissage des langues africaines (Lingala, Swahili, Wolof, Bambara) avec leçons audio et professeurs natifs.' },
+export interface Startup {
+  slug: string;
+  name: string;
+  sector: string;
+  country: string;       // Drapeau emoji
+  countryName: string;   // Nom du pays
+  city?: string;         // Ville (optionnel)
+  status: 'En incubation' | 'Diplômée' | 'Alumni';
+  year: number;          // Année d'entrée dans le programme
+  foundedYear?: number;  // Année de fondation
+  tagline: string;
+  description: string;   // Description courte (200 mots max — CDC §6.4)
+  longDescription?: string; // Description longue pour la page détail
+  technologies?: string[];  // Stack technique
+  founders?: string[];      // Noms fondateurs
+  metrics?: Array<{ label: string; value: string }>;
+  website?: string;
+  linkedin?: string;
+  achievements?: string[];  // Étapes marquantes
+}
+
+export const FEATURED_STARTUPS: Startup[] = [
+  {
+    slug: 'farmtrack',
+    name: 'FarmTrack',
+    sector: 'Agritech',
+    country: '🇨🇲',
+    countryName: 'Cameroun',
+    city: 'Yaoundé',
+    status: 'Diplômée',
+    year: 2024,
+    foundedYear: 2023,
+    tagline: 'Traçabilité agricole pour petits producteurs.',
+    description: 'Plateforme de traçabilité de la chaîne agricole pour les coopératives camerounaises. Permet aux petits producteurs de prouver l\'origine et la qualité de leurs récoltes.',
+    longDescription: 'FarmTrack équipe les coopératives agricoles d\'un système de traçabilité hybride (SMS pour les producteurs, dashboard web pour les coopératives, certificats blockchain pour les acheteurs internationaux). La plateforme permet aux petits producteurs de cacao, café et palme de prouver l\'origine et la qualité de leurs récoltes, et d\'accéder à des prix justes sur les marchés internationaux. Aujourd\'hui, 12 coopératives clientes utilisent FarmTrack au Cameroun, totalisant plus de 1 200 producteurs tracés.',
+    technologies: ['Blockchain', 'IoT rural', 'SMS Gateway', 'Cartographie satellite'],
+    founders: ['Amina N.'],
+    metrics: [
+      { label: 'Coopératives clientes', value: '12' },
+      { label: 'Producteurs tracés', value: '1 200+' },
+      { label: 'Chiffre d\'affaires mensuel', value: '50 000 FCFA' },
+    ],
+    achievements: [
+      'Demo Day 2024 : présentation devant 50 investisseurs',
+      'Premier partenariat avec un acheteur européen (en négociation)',
+      'Candidate au programme Accélération 2026',
+    ],
+  },
+  {
+    slug: 'payeasy',
+    name: 'PayEasy',
+    sector: 'Fintech',
+    country: '🇨🇲',
+    countryName: 'Cameroun',
+    city: 'Douala',
+    status: 'En incubation',
+    year: 2025,
+    foundedYear: 2024,
+    tagline: 'Paiement digital pour PME africaines.',
+    description: 'Solution de paiement multi-moyens (Mobile Money, carte, virement) pour les PME camerounaises et CEMAC.',
+    longDescription: 'PayEasy démocratise le paiement digital pour les petites et moyennes entreprises de la zone CEMAC. La plateforme unifie tous les moyens de paiement (Mobile Money MTN/Orange, cartes Visa/Mastercard, virements bancaires) en une seule interface, avec un dashboard de gestion adapté aux réalités africaines (multi-devises, comptabilité simplifiée, gestion d\'équipe).',
+    technologies: ['Mobile Money APIs', 'Stripe', 'Node.js', 'PostgreSQL'],
+    founders: ['Jean-Paul M.'],
+    metrics: [
+      { label: 'PME clientes', value: '47' },
+      { label: 'Transactions/mois', value: '8 000+' },
+      { label: 'Premier client corporate', value: 'Semaine 8' },
+    ],
+  },
+  {
+    slug: 'medikafrique',
+    name: 'MédikAfrique',
+    sector: 'Healthtech',
+    country: '🇨🇬',
+    countryName: 'Congo-Brazzaville',
+    city: 'Brazzaville',
+    status: 'Alumni',
+    year: 2023,
+    foundedYear: 2022,
+    tagline: 'Téléconsultation médicale accessible.',
+    description: 'App de téléconsultation médicale connectant 12 000 utilisateurs actifs aux médecins certifiés en Afrique centrale.',
+    longDescription: 'MédikAfrique connecte les populations rurales et urbaines à des médecins certifiés via une application mobile simple d\'utilisation. La plateforme propose des consultations en visioconférence, du suivi médical à distance et un service d\'ordonnance électronique reconnu par les pharmacies partenaires. Présent au Congo-Brazzaville, en RDC et au Gabon.',
+    technologies: ['React Native', 'WebRTC', 'IA diagnostic', 'PWA'],
+    founders: ['Rodrigue K.'],
+    metrics: [
+      { label: 'Utilisateurs actifs', value: '12 000+' },
+      { label: 'Médecins partenaires', value: '85' },
+      { label: 'Pays couverts', value: '3' },
+    ],
+    achievements: [
+      'Lauréate du Demo Day 2023',
+      'Levée de fonds seed 200K€ en 2024',
+      'Expansion en Afrique de l\'Ouest prévue 2026',
+    ],
+  },
+  {
+    slug: 'educonnect',
+    name: 'EduConnect',
+    sector: 'Edtech',
+    country: '🇸🇳',
+    countryName: 'Sénégal',
+    city: 'Dakar',
+    status: 'Diplômée',
+    year: 2024,
+    foundedYear: 2023,
+    tagline: 'Plateforme d\'apprentissage mobile-first.',
+    description: 'LMS mobile-first pour les écoles primaires et secondaires. Optimisé pour les zones à faible connectivité.',
+    longDescription: 'EduConnect est une plateforme d\'apprentissage conçue spécifiquement pour les écoles africaines. Mobile-first, elle fonctionne en mode hors-ligne avec synchronisation automatique quand la connexion est disponible. Les enseignants peuvent créer leurs cours, les élèves accèdent à des contenus pédagogiques adaptés au programme local, et les parents suivent les progrès en temps réel.',
+    technologies: ['React Native', 'Service Workers', 'Firebase', 'SQLite'],
+    founders: ['Fatou S.'],
+    metrics: [
+      { label: 'Écoles équipées', value: '24' },
+      { label: 'Élèves actifs', value: '3 500+' },
+      { label: 'Pays couverts', value: '2' },
+    ],
+  },
+  {
+    slug: 'agripredict',
+    name: 'AgriPredict',
+    sector: 'Agritech',
+    country: '🇧🇫',
+    countryName: 'Burkina Faso',
+    city: 'Ouagadougou',
+    status: 'En incubation',
+    year: 2025,
+    foundedYear: 2024,
+    tagline: 'IA prédictive pour l\'agriculture.',
+    description: 'Modèles d\'IA prédictive pour anticiper les rendements agricoles et optimiser les semis selon les conditions climatiques.',
+    longDescription: 'AgriPredict combine intelligence artificielle, données satellite et capteurs IoT au sol pour prédire les rendements agricoles avec une précision de ±5%. La startup accompagne les coopératives sahéliennes dans l\'optimisation de leurs semis, l\'anticipation des sécheresses et la gestion intelligente de l\'irrigation.',
+    technologies: ['TensorFlow', 'Données satellite', 'IoT capteurs', 'Python'],
+    founders: ['Issaka T.', 'Marie K.'],
+    metrics: [
+      { label: 'Hectares analysés', value: '4 500' },
+      { label: 'Précision prédictive', value: '94%' },
+      { label: 'Coopératives clientes', value: '7' },
+    ],
+  },
+  {
+    slug: 'cryptosahel',
+    name: 'CryptoSahel',
+    sector: 'Fintech',
+    country: '🇲🇱',
+    countryName: 'Mali',
+    city: 'Bamako',
+    status: 'Diplômée',
+    year: 2023,
+    foundedYear: 2022,
+    tagline: 'Microfinance via blockchain.',
+    description: 'Plateforme de microfinance basée sur la blockchain, opérationnelle au Mali et en cours d\'expansion en Afrique de l\'Ouest.',
+    longDescription: 'CryptoSahel transforme la microfinance grâce à la blockchain. La startup permet aux populations non-bancarisées d\'accéder à des microcrédits, à l\'épargne et au transfert d\'argent sans frais via une application mobile. Les contrats intelligents garantissent la transparence et réduisent les coûts opérationnels de 60% comparé aux institutions classiques.',
+    technologies: ['Ethereum L2', 'Smart contracts', 'Solidity', 'React Native'],
+    founders: ['Sékou D.'],
+    metrics: [
+      { label: 'Utilisateurs', value: '8 200+' },
+      { label: 'Microcrédits accordés', value: '4 100' },
+      { label: 'Taux de remboursement', value: '97%' },
+    ],
+  },
+  {
+    slug: 'greenwatt',
+    name: 'GreenWatt',
+    sector: 'Smart Cities',
+    country: '🇨🇮',
+    countryName: 'Côte d\'Ivoire',
+    city: 'Abidjan',
+    status: 'En incubation',
+    year: 2025,
+    foundedYear: 2024,
+    tagline: 'Énergie solaire connectée pour les ménages.',
+    description: 'Kits solaires intelligents avec paiement à l\'usage pour les ménages non raccordés au réseau électrique.',
+    longDescription: 'GreenWatt rend l\'énergie solaire accessible aux foyers ivoiriens hors-réseau grâce à un modèle de paiement à l\'usage (pay-as-you-go). Les kits solaires connectés sont monitorés à distance et financés via Mobile Money en versements quotidiens abordables. Plus de 800 foyers déjà équipés.',
+    technologies: ['IoT (LoRaWAN)', 'Mobile Money APIs', 'Edge computing'],
+    founders: ['Amadou Y.'],
+    metrics: [
+      { label: 'Foyers équipés', value: '850' },
+      { label: 'kWh produits/mois', value: '12 000' },
+      { label: 'CO₂ évité (an)', value: '85 tonnes' },
+    ],
+  },
+  {
+    slug: 'taxisafe',
+    name: 'TaxiSafe',
+    sector: 'Smart Cities',
+    country: '🇨🇲',
+    countryName: 'Cameroun',
+    city: 'Yaoundé & Douala',
+    status: 'Alumni',
+    year: 2022,
+    foundedYear: 2021,
+    tagline: 'Mobilité urbaine sécurisée.',
+    description: 'Service de transport urbain avec géolocalisation, paiement digital et notation des chauffeurs. Présent à Yaoundé et Douala.',
+    longDescription: 'TaxiSafe digitalise le transport urbain camerounais avec une application qui combine géolocalisation en temps réel, paiement digital via Mobile Money et système de notation des chauffeurs. Plus de 400 chauffeurs vérifiés desservent Yaoundé et Douala, avec un focus sur la sécurité (vérification d\'identité, bouton SOS, partage de trajet).',
+    technologies: ['Flutter', 'Google Maps SDK', 'Stripe', 'Firebase'],
+    founders: ['Patrick N.'],
+    metrics: [
+      { label: 'Chauffeurs vérifiés', value: '420' },
+      { label: 'Courses/mois', value: '18 000+' },
+      { label: 'Note moyenne', value: '4.7/5' },
+    ],
+    achievements: [
+      'Partenariat avec une compagnie de taxi camerounaise',
+      'Profitable depuis 2024',
+    ],
+  },
+  {
+    slug: 'lingalearn',
+    name: 'LingaLearn',
+    sector: 'Edtech',
+    country: '🇨🇩',
+    countryName: 'RDC',
+    city: 'Kinshasa',
+    status: 'En incubation',
+    year: 2025,
+    foundedYear: 2024,
+    tagline: 'Apprendre les langues africaines en ligne.',
+    description: 'Plateforme d\'apprentissage des langues africaines (Lingala, Swahili, Wolof, Bambara) avec leçons audio et professeurs natifs.',
+    longDescription: 'LingaLearn est la première plateforme dédiée à l\'apprentissage des langues africaines. La startup propose des cours interactifs de Lingala, Swahili, Wolof et Bambara, avec leçons audio enregistrées par des locuteurs natifs et des sessions live avec des professeurs certifiés. Cible : la diaspora africaine, les expatriés et les Africains souhaitant retrouver leurs racines linguistiques.',
+    technologies: ['Next.js', 'WebRTC', 'IA prononciation', 'Stripe'],
+    founders: ['Christelle M.'],
+    metrics: [
+      { label: 'Langues disponibles', value: '4' },
+      { label: 'Apprenants actifs', value: '1 200+' },
+      { label: 'Pays des apprenants', value: '32' },
+    ],
+  },
 ];
 
 /**
@@ -504,7 +719,7 @@ export const ARTICLE_CATEGORIES: ReadonlyArray<'Toutes' | ArticleCategory> = [
 export const ARTICLE_CATEGORY_COLORS: Record<ArticleCategory, string> = {
   Annonces: 'bg-cauris-orange/10 text-cauris-orange',
   Portraits: 'bg-pink-100 text-pink-700',
-  Ressources: 'bg-cauris-success/10 text-cauris-success',
+  Ressources: 'bg-cauris-success/10 text-cauris-success-text',
   Événements: 'bg-purple-100 text-purple-700',
   Opinions: 'bg-blue-100 text-blue-700',
 };
@@ -899,4 +1114,30 @@ export function getRelatedArticles(currentSlug: string, limit = 3): Article[] {
     0,
     limit,
   );
+}
+
+/**
+ * Helper : récupère une startup par son slug.
+ */
+export function getStartupBySlug(slug: string): Startup | undefined {
+  return FEATURED_STARTUPS.find((s) => s.slug === slug);
+}
+
+/**
+ * Helper : récupère des startups liées (même secteur ou même pays, hors startup courante).
+ */
+export function getRelatedStartups(currentSlug: string, limit = 3): Startup[] {
+  const current = getStartupBySlug(currentSlug);
+  if (!current) return [];
+  // Priorité : même secteur, puis même pays, puis le reste
+  const sameSector = FEATURED_STARTUPS.filter(
+    (s) => s.slug !== currentSlug && s.sector === current.sector,
+  );
+  const sameCountry = FEATURED_STARTUPS.filter(
+    (s) => s.slug !== currentSlug && s.countryName === current.countryName && s.sector !== current.sector,
+  );
+  const others = FEATURED_STARTUPS.filter(
+    (s) => s.slug !== currentSlug && s.sector !== current.sector && s.countryName !== current.countryName,
+  );
+  return [...sameSector, ...sameCountry, ...others].slice(0, limit);
 }

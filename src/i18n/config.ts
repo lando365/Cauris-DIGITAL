@@ -1,8 +1,9 @@
 /**
  * Configuration centrale du multilingue.
  *
- * Mode : "sans routing i18n" — la langue est stockée dans un cookie
- * et lue côté serveur. Les URLs ne changent pas (pas de /fr/ ou /en/).
+ * Mode : routing i18n avec préfixe d'URL (/fr/, /en/ — CDC §6.6).
+ * La locale vient du segment d'URL [locale], résolu par le middleware
+ * (voir src/middleware.ts et src/i18n/routing.ts).
  *
  * Pour ajouter une langue :
  *  1. Ajouter le code à `LOCALES`
@@ -19,13 +20,3 @@ export const LOCALE_LABELS: Record<Locale, { native: string; short: string; flag
   fr: { native: 'Français', short: 'FR', flag: '🇫🇷' },
   en: { native: 'English', short: 'EN', flag: '🇬🇧' },
 };
-
-export const LOCALE_COOKIE_NAME = 'cauris-locale';
-export const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 an
-
-/**
- * Vérifie qu'une chaîne est une locale supportée.
- */
-export function isValidLocale(value: unknown): value is Locale {
-  return typeof value === 'string' && (LOCALES as readonly string[]).includes(value);
-}

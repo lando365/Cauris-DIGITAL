@@ -1,20 +1,23 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { SITE_CONFIG } from '@/lib/constants';
+import { createToken } from '@/lib/newsletter-token';
 
 /**
- * Endpoint d'inscription newsletter (CDC §6.5).
+ * Endpoint d'inscription newsletter — étape 1/2 : double opt-in (CDC §6.5).
  *
  * Flow :
  *  1. Validation de l'email
- *  2. Ajout du contact à l'audience Resend (RESEND_AUDIENCE_ID)
- *  3. Envoi d'un email de bienvenue stylé CAURIS
- *  4. Réponse JSON
+ *  2. Génération d'un jeton de confirmation signé (48h de validité)
+ *  3. Envoi d'un email « Confirmez votre inscription » contenant le lien
+ *  4. Réponse JSON — le contact n'est PAS encore ajouté à l'audience Resend :
+ *     ça n'arrive qu'après le clic sur le lien, voir /api/newsletter/confirm
  *
  * Variables .env.local requises :
  *  - RESEND_API_KEY        → même clé que pour le formulaire de contact
  *  - RESEND_AUDIENCE_ID    → ID de l'audience Resend (créée dans le dashboard)
  *  - CONTACT_EMAIL_FROM    → adresse expéditrice vérifiée
+ *  - NEWSLETTER_TOKEN_SECRET → secret de signature des liens (voir newsletter-token.ts)
  *
  * En l'absence de configuration, la route log uniquement (mode dev fallback).
  */
@@ -37,10 +40,10 @@ export async function POST(request: Request) {
       console.warn(
         '[newsletter] RESEND_API_KEY ou RESEND_AUDIENCE_ID non configurés. Mode log uniquement.',
       );
-      console.log('[newsletter] Inscription:', cleanEmail);
+      console.log('[newsletter] Demande de confirmation (mode dev):', cleanEmail);
       return NextResponse.json({
         success: true,
-        message: 'Inscription enregistrée (mode dev).',
+        message: 'Confirmation enregistrée (mode dev).',
         dev: true,
       });
     }
@@ -48,119 +51,82 @@ export async function POST(request: Request) {
     const resend = new Resend(apiKey);
     const from = process.env.CONTACT_EMAIL_FROM ?? 'CAURIS DIGITAL <onboarding@resend.dev>';
 
-    // 3. Ajout à l'audience Resend
-    const { error: contactError } = await resend.contacts.create({
-      email: cleanEmail,
-      firstName: cleanFirstName,
-      unsubscribed: false,
-      audienceId,
-    });
+    // 3. Lien de confirmation signé (double opt-in — pas d'ajout à l'audience ici)
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url;
+    const confirmToken = createToken(cleanEmail, 'confirm');
+    const confirmUrl = new URL('/api/newsletter/confirm', siteUrl);
+    confirmUrl.searchParams.set('token', confirmToken);
+    if (cleanFirstName) confirmUrl.searchParams.set('firstName', cleanFirstName);
 
-    // Si déjà inscrit, ce n'est pas une erreur grave — on continue avec un email de bienvenue
-    if (contactError) {
-      const errorMessage = String(contactError.message ?? '').toLowerCase();
-      const isAlreadySubscribed =
-        errorMessage.includes('already') || errorMessage.includes('exist');
-
-      if (!isAlreadySubscribed) {
-        console.error('[newsletter] Erreur Resend contacts.create:', contactError);
-        return NextResponse.json(
-          { error: 'Impossible de vous inscrire pour le moment. Réessayez plus tard.' },
-          { status: 500 },
-        );
-      }
-
-      console.log('[newsletter] Email déjà inscrit:', cleanEmail);
-      return NextResponse.json({
-        success: true,
-        message: 'Cette adresse est déjà inscrite à notre newsletter. Merci !',
-      });
-    }
-
-    // 4. Envoi de l'email de bienvenue (Textes_Site_v1 §12)
-    const welcomeHtml = `
+    const confirmHtml = `
       <!DOCTYPE html>
       <html lang="fr">
         <body style="font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 24px; background: #FFF5EE;">
           <div style="background: #1A1A2E; padding: 24px; border-radius: 12px 12px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">
-              Bienvenue dans la communauté <span style="color: #E8640A;">CAURIS DIGITAL</span> 🌍
+            <h1 style="color: white; margin: 0; font-size: 22px;">
+              Confirmez votre inscription à <span style="color: #E8640A;">CAURIS DIGITAL</span>
             </h1>
           </div>
 
           <div style="background: white; padding: 32px 28px; border-radius: 0 0 12px 12px;">
             <p>Bonjour${cleanFirstName ? ` <strong>${escape(cleanFirstName)}</strong>` : ''},</p>
 
-            <p>Votre inscription est confirmée. Bienvenue dans la communauté CAURIS DIGITAL !</p>
+            <p>Vous avez demandé à recevoir la newsletter de CAURIS DIGITAL. Pour confirmer votre inscription, cliquez sur le bouton ci-dessous :</p>
 
-            <p>Vous faites maintenant partie d'un réseau d'entrepreneurs, mentors et partenaires qui construisent l'Afrique numérique de demain.</p>
-
-            <h3 style="color: #1A1A2E; margin-top: 28px; margin-bottom: 12px;">Pour commencer :</h3>
-
-            <ul style="padding-left: 20px;">
-              <li style="margin-bottom: 8px;">
-                <a href="${SITE_CONFIG.url}/programme-incubation" style="color: #E8640A; text-decoration: none; font-weight: 600;">Découvrez nos programmes d'incubation et d'accélération</a>
-              </li>
-              <li style="margin-bottom: 8px;">
-                <a href="${SITE_CONFIG.url}/startups" style="color: #E8640A; text-decoration: none; font-weight: 600;">Explorez les startups que nous accompagnons</a>
-              </li>
-              <li style="margin-bottom: 8px;">
-                <a href="${SITE_CONFIG.url}/contact?objet=candidature" style="color: #E8640A; text-decoration: none; font-weight: 600;">Candidatez si vous avez un projet tech</a>
-              </li>
-            </ul>
-
-            <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #eee;">
-              <p style="margin: 0; font-style: italic;">À très bientôt,</p>
-              <p style="margin: 4px 0 0; font-weight: 600;">L'équipe CAURIS DIGITAL</p>
+            <div style="text-align: center; margin: 28px 0;">
+              <a href="${confirmUrl.toString()}" style="display: inline-block; background: #E8640A; color: white; text-decoration: none; font-weight: 600; padding: 14px 28px; border-radius: 6px;">
+                Confirmer mon inscription
+              </a>
             </div>
-          </div>
 
-          <p style="text-align: center; color: #6C757D; font-size: 11px; margin-top: 20px;">
-            Vous avez reçu cet email parce que vous vous êtes inscrit à la newsletter de CAURIS DIGITAL.<br />
-            Pour vous désinscrire, contactez-nous à <a href="mailto:${SITE_CONFIG.email}" style="color: #6C757D;">${SITE_CONFIG.email}</a>.
-          </p>
+            <p style="font-size: 13px; color: #6C757D;">Ce lien est valable 48 heures. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email sans risque — aucune inscription ne sera enregistrée.</p>
+          </div>
         </body>
       </html>
     `;
 
-    const welcomeText = `Bienvenue dans la communauté CAURIS DIGITAL 🌍\n\n` +
+    const confirmText =
+      `Confirmez votre inscription à la newsletter CAURIS DIGITAL\n\n` +
       `Bonjour${cleanFirstName ? ` ${cleanFirstName}` : ''},\n\n` +
-      `Votre inscription est confirmée. Bienvenue dans la communauté CAURIS DIGITAL !\n\n` +
-      `Pour commencer :\n` +
-      `→ Découvrez nos programmes : ${SITE_CONFIG.url}/programme-incubation\n` +
-      `→ Explorez les startups : ${SITE_CONFIG.url}/startups\n` +
-      `→ Candidatez : ${SITE_CONFIG.url}/contact?objet=candidature\n\n` +
-      `À très bientôt,\n` +
-      `L'équipe CAURIS DIGITAL`;
+      `Cliquez sur ce lien pour confirmer votre inscription (valable 48h) :\n${confirmUrl.toString()}\n\n` +
+      `Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.`;
 
     const { error: emailError } = await resend.emails.send({
       from,
       to: [cleanEmail],
-      subject: 'Bienvenue dans la communauté CAURIS DIGITAL 🌍',
-      html: welcomeHtml,
-      text: welcomeText,
+      subject: 'Confirmez votre inscription à la newsletter CAURIS DIGITAL',
+      html: confirmHtml,
+      text: confirmText,
     });
 
     if (emailError) {
-      // L'inscription a réussi mais l'email de bienvenue a échoué — on log et on continue
-      // Cas attendu tant qu'aucun domaine n'a été vérifié sur Resend : le mode test
-      // de Resend ne permet d'envoyer qu'à l'email du propriétaire du compte.
-      // Voir docs/SETUP_RESEND.md pour la procédure de vérification de domaine.
       if (isResendTestModeRestriction(emailError)) {
         console.warn(
-          `[newsletter] Email de bienvenue non envoyé à ${cleanEmail} ` +
-            `(mode test Resend — domaine non vérifié). L'inscription est bien prise en compte.`,
+          `[newsletter] Email de confirmation non envoyé à ${cleanEmail} ` +
+            `(mode test Resend — domaine non vérifié). Voir docs/SETUP_RESEND.md.`,
         );
-      } else {
-        console.error('[newsletter] Erreur inattendue email bienvenue:', emailError);
+        // On ne peut pas garantir que l'utilisateur recevra le lien : on le
+        // signale clairement plutôt que de prétendre que tout s'est bien passé.
+        return NextResponse.json(
+          {
+            error:
+              "Le service d'emails est en mode test et ne peut pas encore envoyer à cette adresse. Réessayez plus tard ou contactez-nous directement.",
+          },
+          { status: 503 },
+        );
       }
+      console.error('[newsletter] Erreur envoi email de confirmation:', emailError);
+      return NextResponse.json(
+        { error: "Impossible d'envoyer l'email de confirmation. Réessayez plus tard." },
+        { status: 500 },
+      );
     }
 
-    console.log('[newsletter] Inscription réussie ✓', cleanEmail);
+    console.log('[newsletter] Email de confirmation envoyé ✓', cleanEmail);
 
     return NextResponse.json({
       success: true,
-      message: 'Inscription confirmée ! Vérifiez votre boîte mail.',
+      message: 'Vérifiez votre boîte mail pour confirmer votre inscription.',
     });
   } catch (error) {
     console.error('[newsletter] Erreur:', error);
@@ -181,11 +147,6 @@ function escape(str: string): string {
 /**
  * Détecte si l'erreur Resend correspond à la restriction du mode test
  * (uniquement envoi vers l'email du propriétaire tant qu'aucun domaine n'est vérifié).
- *
- * Resend renvoie typiquement :
- *  - statusCode: 403
- *  - name: 'validation_error'
- *  - message contenant "You can only send testing emails to your own email address"
  */
 function isResendTestModeRestriction(err: unknown): boolean {
   if (!err || typeof err !== 'object') return false;

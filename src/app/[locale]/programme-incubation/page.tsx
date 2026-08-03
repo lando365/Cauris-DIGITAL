@@ -288,7 +288,7 @@ export default function IncubationProgramPage() {
 
             <Reveal delay={150}>
               <div className="bg-cauris-black text-white rounded-card p-8 lg:p-10">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-cauris-orange mb-2">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-cauris-orange-light mb-2">
                   Bon à savoir
                 </p>
                 <h3 className="font-heading font-bold text-2xl mb-4">

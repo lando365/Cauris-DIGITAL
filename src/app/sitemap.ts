@@ -1,23 +1,73 @@
 import type { MetadataRoute } from 'next';
+import { ARTICLES, FEATURED_STARTUPS } from '@/lib/constants';
+import { routing } from '@/i18n/routing';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://caurisdigital.org';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+type ChangeFrequency = NonNullable<MetadataRoute.Sitemap[number]['changeFrequency']>;
 
-  return [
-    { url: `${SITE_URL}/`, lastModified, changeFrequency: 'weekly', priority: 1 },
-    { url: `${SITE_URL}/a-propos`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${SITE_URL}/programme-incubation`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${SITE_URL}/programme-acceleration`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/startups`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE_URL}/innovation-corporative`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/evenements`, lastModified, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${SITE_URL}/actualites`, lastModified, changeFrequency: 'daily', priority: 0.7 },
-    { url: `${SITE_URL}/partenaires`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/faq`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/mentions-legales`, lastModified, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${SITE_URL}/politique-de-confidentialite`, lastModified, changeFrequency: 'yearly', priority: 0.3 },
-  ];
+interface StaticPage {
+  path: string;
+  changeFrequency: ChangeFrequency;
+  priority: number;
+}
+
+// Pages statiques principales
+const STATIC_PAGES: StaticPage[] = [
+  { path: '/', changeFrequency: 'weekly', priority: 1 },
+  { path: '/a-propos', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/programme-incubation', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/programme-acceleration', changeFrequency: 'monthly', priority: 0.8 },
+  { path: '/startups', changeFrequency: 'weekly', priority: 0.8 },
+  { path: '/innovation-corporative', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/evenements', changeFrequency: 'weekly', priority: 0.7 },
+  { path: '/actualites', changeFrequency: 'daily', priority: 0.7 },
+  { path: '/partenaires', changeFrequency: 'monthly', priority: 0.6 },
+  { path: '/faq', changeFrequency: 'monthly', priority: 0.6 },
+  { path: '/contact', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/mentions-legales', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/politique-de-confidentialite', changeFrequency: 'yearly', priority: 0.3 },
+];
+
+/**
+ * Émet une entrée par locale pour un chemin donné, avec les alternates
+ * hreflang pointant vers les autres langues (CDC §6.6 / §7.1).
+ */
+function localizedEntries(
+  path: string,
+  lastModified: Date,
+  changeFrequency: ChangeFrequency,
+  priority: number,
+): MetadataRoute.Sitemap {
+  const languages = Object.fromEntries(
+    routing.locales.map((locale) => [locale, `${SITE_URL}/${locale}${path}`]),
+  );
+
+  return routing.locales.map((locale) => ({
+    url: `${SITE_URL}/${locale}${path}`,
+    lastModified,
+    changeFrequency,
+    priority,
+    alternates: { languages },
+  }));
+}
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
+
+  const staticEntries = STATIC_PAGES.flatMap((p) =>
+    localizedEntries(p.path, now, p.changeFrequency, p.priority),
+  );
+
+  // Pages d'articles dynamiques
+  const articleEntries = ARTICLES.flatMap((article) =>
+    localizedEntries(`/actualites/${article.slug}`, new Date(article.date), 'monthly', 0.5),
+  );
+
+  // Pages de détail startup dynamiques
+  const startupEntries = FEATURED_STARTUPS.flatMap((startup) =>
+    localizedEntries(`/startups/${startup.slug}`, now, 'monthly', 0.5),
+  );
+
+  return [...staticEntries, ...articleEntries, ...startupEntries];
 }

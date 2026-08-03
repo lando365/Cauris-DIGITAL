@@ -119,7 +119,7 @@ export default function InnovationCorporativePage() {
 
         <div className="container-cauris relative">
           <div className="max-w-4xl">
-            <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
+            <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange-light">
               Pour les grandes entreprises
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-6">

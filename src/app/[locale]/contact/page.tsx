@@ -118,7 +118,7 @@ export default function ContactPage({ searchParams }: PageProps) {
                       <Clock className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange mb-1">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange-light mb-1">
                         Horaires
                       </p>
                       <p className="font-medium">Lun. — Ven.</p>
