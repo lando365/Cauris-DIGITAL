@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Montserrat } from 'next/font/google';
 import { Suspense } from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -71,13 +73,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Récupère la locale et les messages côté serveur (next-intl)
+  const locale = await getLocale();
+  const messages = await getMessages();
+
+  // Texte du skip-link traduit selon la langue (depuis le namespace Common)
+  const skipLinkText = locale === 'en' ? 'Skip to main content' : 'Aller au contenu principal';
+
   return (
-    <html lang="fr" className={`${inter.variable} ${montserrat.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${montserrat.variable}`}>
       <head>
         {/* Preconnect aux domaines externes pour réduire la latence */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -85,23 +94,25 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.gstatic.com" />
       </head>
       <body className="min-h-screen flex flex-col bg-white">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-cauris-orange focus:text-white focus:px-4 focus:py-2 focus:rounded-btn"
-        >
-          Aller au contenu principal
-        </a>
-        <Header />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <CookieBanner />
-        <RecaptchaScript />
-        {/* Suspense requis car GoogleAnalytics utilise useSearchParams (Next.js 14) */}
-        <Suspense fallback={null}>
-          <GoogleAnalytics />
-        </Suspense>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-cauris-orange focus:text-white focus:px-4 focus:py-2 focus:rounded-btn"
+          >
+            {skipLinkText}
+          </a>
+          <Header />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <CookieBanner />
+          <RecaptchaScript />
+          {/* Suspense requis car GoogleAnalytics utilise useSearchParams (Next.js 14) */}
+          <Suspense fallback={null}>
+            <GoogleAnalytics />
+          </Suspense>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

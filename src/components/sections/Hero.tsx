@@ -1,13 +1,18 @@
+'use client';
+
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { ArrowRight, Play } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { BRAND_IMAGES } from '@/lib/constants';
 
 /**
- * Hero homepage (CDC §2.1).
+ * Hero homepage (CDC §2.1) — Traduit via next-intl.
  * H1, sous-titre, CTA principal, image de fond plein écran.
  */
 export default function Hero() {
+  const t = useTranslations('Hero');
+
   return (
     <section className="relative min-h-[88vh] lg:min-h-[92vh] flex items-center pt-16 lg:pt-20 overflow-hidden bg-cauris-black">
       {/* Image de fond — priority pour optimiser le LCP (Largest Contentful Paint) */}
@@ -31,18 +36,17 @@ export default function Hero() {
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-cauris-orange/15 border border-cauris-orange/30 text-cauris-orange text-xs font-semibold uppercase tracking-wider backdrop-blur">
             <span className="w-1.5 h-1.5 rounded-full bg-cauris-orange animate-pulse" />
-            Candidatures ouvertes — Promo 2026
+            {t('badge')}
           </span>
 
           <h1 className="font-heading font-extrabold text-white text-4xl sm:text-5xl lg:text-7xl leading-[1.05] mb-6">
-            Où l&apos;innovation numérique{' '}
-            <span className="text-gradient-orange">africaine</span>{' '}
-            prend son essor
+            {t('titleStart')}{' '}
+            <span className="text-gradient-orange">{t('titleAccent')}</span>{' '}
+            {t('titleEnd')}
           </h1>
 
           <p className="text-base sm:text-lg lg:text-xl text-white/85 leading-relaxed max-w-2xl mb-10">
-            CAURIS DIGITAL stimule l&apos;entrepreneuriat tech et forme les entrepreneurs numériques de demain.
-            Basé à Yaoundé, actif partout dans le monde.
+            {t('subtitle')}
           </p>
 
           {/* CTA — sur mobile, primaire en évidence + secondaire en lien texte ; sur desktop, deux boutons côte à côte */}
@@ -52,7 +56,7 @@ export default function Hero() {
               size="lg"
               className="w-full sm:w-auto justify-center"
             >
-              Déposer ma candidature
+              {t('applyCTA')}
               <ArrowRight className="w-4 h-4" />
             </Button>
 
@@ -62,7 +66,7 @@ export default function Hero() {
               className="sm:hidden inline-flex items-center gap-2 self-start mt-1 px-2 py-2 text-sm text-white/85 font-medium"
             >
               <Play className="w-4 h-4 text-cauris-orange" />
-              Découvrir nos programmes
+              {t('discoverPrograms')}
             </a>
             <Button
               href="#programmes"
@@ -71,7 +75,7 @@ export default function Hero() {
               className="hidden sm:inline-flex text-white border-white/40 hover:bg-white hover:text-cauris-black"
             >
               <Play className="w-4 h-4" />
-              Découvrir nos programmes
+              {t('discoverPrograms')}
             </Button>
           </div>
         </div>

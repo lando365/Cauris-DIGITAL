@@ -1,17 +1,23 @@
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { Linkedin, Twitter, Youtube, Facebook } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
 import NewsletterForm from '@/components/forms/NewsletterForm';
 import Logo from '@/components/ui/Logo';
 
 /**
- * Footer 4 colonnes (CDC §4.3)
+ * Footer 4 colonnes (CDC §4.3) — Traduit via next-intl.
  * - Col 1 : Logo + slogan + newsletter
  * - Col 2 : Liens À propos
- * - Col 3 : Startups + Innovation Corporative
+ * - Col 3 : Programmes
  * - Col 4 : Liens légaux + réseaux sociaux
  */
 export default function Footer() {
+  const t = useTranslations('Footer');
+  const tLinks = useTranslations('Footer.links');
+  const tCols = useTranslations('Footer.columns');
+  const year = new Date().getFullYear();
+
   return (
     <footer className="bg-cauris-black text-white">
       <div className="container-cauris py-section-lg">
@@ -22,58 +28,60 @@ export default function Footer() {
               <Logo variant="light" size={44} />
             </div>
             <p className="text-sm text-white/70 leading-relaxed mb-6">
-              Propulser l&apos;innovation numérique africaine — depuis Yaoundé, pour le monde.
+              {t('slogan')}
             </p>
-            <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide">Newsletter</h3>
+            <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide">
+              {t('newsletterTitle')}
+            </h3>
             <p className="text-xs text-white/60 mb-3">
-              Restez informé de nos actualités et événements.
+              {t('newsletterDescription')}
             </p>
             <NewsletterForm />
           </div>
 
           {/* Col 2 — À propos */}
           <div>
-            <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide text-cauris-orange">
-              À propos
+            <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide text-cauris-orange-light">
+              {tCols('about')}
             </h3>
             <ul className="space-y-2.5 text-sm text-white/80">
-              <li><Link href="/a-propos" className="hover:text-cauris-orange transition-colors">Qui sommes-nous</Link></li>
-              <li><Link href="/a-propos#equipe" className="hover:text-cauris-orange transition-colors">Notre équipe</Link></li>
-              <li><Link href="/a-propos#ca" className="hover:text-cauris-orange transition-colors">Conseil d&apos;administration</Link></li>
-              <li><Link href="/actualites" className="hover:text-cauris-orange transition-colors">Actualités</Link></li>
-              <li><Link href="/evenements" className="hover:text-cauris-orange transition-colors">Événements</Link></li>
+              <li><Link href="/a-propos" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('whoWeAre')}</Link></li>
+              <li><Link href="/a-propos#equipe" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('ourTeam')}</Link></li>
+              <li><Link href="/a-propos#ca" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('board')}</Link></li>
+              <li><Link href="/actualites" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('news')}</Link></li>
+              <li><Link href="/evenements" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('events')}</Link></li>
             </ul>
           </div>
 
-          {/* Col 3 — Startups + Innovation */}
+          {/* Col 3 — Programmes */}
           <div>
-            <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide text-cauris-orange">
-              Programmes
+            <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide text-cauris-orange-light">
+              {tCols('programs')}
             </h3>
             <ul className="space-y-2.5 text-sm text-white/80">
-              <li><Link href="/programme-incubation" className="hover:text-cauris-orange transition-colors">Programme Incubation</Link></li>
-              <li><Link href="/programme-acceleration" className="hover:text-cauris-orange transition-colors">Programme Accélération</Link></li>
-              <li><Link href="/startups" className="hover:text-cauris-orange transition-colors">Nos startups</Link></li>
-              <li><Link href="/innovation-corporative" className="hover:text-cauris-orange transition-colors">Innovation corporative</Link></li>
-              <li><Link href="/partenaires" className="hover:text-cauris-orange transition-colors">Partenaires</Link></li>
+              <li><Link href="/programme-incubation" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('incubation')}</Link></li>
+              <li><Link href="/programme-acceleration" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('acceleration')}</Link></li>
+              <li><Link href="/startups" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('startups')}</Link></li>
+              <li><Link href="/innovation-corporative" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('innovationCorporative')}</Link></li>
+              <li><Link href="/partenaires" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('partners')}</Link></li>
             </ul>
           </div>
 
           {/* Col 4 — Légal + Social */}
           <div>
-            <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide text-cauris-orange">
-              Mentions légales
+            <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide text-cauris-orange-light">
+              {tCols('legal')}
             </h3>
             <ul className="space-y-2.5 text-sm text-white/80 mb-6">
-              <li><Link href="/mentions-legales" className="hover:text-cauris-orange transition-colors">Mentions légales</Link></li>
-              <li><Link href="/politique-de-confidentialite" className="hover:text-cauris-orange transition-colors">Politique de confidentialité</Link></li>
-              <li><Link href="/politique-de-confidentialite#cookies" className="hover:text-cauris-orange transition-colors">Utilisation des cookies</Link></li>
-              <li><Link href="/contact" className="hover:text-cauris-orange transition-colors">Contact</Link></li>
-              <li><Link href="/faq" className="hover:text-cauris-orange transition-colors">FAQ</Link></li>
+              <li><Link href="/mentions-legales" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('legalNotice')}</Link></li>
+              <li><Link href="/politique-de-confidentialite" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('privacy')}</Link></li>
+              <li><Link href="/politique-de-confidentialite#cookies" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('cookies')}</Link></li>
+              <li><Link href="/contact" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('contact')}</Link></li>
+              <li><Link href="/faq" className="inline-block py-1.5 hover:text-cauris-orange transition-colors">{tLinks('faq')}</Link></li>
             </ul>
 
-            <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide text-cauris-orange">
-              Suivez-nous
+            <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide text-cauris-orange-light">
+              {tCols('follow')}
             </h3>
             <div className="flex items-center gap-3">
               <a
@@ -120,10 +128,8 @@ export default function Footer() {
       {/* Copyright */}
       <div className="border-t border-white/10">
         <div className="container-cauris py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/60">
-          <p>
-            © {new Date().getFullYear()} CAURIS DIGITAL — Tous droits réservés
-          </p>
-          <p>Siège social : {SITE_CONFIG.fullAddress}</p>
+          <p>{t('copyright', { year })}</p>
+          <p>{t('headOffice', { address: SITE_CONFIG.fullAddress })}</p>
         </div>
       </div>
     </footer>

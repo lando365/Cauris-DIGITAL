@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { Cookie, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +15,7 @@ type Consent = 'accepted' | 'refused' | null;
  * Affiché à la première visite, choix mémorisé en localStorage.
  */
 export default function CookieBanner() {
+  const t = useTranslations('CookieBanner');
   const [consent, setConsent] = useState<Consent>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -70,16 +72,15 @@ export default function CookieBanner() {
               id="cookie-banner-title"
               className="font-heading font-bold text-base text-cauris-black mb-1"
             >
-              Cookies et confidentialité
+              {t('title')}
             </h2>
             <p id="cookie-banner-desc" className="text-sm text-cauris-gray-text leading-relaxed">
-              Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic.
-              En continuant à naviguer, vous acceptez notre{' '}
+              {t('description')}{' '}
               <Link
                 href="/politique-de-confidentialite#cookies"
                 className="text-cauris-orange hover:underline font-medium"
               >
-                politique de cookies
+                {t('policyLink')}
               </Link>
               .
             </p>
@@ -89,27 +90,27 @@ export default function CookieBanner() {
                 onClick={() => handleChoice('accepted')}
                 className="bg-cauris-orange hover:bg-cauris-orange-dark text-white px-5 py-2.5 rounded-btn text-sm font-semibold uppercase tracking-wide transition-colors"
               >
-                J&apos;accepte
+                {t('accept')}
               </button>
               <button
                 type="button"
                 onClick={() => handleChoice('refused')}
                 className="bg-white border border-gray-200 hover:border-cauris-orange hover:text-cauris-orange text-cauris-gray-text px-5 py-2.5 rounded-btn text-sm font-semibold transition-colors"
               >
-                Refuser les non-essentiels
+                {t('refuse')}
               </button>
               <Link
                 href="/politique-de-confidentialite#cookies"
                 className="text-sm text-cauris-gray-secondary hover:text-cauris-orange underline-offset-2 hover:underline"
               >
-                En savoir plus sur nos cookies
+                {t('learnMore')}
               </Link>
             </div>
           </div>
           <button
             type="button"
             onClick={() => handleChoice('refused')}
-            aria-label="Fermer le bandeau cookies"
+            aria-label={t('closeButton')}
             className="self-start p-1 text-cauris-gray-secondary hover:text-cauris-black transition-colors"
           >
             <X className="w-5 h-5" />
