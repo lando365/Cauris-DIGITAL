@@ -2,7 +2,6 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useState, useTransition } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Globe, Check } from 'lucide-react';
 import { LOCALES, LOCALE_LABELS, type Locale } from '@/i18n/config';
 import { usePathname, useRouter } from '@/i18n/navigation';
@@ -28,7 +27,6 @@ export default function LanguageSwitcher({ variant = 'inline', className }: Prop
   const t = useTranslations('LanguageSwitcher');
   const currentLocale = useLocale() as Locale;
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
@@ -37,9 +35,12 @@ export default function LanguageSwitcher({ variant = 'inline', className }: Prop
     if (newLocale === currentLocale || isPending) return;
 
     startTransition(() => {
-      const query = searchParams.toString();
-      const href = query ? `${pathname}?${query}` : pathname;
-      router.replace(href, { locale: newLocale });
+      // Lu au clic (pas via useSearchParams) pour ne pas exiger de limite
+      // Suspense ici — Header/LanguageSwitcher sont rendus sur toutes les
+      // pages, y compris celles générées statiquement (SSG).
+      // window.location.search inclut déjà le "?" s'il y a des paramètres
+      const query = typeof window !== 'undefined' ? window.location.search : '';
+      router.replace(`${pathname}${query}`, { locale: newLocale });
     });
   };
 
