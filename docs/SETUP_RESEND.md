@@ -134,23 +134,35 @@ RESEND_AUDIENCE_ID=78f5e0fa-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 npm run dev
 ```
 
-## 5. Tester
+## 5. Tester (double opt-in — CDC §6.5)
+
+L'inscription se fait en 2 étapes : un email de confirmation d'abord, puis l'ajout réel à
+l'audience seulement après clic sur le lien.
 
 1. Aller sur **n'importe quelle page** du site (la newsletter est dans le footer)
 2. Saisir un email **différent** de celui du compte Resend
 3. Cliquer sur la flèche →
 4. Vérifier :
-   - ✅ Message "Inscription confirmée ! Vérifiez votre boîte mail."
-   - ✅ Email de bienvenue reçu sur l'email saisi
-   - ✅ Contact apparaît dans https://resend.com/audiences (clique sur ton audience)
+   - ✅ Message "Vérifiez votre boîte mail pour confirmer votre inscription."
+   - ✅ Email "Confirmez votre inscription" reçu sur l'email saisi
+   - ⚠️ Le contact n'apparaît **pas encore** dans l'audience à ce stade — c'est normal
+5. Cliquer sur le bouton **"Confirmer mon inscription"** dans l'email
+6. Vérifier :
+   - ✅ Redirection vers une page "Inscription confirmée !"
+   - ✅ Email de bienvenue reçu, avec un lien "Se désinscrire en un clic" en bas
+   - ✅ Contact apparaît maintenant dans https://resend.com/audiences
+
+Ajoute aussi `NEWSLETTER_TOKEN_SECRET` dans `.env.local` (une chaîne aléatoire longue) — elle
+signe les liens de confirmation/désinscription. Sans elle, un secret de repli non sécurisé est
+utilisé en dev, mais elle est **obligatoire en production**.
 
 ## 🆘 Dépannage newsletter
 
 | Problème | Solution |
 |---|---|
-| "Inscription enregistrée (mode dev)" | C'est que `RESEND_AUDIENCE_ID` est vide. Vérifie ton `.env.local`. |
-| Email déjà inscrit | Normal — Resend détecte les doublons et renvoie un message gentil. |
-| L'email de bienvenue n'arrive pas | Vérifier Spams. Vérifier que `CONTACT_EMAIL_FROM` est correct dans `.env.local`. |
+| "Confirmation enregistrée (mode dev)" | C'est que `RESEND_AUDIENCE_ID` est vide. Vérifie ton `.env.local`. |
+| L'email de confirmation n'arrive pas | Vérifier Spams. Vérifier que `CONTACT_EMAIL_FROM` est correct dans `.env.local`. |
+| Le lien de confirmation redirige vers une page d'erreur | Le lien a plus de 48h, ou `NEWSLETTER_TOKEN_SECRET` a changé entre l'envoi et le clic (redémarrage serveur avec un secret différent). Réinscris-toi. |
 | Erreur "Audience not found" | L'ID copié est incorrect — vérifier l'URL exacte dans le dashboard Resend. |
 
 ## 📊 Envoyer une vraie newsletter plus tard
