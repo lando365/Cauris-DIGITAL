@@ -4,6 +4,7 @@
   "private": true,
   "description": "Site web institutionnel CAURIS DIGITAL — Incubateur numérique d'excellence en Afrique francophone",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
