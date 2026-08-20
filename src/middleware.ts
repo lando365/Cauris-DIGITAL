@@ -1,9 +1,15 @@
+import NextAuth from 'next-auth';
 import { NextResponse, type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
-import { auth } from './auth';
+import { authConfig } from './auth.config';
 
 const intlMiddleware = createMiddleware(routing);
+
+// Instance NextAuth dédiée au middleware, construite UNIQUEMENT à partir de
+// auth.config.ts (aucun provider, aucune dépendance Node) — voir le commentaire
+// dans auth.ts pour pourquoi src/auth.ts ne peut pas être importé ici.
+const { auth } = NextAuth(authConfig);
 
 // /admin est hors du routing [locale] (CDC V2 §8.1 : URL /admin, pas /fr/admin).
 // Ici on ne fait qu'un contrôle rapide de présence du JWT (compatible Edge runtime,

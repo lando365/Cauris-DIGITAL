@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { createDbSession, revokeDbSession } from '@/lib/session';
 import { isLocked, recordFailedLogin, resetFailedLogins } from '@/lib/login-rate-limit';
+import { authConfig } from '@/auth.config';
 
 // CDC V2 §7.1 : Credentials Provider + sessions révocables en base.
 // NextAuth n'autorise pas la stratégie "database" native avec le Credentials
@@ -11,11 +12,13 @@ import { isLocked, recordFailedLogin, resetFailedLogins } from '@/lib/login-rate
 // (obligatoire côté Auth.js pour Credentials) qui ne porte qu'un sessionToken
 // opaque ; la session réelle (utilisateur, validité, révocation) vit dans la
 // table Session et est vérifiée côté serveur via requireAdminSession() —
-// voir src/lib/require-admin.ts. Le middleware Edge ne fait qu'un contrôle
-// de présence/validité du JWT, trop rapide pour taper la base à chaque requête.
+// voir src/lib/require-admin.ts. Le middleware Edge (src/middleware.ts) importe
+// une instance NextAuth séparée basée sur auth.config.ts, PAS ce fichier :
+// authorize() ci-dessous dépend de bcrypt/Prisma, incompatibles avec l'Edge
+// Runtime et trop lourds pour la limite de taille des Edge Functions.
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   session: { strategy: 'jwt', maxAge: 24 * 60 * 60 },
-  pages: { signIn: '/admin/login' },
   providers: [
     Credentials({
       credentials: {
@@ -53,22 +56,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id!;
-        token.role = user.role;
-        token.sessionToken = user.sessionToken;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.role = token.role;
-      session.sessionToken = token.sessionToken;
-      return session;
-    },
-  },
   events: {
     async signOut(message) {
       if ('token' in message && message.token?.sessionToken) {
