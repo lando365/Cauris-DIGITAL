@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { SITE_CONFIG } from '@/lib/constants';
 import { verifyToken } from '@/lib/newsletter-token';
 import { DEFAULT_LOCALE } from '@/i18n/config';
+import { prisma } from '@/lib/prisma';
 
 // Les emails sont envoyés hors contexte de requête (pas de locale "courante") :
 // on utilise toujours la langue par défaut pour les liens (CDC §6.6).
@@ -28,6 +29,12 @@ export async function GET(request: Request) {
   }
 
   const email = result.email;
+
+  await prisma.newsletterSubscriber.updateMany({
+    where: { email },
+    data: { status: 'UNSUBSCRIBED', unsubscribedAt: new Date() },
+  });
+
   const apiKey = process.env.RESEND_API_KEY;
   const audienceId = process.env.RESEND_AUDIENCE_ID;
 

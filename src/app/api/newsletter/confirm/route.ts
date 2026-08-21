@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { SITE_CONFIG } from '@/lib/constants';
 import { createToken, verifyToken } from '@/lib/newsletter-token';
 import { DEFAULT_LOCALE } from '@/i18n/config';
+import { prisma } from '@/lib/prisma';
 
 // Les emails sont envoyés hors contexte de requête (pas de locale "courante") :
 // on utilise toujours la langue par défaut pour les liens (CDC §6.6).
@@ -32,6 +33,25 @@ export async function GET(request: Request) {
   }
 
   const email = result.email;
+
+  // Persistance en base (CDC §5.3.7) — indépendante de Resend, source de vérité
+  // pour le dashboard admin. RM-N03 : une réinscription réactive le compte
+  // (status ACTIVE, unsubscribedAt remis à zéro) plutôt que de dupliquer la ligne.
+  await prisma.newsletterSubscriber.upsert({
+    where: { email },
+    create: {
+      email,
+      firstName: firstName ?? null,
+      source: 'footer',
+      consentGiven: true,
+      consentDate: new Date(),
+    },
+    update: {
+      status: 'ACTIVE',
+      unsubscribedAt: null,
+    },
+  });
+
   const apiKey = process.env.RESEND_API_KEY;
   const audienceId = process.env.RESEND_AUDIENCE_ID;
 
