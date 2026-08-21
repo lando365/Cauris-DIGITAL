@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { SITE_CONFIG } from '@/lib/constants';
+import { prisma } from '@/lib/prisma';
 
 /**
  * Endpoint de réception des messages de contact (CDC §6.1).
@@ -114,9 +115,11 @@ export async function POST(request: Request) {
     }
 
     // 2quater. Vérification reCAPTCHA v3 (CDC §6.1)
+    let recaptchaScore: number | null = null;
     const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
     if (recaptchaSecret && recaptchaToken) {
       const recaptchaResult = await verifyRecaptcha(recaptchaToken, recaptchaSecret);
+      recaptchaScore = recaptchaResult.score;
       if (!recaptchaResult.success) {
         console.warn('[contact] reCAPTCHA invalide:', recaptchaResult.errorCodes);
         return NextResponse.json(
@@ -137,6 +140,32 @@ export async function POST(request: Request) {
     } else if (recaptchaSecret && !recaptchaToken) {
       console.warn('[contact] RECAPTCHA_SECRET_KEY configurée mais aucun token reçu du client.');
     }
+
+    // 2quinquies. Persistance en base (CDC §5.3.6) — les champs spécifiques
+    // candidature/partenariat (startup, secteur, société...) n'ont pas de colonne
+    // dédiée dans ContactMessage : ils sont repris dans le corps du message stocké,
+    // comme déjà fait pour l'email envoyé à l'équipe.
+    const dbMessageParts = [message];
+    if (startupName) dbMessageParts.push(`Startup : ${startupName}`);
+    if (sector) dbMessageParts.push(`Secteur : ${sector}`);
+    if (stage) dbMessageParts.push(`Stade du projet : ${stage}`);
+    if (company) dbMessageParts.push(`Société : ${company}`);
+    if (phone) dbMessageParts.push(`Téléphone : ${phone}`);
+
+    const ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null;
+
+    await prisma.contactMessage.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        country: country || null,
+        subject: SUBJECT_LABELS[subject] ?? subject,
+        message: dbMessageParts.join('\n\n'),
+        ipAddress,
+        recaptchaScore,
+      },
+    });
 
     // 3. Construction de l'email
     const fullName = `${firstName} ${lastName}`.trim();
