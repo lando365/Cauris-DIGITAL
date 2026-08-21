@@ -23,11 +23,14 @@ import { createToken } from '@/lib/newsletter-token';
  */
 export async function POST(request: Request) {
   try {
-    const { email, firstName } = await request.json();
+    const { email, firstName, consent } = await request.json();
 
     // 1. Validation
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Adresse email invalide.' }, { status: 400 });
+    }
+    if (!consent) {
+      return NextResponse.json({ error: 'Le consentement est obligatoire.' }, { status: 400 }); // RM-N02
     }
     const cleanEmail = email.trim().toLowerCase();
     const cleanFirstName = typeof firstName === 'string' ? firstName.trim().slice(0, 80) : undefined;

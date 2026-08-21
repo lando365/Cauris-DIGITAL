@@ -2,11 +2,13 @@
 
 import { useState, type FormEvent } from 'react';
 import { ArrowRight, Check, Loader2 } from 'lucide-react';
+import { Link } from '@/i18n/navigation';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
 
@@ -19,13 +21,14 @@ export default function NewsletterForm() {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, consent }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Erreur');
       setStatus('success');
       setMessage('Merci ! Vérifiez votre email pour confirmer votre inscription.');
       setEmail('');
+      setConsent(false);
     } catch (err) {
       setStatus('error');
       setMessage(err instanceof Error ? err.message : 'Une erreur est survenue.');
@@ -64,6 +67,26 @@ export default function NewsletterForm() {
           )}
         </button>
       </div>
+
+      <div className="flex items-start gap-2">
+        <input
+          id="newsletter-consent"
+          type="checkbox"
+          required
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          disabled={status === 'loading'}
+          className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/30 bg-white/10 text-cauris-orange focus:ring-cauris-orange"
+        />
+        <label htmlFor="newsletter-consent" className="text-xs leading-relaxed text-white/70">
+          J&apos;accepte de recevoir la newsletter, conformément à la{' '}
+          <Link href="/politique-de-confidentialite" className="text-cauris-orange hover:underline">
+            politique de confidentialité
+          </Link>
+          .
+        </label>
+      </div>
+
       {message && (
         <p
           role="status"
