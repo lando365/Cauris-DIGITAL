@@ -10,11 +10,12 @@ const NAV_ITEMS = [
   { label: 'Partenaires', href: '/admin/partners' },
   { label: 'Messages', href: '/admin/messages' },
   { label: 'Newsletter', href: '/admin/subscribers' },
-  { label: 'Utilisateurs', href: '/admin/users' },
+  { label: 'Utilisateurs', href: '/admin/users', adminOnly: true },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await requireAdminUser();
+  const navItems = NAV_ITEMS.filter((item) => !item.adminOnly || user.role === 'ADMIN');
 
   return (
     <div className="flex min-h-screen bg-cauris-gray-bg">
@@ -24,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <p className="text-xs text-white/60">Admin</p>
         </div>
         <nav className="flex flex-col gap-1 p-3">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
