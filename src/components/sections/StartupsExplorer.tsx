@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { Search, X, ArrowRight } from 'lucide-react';
-import { FEATURED_STARTUPS } from '@/lib/constants';
+import type { Startup } from '@/lib/constants';
 
 type Status = 'all' | 'En incubation' | 'Diplômée' | 'Alumni';
 
@@ -16,9 +16,10 @@ const STATUS_OPTIONS: Array<{ value: Status; label: string }> = [
 
 /**
  * Explorateur de startups avec filtres dynamiques côté client (CDC §6.2).
- * Pas de rechargement de page — réactivité immédiate.
+ * Les données viennent de la base (via le Server Component parent) — pas de
+ * rechargement de page pour le filtrage, qui reste réactif côté client.
  */
-export default function StartupsExplorer() {
+export default function StartupsExplorer({ startups }: { startups: Startup[] }) {
   const [query, setQuery] = useState('');
   const [sectorFilter, setSectorFilter] = useState<string>('all');
   const [countryFilter, setCountryFilter] = useState<string>('all');
@@ -26,19 +27,19 @@ export default function StartupsExplorer() {
 
   // Listes uniques de secteurs et pays
   const sectors = useMemo(() => {
-    const set = new Set(FEATURED_STARTUPS.map((s) => s.sector));
+    const set = new Set(startups.map((s) => s.sector));
     return Array.from(set).sort();
-  }, []);
+  }, [startups]);
 
   const countries = useMemo(() => {
-    const set = new Set(FEATURED_STARTUPS.map((s) => s.countryName));
+    const set = new Set(startups.map((s) => s.countryName));
     return Array.from(set).sort();
-  }, []);
+  }, [startups]);
 
   // Filtrage
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return FEATURED_STARTUPS.filter((s) => {
+    return startups.filter((s) => {
       if (sectorFilter !== 'all' && s.sector !== sectorFilter) return false;
       if (countryFilter !== 'all' && s.countryName !== countryFilter) return false;
       if (statusFilter !== 'all' && s.status !== statusFilter) return false;

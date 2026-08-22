@@ -3,14 +3,10 @@ import Image from 'next/image';
 import { ArrowRight, ExternalLink, Building2, Banknote, GraduationCap, Briefcase } from 'lucide-react';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
-import {
-  PARTNER_CATEGORIES,
-  PARTNERS_INSTITUTIONNELS,
-  PARTNERS_FINANCIERS,
-  PARTNERS_ACADEMIQUES,
-  PARTNERS_CORPORATIFS,
-  type PartnerLogo,
-} from '@/lib/constants';
+import { PARTNER_CATEGORIES, type PartnerLogo } from '@/lib/constants';
+import { prisma } from '@/lib/prisma';
+import { mapPartner } from '@/lib/content-mappers';
+import type { PartnerCategory } from '@prisma/client';
 
 export const metadata: Metadata = {
   title: 'Nos partenaires — CAURIS DIGITAL | Écosystème tech africain',
@@ -18,12 +14,8 @@ export const metadata: Metadata = {
     'Découvrez les partenaires institutionnels, financiers, académiques et corporatifs qui soutiennent la mission de CAURIS DIGITAL en Afrique francophone.',
 };
 
-const PARTNERS_BY_CATEGORY: Record<string, PartnerLogo[]> = {
-  institutionnels: PARTNERS_INSTITUTIONNELS,
-  financiers: PARTNERS_FINANCIERS,
-  academiques: PARTNERS_ACADEMIQUES,
-  corporatifs: PARTNERS_CORPORATIFS,
-};
+// CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
+export const revalidate = 60;
 
 const CATEGORY_ICONS = {
   institutionnels: Building2,
@@ -32,7 +24,21 @@ const CATEGORY_ICONS = {
   corporatifs: Briefcase,
 } as const;
 
-export default function PartnersPage() {
+const CATEGORY_ID_TO_PRISMA: Record<string, PartnerCategory> = {
+  institutionnels: 'INSTITUTIONNEL',
+  financiers: 'FINANCIER',
+  academiques: 'ACADEMIQUE',
+  corporatifs: 'CORPORATIF',
+};
+
+export default async function PartnersPage() {
+  const records = await prisma.partner.findMany({ orderBy: { displayOrder: 'asc' } });
+  const mapped = records.map((p) => ({ ...mapPartner(p), category: p.category }));
+  const PARTNERS_BY_CATEGORY: Record<string, PartnerLogo[]> = {};
+  for (const id of Object.keys(CATEGORY_ID_TO_PRISMA)) {
+    PARTNERS_BY_CATEGORY[id] = mapped.filter((p) => p.category === CATEGORY_ID_TO_PRISMA[id]);
+  }
+
   return (
     <>
       {/* Hero */}

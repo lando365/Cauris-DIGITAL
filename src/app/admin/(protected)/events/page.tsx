@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
+import { isEventPast } from '@/lib/event-status';
 import { DeleteEventButton } from './DeleteEventButton';
 
 export default async function AdminEventsPage() {
   const user = await requireAdminUser();
   const events = await prisma.event.findMany({ orderBy: { startDate: 'desc' } });
-  const now = new Date();
 
   return (
     <div>
@@ -38,7 +38,7 @@ export default async function AdminEventsPage() {
                 <td className="px-4 py-2 font-medium text-cauris-black">{e.title}</td>
                 <td className="px-4 py-2">{e.type}</td>
                 <td className="px-4 py-2">{e.startDate.toLocaleString('fr-FR')}</td>
-                <td className="px-4 py-2">{e.startDate < now ? 'Passé' : 'À venir'}</td>
+                <td className="px-4 py-2">{isEventPast(e.startDate) ? 'Passé' : 'À venir'}</td>
                 <td className="px-4 py-2">{e.isPublished ? 'Oui' : 'Non'}</td>
                 <td className="px-4 py-2">
                   <div className="flex gap-3">

@@ -3,8 +3,8 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight, Search, X } from 'lucide-react';
 import {
-  ARTICLES,
   ARTICLE_CATEGORIES,
+  type Article,
   type ArticleCategory,
 } from '@/lib/constants';
 import ArticleCard from '@/components/ui/ArticleCard';
@@ -13,20 +13,21 @@ const PAGE_SIZE = 6;
 
 /**
  * Explorateur du blog : filtres par catégorie + recherche + pagination.
+ * Les articles viennent de la base (Server Component parent).
  */
-export default function NewsExplorer() {
+export default function NewsExplorer({ articles }: { articles: Article[] }) {
   const [category, setCategory] = useState<'Toutes' | ArticleCategory>('Toutes');
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ARTICLES.filter((a) => {
+    return articles.filter((a) => {
       if (category !== 'Toutes' && a.category !== category) return false;
       if (q && !`${a.title} ${a.excerpt}`.toLowerCase().includes(q)) return false;
       return true;
     }).sort((a, b) => b.date.localeCompare(a.date));
-  }, [category, query]);
+  }, [articles, category, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);

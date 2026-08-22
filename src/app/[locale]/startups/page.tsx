@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import StartupsExplorer from '@/components/sections/StartupsExplorer';
 import FinalCTA from '@/components/sections/FinalCTA';
+import { prisma } from '@/lib/prisma';
+import { mapStartup } from '@/lib/content-mappers';
 
 export const metadata: Metadata = {
   title: 'Startups CAURIS DIGITAL — Les entreprises tech africaines que nous propulsons',
@@ -8,7 +10,12 @@ export const metadata: Metadata = {
     'Découvrez les startups technologiques africaines accompagnées par CAURIS DIGITAL : Agritech, Fintech, Edtech, Healthtech, Smart Cities. Des entrepreneurs qui changent l\'Afrique.',
 };
 
-export default function StartupsPage() {
+// CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
+export const revalidate = 60;
+
+export default async function StartupsPage() {
+  const startups = await prisma.startup.findMany({ orderBy: { createdAt: 'desc' } });
+  const mapped = startups.map(mapStartup);
   return (
     <>
       {/* Hero */}
@@ -37,7 +44,7 @@ export default function StartupsPage() {
       </section>
 
       {/* Explorateur (filtres + grille) */}
-      <StartupsExplorer />
+      <StartupsExplorer startups={mapped} />
 
       <FinalCTA />
     </>

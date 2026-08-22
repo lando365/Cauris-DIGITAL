@@ -1,13 +1,30 @@
 import Image from 'next/image';
-import { HOMEPAGE_PARTNERS } from '@/lib/constants';
+import { prisma } from '@/lib/prisma';
+import { mapPartner } from '@/lib/content-mappers';
 
 /**
- * Bande de logos partenaires (CDC §2.1).
- * Défilement marquee automatique. Logos en niveaux de gris au repos, couleur au hover.
+ * Bande de logos partenaires (CDC §2.1). Priorité aux partenaires marqués
+ * "isFeatured" dans l'admin, complétés si besoin pour ne jamais afficher une
+ * bande vide. Défilement marquee automatique.
  */
-export default function PartnerStrip() {
+export default async function PartnerStrip() {
+  const featuredRecords = await prisma.partner.findMany({
+    where: { isFeatured: true },
+    orderBy: { displayOrder: 'asc' },
+    take: 6,
+  });
+  let records = featuredRecords;
+  if (records.length < 6) {
+    const fillers = await prisma.partner.findMany({
+      where: { isFeatured: false },
+      orderBy: { displayOrder: 'asc' },
+      take: 6 - records.length,
+    });
+    records = [...records, ...fillers];
+  }
+  const partners = records.map(mapPartner);
   // On double la liste pour la marquee continue (boucle infinie sans saut)
-  const logos = [...HOMEPAGE_PARTNERS, ...HOMEPAGE_PARTNERS];
+  const logos = [...partners, ...partners];
 
   return (
     <section

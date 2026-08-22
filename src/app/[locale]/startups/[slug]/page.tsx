@@ -14,34 +14,45 @@ import {
   Award,
   TrendingUp,
 } from 'lucide-react';
-import {
-  FEATURED_STARTUPS,
-  getStartupBySlug,
-  getRelatedStartups,
-  SITE_CONFIG,
-} from '@/lib/constants';
+import type { Startup as DisplayStartup } from '@/lib/constants';
 import Button from '@/components/ui/Button';
 import Reveal from '@/components/ui/Reveal';
+import { prisma } from '@/lib/prisma';
+import { mapStartup } from '@/lib/content-mappers';
 
 interface PageProps {
   params: { locale: string; slug: string };
 }
 
-/**
- * Pré-génère toutes les pages startup au build (SSG).
- */
-export function generateStaticParams() {
-  return FEATURED_STARTUPS.map((s) => ({ slug: s.slug }));
+// CDC V2 §4.3.1 : détail public en cache ISR (revalidate 60s). Pas de
+// generateStaticParams : une startup créée après le build doit rester
+// accessible immédiatement (dynamicParams reste true par défaut).
+export const revalidate = 60;
+
+async function getRelatedStartups(current: DisplayStartup, limit = 3): Promise<DisplayStartup[]> {
+  const others = await prisma.startup.findMany({
+    where: { slug: { not: current.slug } },
+    take: 30,
+    orderBy: { createdAt: 'desc' },
+  });
+  const mapped = others.map(mapStartup);
+  const sameSector = mapped.filter((s) => s.sector === current.sector);
+  const sameCountry = mapped.filter(
+    (s) => s.countryName === current.countryName && s.sector !== current.sector
+  );
+  const rest = mapped.filter((s) => s.sector !== current.sector && s.countryName !== current.countryName);
+  return [...sameSector, ...sameCountry, ...rest].slice(0, limit);
 }
 
 /**
  * Métadonnées SEO dynamiques par startup (CDC §7.1).
  */
-export function generateMetadata({ params }: PageProps): Metadata {
-  const startup = getStartupBySlug(params.slug);
-  if (!startup) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const record = await prisma.startup.findUnique({ where: { slug: params.slug } });
+  if (!record) {
     return { title: 'Startup introuvable' };
   }
+  const startup = mapStartup(record);
   return {
     title: `${startup.name} — ${startup.tagline}`,
     description: startup.description,
@@ -67,11 +78,12 @@ function getStatusStyle(status: string): string {
   return 'bg-cauris-orange/10 text-cauris-orange border-cauris-orange/30';
 }
 
-export default function StartupDetailPage({ params }: PageProps) {
-  const startup = getStartupBySlug(params.slug);
-  if (!startup) notFound();
+export default async function StartupDetailPage({ params }: PageProps) {
+  const record = await prisma.startup.findUnique({ where: { slug: params.slug } });
+  if (!record) notFound();
+  const startup = mapStartup(record);
 
-  const related = getRelatedStartups(params.slug, 3);
+  const related = await getRelatedStartups(startup, 3);
 
   return (
     <>

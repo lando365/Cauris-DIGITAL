@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import NewsExplorer from '@/components/sections/NewsExplorer';
+import { prisma } from '@/lib/prisma';
+import { mapArticle } from '@/lib/content-mappers';
 
 export const metadata: Metadata = {
   title: 'Actualités CAURIS DIGITAL — Tech, Innovation et Entrepreneuriat en Afrique',
@@ -7,7 +9,16 @@ export const metadata: Metadata = {
     'Suivez l\'actualité de CAURIS DIGITAL et de l\'écosystème tech africain : portraits d\'entrepreneurs, annonces de promotions, analyses et ressources pour startups.',
 };
 
-export default function NewsPage() {
+// CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
+export const revalidate = 60;
+
+export default async function NewsPage() {
+  const records = await prisma.article.findMany({
+    where: { status: 'PUBLISHED', publishedAt: { lte: new Date() } },
+    include: { author: { select: { name: true } } },
+    orderBy: { publishedAt: 'desc' },
+  });
+  const articles = records.map(mapArticle);
   return (
     <>
       {/* Hero */}
@@ -28,7 +39,7 @@ export default function NewsPage() {
         </div>
       </section>
 
-      <NewsExplorer />
+      <NewsExplorer articles={articles} />
     </>
   );
 }

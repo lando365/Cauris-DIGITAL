@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import EventsExplorer from '@/components/sections/EventsExplorer';
 import NewsletterForm from '@/components/forms/NewsletterForm';
 import { Mail } from 'lucide-react';
+import { prisma } from '@/lib/prisma';
+import { mapEvent } from '@/lib/content-mappers';
 
 export const metadata: Metadata = {
   title: 'Événements CAURIS DIGITAL — Conférences, Demo Days, Ateliers tech Afrique',
@@ -9,7 +11,15 @@ export const metadata: Metadata = {
     'Retrouvez tous les événements de CAURIS DIGITAL : Demo Days, ateliers, conférences tech, hackathons et webinaires en ligne accessibles depuis partout.',
 };
 
-export default function EventsPage() {
+// CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
+export const revalidate = 60;
+
+export default async function EventsPage() {
+  const records = await prisma.event.findMany({
+    where: { isPublished: true },
+    orderBy: { startDate: 'desc' },
+  });
+  const events = records.map(mapEvent);
   return (
     <>
       {/* Hero */}
@@ -31,7 +41,7 @@ export default function EventsPage() {
       </section>
 
       {/* Liste événements */}
-      <EventsExplorer />
+      <EventsExplorer events={events} />
 
       {/* Newsletter événements */}
       <section className="section bg-cauris-black text-white relative overflow-hidden">

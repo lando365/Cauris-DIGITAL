@@ -1,18 +1,34 @@
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
-import { FEATURED_STARTUPS } from '@/lib/constants';
 import Button from '@/components/ui/Button';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
+import { prisma } from '@/lib/prisma';
+import { mapStartup } from '@/lib/content-mappers';
 
 /**
- * Startups vedettes (CDC §2.1).
- * Sélection des 6 premières startups pour la homepage — chacune cliquable
- * vers sa page détail /startups/[slug].
+ * Startups vedettes (CDC §2.1). Celles marquées "isFeatured" dans l'admin
+ * (bouton "Mettre en avant sur la page d'accueil") ; complétées par les plus
+ * récentes si moins de 6 sont marquées, pour ne jamais afficher une grille vide.
  */
-export default function FeaturedStartups() {
-  // 6 startups en vedette pour l'accueil (grille 2×3 ou 3×2)
-  const featured = FEATURED_STARTUPS.slice(0, 6);
+export default async function FeaturedStartups() {
+  const featuredRecords = await prisma.startup.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: 'desc' },
+    take: 6,
+  });
+
+  let records = featuredRecords;
+  if (records.length < 6) {
+    const fillers = await prisma.startup.findMany({
+      where: { isFeatured: false },
+      orderBy: { createdAt: 'desc' },
+      take: 6 - records.length,
+    });
+    records = [...records, ...fillers];
+  }
+
+  const featured = records.map(mapStartup);
 
   return (
     <section className="section bg-white">

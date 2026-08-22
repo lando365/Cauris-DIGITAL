@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { isEventPast } from '@/lib/event-status';
 
 // GET /api/events — CDC V2 §6.2. Liste des événements à venir et passés,
 // uniquement ceux publiés (isPublished=true). isPast est calculé à la volée (RM-E02).
@@ -20,8 +21,7 @@ export async function GET(req: NextRequest) {
     prisma.event.count({ where }),
   ]);
 
-  const now = new Date();
-  const data = events.map((e) => ({ ...e, isPast: e.startDate < now }));
+  const data = events.map((e) => ({ ...e, isPast: isEventPast(e.startDate) }));
 
   return NextResponse.json({ data, meta: { page, limit, total } });
 }

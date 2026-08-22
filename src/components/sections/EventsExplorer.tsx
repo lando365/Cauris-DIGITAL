@@ -3,9 +3,9 @@
 import { useState, useMemo } from 'react';
 import { Calendar, MapPin, Clock, ArrowRight, Tag } from 'lucide-react';
 
-type EventType = 'Demo Day' | 'Atelier' | 'Conférence' | 'Hackathon' | 'Webinaire' | 'Networking';
+export type EventType = 'Demo Day' | 'Atelier' | 'Conférence' | 'Hackathon' | 'Webinaire' | 'Networking';
 
-interface Event {
+export interface Event {
   id: string;
   title: string;
   type: EventType;
@@ -18,93 +18,6 @@ interface Event {
   free: boolean;
   price?: string;
 }
-
-/**
- * Données d'exemple — à remplacer par CMS.
- * Le statut "À venir / Passé" est calculé dynamiquement par rapport à la date du jour.
- */
-const EVENTS: Event[] = [
-  {
-    id: 'demo-day-promo-2026',
-    title: 'Demo Day — Promotion 2026 du programme Incubation',
-    type: 'Demo Day',
-    date: '2026-09-15',
-    time: '15:00 GMT+1',
-    place: 'Hôtel Hilton, Yaoundé',
-    online: false,
-    description:
-      'Découvrez les 12 startups de la promotion 2026. Pitchs en direct devant un jury d\'investisseurs africains et internationaux. Networking et cocktail de clôture.',
-    registerUrl: '#',
-    free: true,
-  },
-  {
-    id: 'atelier-pitch-investisseurs',
-    title: 'Atelier : Préparer son pitch investisseurs',
-    type: 'Atelier',
-    date: '2026-06-20',
-    time: '10:00 GMT+1',
-    place: 'En ligne (Zoom)',
-    online: true,
-    description:
-      'Atelier de 3 heures animé par notre directrice des programmes : structure du pitch, narratif, financials et préparation aux objections. Limité à 30 participants.',
-    registerUrl: '#',
-    free: true,
-  },
-  {
-    id: 'webinaire-fintech-afrique',
-    title: 'Webinaire : Fintech Afrique — Tendances 2026',
-    type: 'Webinaire',
-    date: '2026-07-12',
-    time: '17:00 GMT+1',
-    place: 'En ligne',
-    online: true,
-    description:
-      'Table ronde avec des fondateurs et investisseurs leaders de la fintech africaine. Quels sont les modèles qui décollent ? Où va l\'argent ? Q&A en fin de session.',
-    registerUrl: '#',
-    free: true,
-  },
-  {
-    id: 'journee-innovation-2026',
-    title: 'Journée de l\'Innovation Ouverte 2026',
-    type: 'Conférence',
-    date: '2026-11-08',
-    time: '09:00 GMT+1',
-    place: 'Centre de Conférences, Yaoundé',
-    online: false,
-    description:
-      'Notre événement annuel : startups, corporates, investisseurs et institutions réunis autour des enjeux tech africains. Pitchs, tables rondes, networking et annonces partenaires.',
-    registerUrl: '#',
-    free: false,
-    price: '15 000 FCFA (gratuit pour startups CAURIS)',
-  },
-  // Événement passé (exemple)
-  {
-    id: 'hackathon-agritech-2025',
-    title: 'Hackathon Agritech : nourrir l\'Afrique de demain',
-    type: 'Hackathon',
-    date: '2025-11-20',
-    time: '09:00 GMT+1',
-    place: 'Université de Yaoundé I',
-    online: false,
-    description:
-      '48 heures pour imaginer les solutions agricoles de demain. 80 participants, 12 équipes finalistes, 3 prix décernés. Édition 2025 sponsorisée par Orange Digital Center.',
-    registerUrl: '#',
-    free: true,
-  },
-  {
-    id: 'demo-day-promo-2025',
-    title: 'Demo Day — Promotion 2025 du programme Incubation',
-    type: 'Demo Day',
-    date: '2025-09-12',
-    time: '15:00 GMT+1',
-    place: 'Hôtel Hilton, Yaoundé',
-    online: false,
-    description:
-      'Présentation publique des startups diplômées de la promotion 2025. Édition record : 250 participants, 8 partenariats annoncés, 1,2M€ en intentions d\'investissement.',
-    registerUrl: '#',
-    free: true,
-  },
-];
 
 const TYPE_COLORS: Record<EventType, string> = {
   'Demo Day': 'bg-cauris-orange text-white',
@@ -124,7 +37,7 @@ function formatDate(iso: string): string {
   });
 }
 
-export default function EventsExplorer() {
+export default function EventsExplorer({ events }: { events: Event[] }) {
   const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming');
 
   const today = new Date().toISOString().slice(0, 10);
@@ -132,14 +45,14 @@ export default function EventsExplorer() {
   const { upcoming, past } = useMemo(() => {
     const upc: Event[] = [];
     const pst: Event[] = [];
-    EVENTS.forEach((e) => {
+    events.forEach((e) => {
       if (e.date >= today) upc.push(e);
       else pst.push(e);
     });
     upc.sort((a, b) => a.date.localeCompare(b.date));
     pst.sort((a, b) => b.date.localeCompare(a.date));
     return { upcoming: upc, past: pst };
-  }, [today]);
+  }, [events, today]);
 
   const visible = tab === 'upcoming' ? upcoming : past;
 

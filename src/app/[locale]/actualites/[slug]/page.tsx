@@ -13,32 +13,48 @@ import {
   Twitter,
   Facebook,
 } from 'lucide-react';
-import {
-  ARTICLES,
-  ARTICLE_CATEGORY_COLORS,
-  getArticleBySlug,
-  getRelatedArticles,
-  SITE_CONFIG,
-} from '@/lib/constants';
+import { ARTICLE_CATEGORY_COLORS, SITE_CONFIG, type Article as DisplayArticle } from '@/lib/constants';
 import Button from '@/components/ui/Button';
 import ArticleCard from '@/components/ui/ArticleCard';
+import { prisma } from '@/lib/prisma';
+import { mapArticle } from '@/lib/content-mappers';
 
 interface PageProps {
   params: { locale: string; slug: string };
 }
 
-/**
- * Pré-génère toutes les pages d'articles au build (SSG).
- */
-export function generateStaticParams() {
-  return ARTICLES.map((a) => ({ slug: a.slug }));
+// CDC V2 §4.3.1 : détail public en cache ISR (revalidate 60s). Pas de
+// generateStaticParams : un article publié après le build doit rester
+// accessible immédiatement.
+export const revalidate = 60;
+
+async function getPublishedArticleBySlug(slug: string) {
+  const record = await prisma.article.findUnique({
+    where: { slug },
+    include: { author: { select: { name: true } } },
+  });
+  if (!record || record.status !== 'PUBLISHED' || !record.publishedAt || record.publishedAt > new Date()) {
+    return null;
+  }
+  return mapArticle(record);
+}
+
+async function getRelatedArticles(current: DisplayArticle, limit = 3): Promise<DisplayArticle[]> {
+  const records = await prisma.article.findMany({
+    where: { status: 'PUBLISHED', publishedAt: { lte: new Date() }, slug: { not: current.slug } },
+    include: { author: { select: { name: true } } },
+    orderBy: { publishedAt: 'desc' },
+    take: 30,
+  });
+  const mapped = records.map(mapArticle);
+  return mapped.filter((a) => a.category === current.category).slice(0, limit);
 }
 
 /**
  * Métadonnées SEO dynamiques par article (CDC §7.1).
  */
-export function generateMetadata({ params }: PageProps): Metadata {
-  const article = getArticleBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const article = await getPublishedArticleBySlug(params.slug);
   if (!article) {
     return { title: 'Article introuvable' };
   }
@@ -70,11 +86,11 @@ function formatDate(iso: string): string {
   });
 }
 
-export default function ArticlePage({ params }: PageProps) {
-  const article = getArticleBySlug(params.slug);
+export default async function ArticlePage({ params }: PageProps) {
+  const article = await getPublishedArticleBySlug(params.slug);
   if (!article) notFound();
 
-  const related = getRelatedArticles(params.slug, 3);
+  const related = await getRelatedArticles(article, 3);
   const shareUrl = `${SITE_CONFIG.url}/actualites/${article.slug}`;
   const categoryColor = ARTICLE_CATEGORY_COLORS[article.category];
 
