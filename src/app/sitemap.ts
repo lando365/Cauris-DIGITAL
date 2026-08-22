@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { ARTICLES, FEATURED_STARTUPS } from '@/lib/constants';
+import { prisma } from '@/lib/prisma';
 import { routing } from '@/i18n/routing';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://caurisdigital.org';
@@ -52,21 +52,34 @@ function localizedEntries(
   }));
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticEntries = STATIC_PAGES.flatMap((p) =>
     localizedEntries(p.path, now, p.changeFrequency, p.priority),
   );
 
+  const [articles, startups] = await Promise.all([
+    prisma.article.findMany({
+      where: { status: 'PUBLISHED', publishedAt: { lte: now } },
+      select: { slug: true, publishedAt: true, createdAt: true },
+    }),
+    prisma.startup.findMany({ select: { slug: true, updatedAt: true } }),
+  ]);
+
   // Pages d'articles dynamiques
-  const articleEntries = ARTICLES.flatMap((article) =>
-    localizedEntries(`/actualites/${article.slug}`, new Date(article.date), 'monthly', 0.5),
+  const articleEntries = articles.flatMap((article) =>
+    localizedEntries(
+      `/actualites/${article.slug}`,
+      article.publishedAt ?? article.createdAt,
+      'monthly',
+      0.5,
+    ),
   );
 
   // Pages de détail startup dynamiques
-  const startupEntries = FEATURED_STARTUPS.flatMap((startup) =>
-    localizedEntries(`/startups/${startup.slug}`, now, 'monthly', 0.5),
+  const startupEntries = startups.flatMap((startup) =>
+    localizedEntries(`/startups/${startup.slug}`, startup.updatedAt, 'monthly', 0.5),
   );
 
   return [...staticEntries, ...articleEntries, ...startupEntries];
