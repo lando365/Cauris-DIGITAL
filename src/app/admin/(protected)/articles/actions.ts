@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
+import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
 import { articleSchema } from '@/lib/validations/article';
 import { computeReadingTime } from '@/lib/reading-time';
 
@@ -80,6 +81,7 @@ export async function updateArticle(
   }
 
   const { publishedAt, ...rest } = parsed.data;
+  const before = await prisma.article.findUnique({ where: { id }, select: { coverImageUrl: true } });
   await prisma.article.update({
     where: { id },
     data: {
@@ -89,6 +91,7 @@ export async function updateArticle(
         parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
     },
   });
+  await deleteReplacedBlob(before?.coverImageUrl, parsed.data.coverImageUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/articles');
   redirect('/admin/articles');
@@ -98,6 +101,7 @@ export async function deleteArticle(id: string) {
   // RM-A05 : seul un ADMIN peut supprimer
   const user = await requireAdminUser('ADMIN');
   const deleted = await prisma.article.delete({ where: { id } });
+  await deleteBlobIfManaged(deleted.coverImageUrl); // CDC V2 §5.5
 
   await logAudit({
     action: 'DELETE',

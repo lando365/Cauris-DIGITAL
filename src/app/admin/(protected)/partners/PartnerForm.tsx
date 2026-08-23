@@ -3,6 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import type { Partner } from '@prisma/client';
 import type { PartnerFormState } from './actions';
+import { FileUploadField } from '@/components/admin/FileUploadField';
 
 const CATEGORIES = ['INSTITUTIONNEL', 'FINANCIER', 'ACADEMIQUE', 'CORPORATIF'] as const;
 
@@ -44,17 +45,12 @@ export function PartnerForm({
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
       </div>
-      <div>
-        <label htmlFor="logoUrl" className="mb-1 block text-sm font-medium text-cauris-gray-text">
-          URL du logo
-        </label>
-        <input
-          id="logoUrl"
-          name="logoUrl"
-          defaultValue={partner?.logoUrl ?? ''}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
-      </div>
+      <FileUploadField
+        label="Logo"
+        name="logoUrl"
+        entityType="partner"
+        defaultValue={partner?.logoUrl}
+      />
       <div>
         <label htmlFor="websiteUrl" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Site web

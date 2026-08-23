@@ -3,6 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import type { Article } from '@prisma/client';
 import type { ArticleFormState } from './actions';
+import { FileUploadField } from '@/components/admin/FileUploadField';
 
 const CATEGORIES = ['ANNONCES', 'PORTRAITS', 'RESSOURCES', 'EVENEMENTS', 'OPINIONS'] as const;
 const STATUSES = ['DRAFT', 'PUBLISHED', 'ARCHIVED'] as const;
@@ -152,17 +153,12 @@ export function ArticleForm({
         </p>
       </div>
 
-      <div>
-        <label htmlFor="coverImageUrl" className="mb-1 block text-sm font-medium text-cauris-gray-text">
-          URL de l'image de couverture
-        </label>
-        <input
-          id="coverImageUrl"
-          name="coverImageUrl"
-          defaultValue={article?.coverImageUrl ?? ''}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
-      </div>
+      <FileUploadField
+        label="Image de couverture"
+        name="coverImageUrl"
+        entityType="article"
+        defaultValue={article?.coverImageUrl}
+      />
 
       {state?.error && (
         <p role="alert" className="text-sm text-red-600">

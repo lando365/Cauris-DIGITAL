@@ -3,6 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import type { Startup } from '@prisma/client';
 import type { StartupFormState } from './actions';
+import { FileUploadField } from '@/components/admin/FileUploadField';
 
 const SECTORS = ['AGRITECH', 'FINTECH', 'EDTECH', 'HEALTHTECH', 'SMART_CITIES'] as const;
 const STATUSES = ['EN_INCUBATION', 'DIPLOMEE', 'ALUMNI'] as const;
@@ -157,7 +158,12 @@ export function StartupForm({
 
       <fieldset className="space-y-4">
         <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">Liens & image</legend>
-        <Field label="URL du logo" name="logoUrl" defaultValue={startup?.logoUrl ?? ''} />
+        <FileUploadField
+          label="Logo"
+          name="logoUrl"
+          entityType="startup"
+          defaultValue={startup?.logoUrl}
+        />
         <Field label="Site web (https://…)" name="websiteUrl" defaultValue={startup?.websiteUrl ?? ''} />
         <Field label="LinkedIn" name="linkedinUrl" defaultValue={startup?.linkedinUrl ?? ''} />
       </fieldset>

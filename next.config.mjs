@@ -11,6 +11,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'cdn.sanity.io' },
+      // Vercel Blob (CDC V2 §5.5) — logos/images uploadés via l'admin.
+      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
     ],
     // Tailles de viewport courantes pour la génération automatique de variantes
     deviceSizes: [375, 640, 750, 828, 1080, 1200, 1920, 2048],
@@ -35,7 +37,7 @@ const nextConfig = {
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://images.unsplash.com https://cdn.sanity.io https://www.google-analytics.com https://www.googletagmanager.com",
+      "img-src 'self' data: blob: https://images.unsplash.com https://cdn.sanity.io https://*.public.blob.vercel-storage.com https://www.google-analytics.com https://www.googletagmanager.com",
       "font-src 'self' data:",
       "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com",
       "frame-src https://www.google.com",

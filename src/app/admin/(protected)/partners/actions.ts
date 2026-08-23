@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
+import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
 import { partnerSchema } from '@/lib/validations/partner';
 
 function extractInput(formData: FormData) {
@@ -57,7 +58,9 @@ export async function updatePartner(
     return { error: parsed.error.issues[0]?.message ?? 'Données invalides.' };
   }
 
+  const before = await prisma.partner.findUnique({ where: { id }, select: { logoUrl: true } });
   await prisma.partner.update({ where: { id }, data: parsed.data });
+  await deleteReplacedBlob(before?.logoUrl, parsed.data.logoUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/partners');
   redirect('/admin/partners');
@@ -66,6 +69,7 @@ export async function updatePartner(
 export async function deletePartner(id: string) {
   const user = await requireAdminUser('ADMIN');
   const deleted = await prisma.partner.delete({ where: { id } });
+  await deleteBlobIfManaged(deleted.logoUrl); // CDC V2 §5.5
 
   await logAudit({
     action: 'DELETE',

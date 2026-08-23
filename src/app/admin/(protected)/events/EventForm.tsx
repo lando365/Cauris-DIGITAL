@@ -3,6 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import type { Event } from '@prisma/client';
 import type { EventFormState } from './actions';
+import { FileUploadField } from '@/components/admin/FileUploadField';
 
 const TYPES = ['DEMO_DAY', 'ATELIER', 'WEBINAIRE', 'HACKATHON', 'NETWORKING', 'CONFERENCE'] as const;
 
@@ -145,17 +146,12 @@ export function EventForm({
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
       </div>
-      <div>
-        <label htmlFor="imageUrl" className="mb-1 block text-sm font-medium text-cauris-gray-text">
-          URL de l'image
-        </label>
-        <input
-          id="imageUrl"
-          name="imageUrl"
-          defaultValue={event?.imageUrl ?? ''}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
-      </div>
+      <FileUploadField
+        label="Image"
+        name="imageUrl"
+        entityType="event"
+        defaultValue={event?.imageUrl}
+      />
       <div>
         <label htmlFor="price" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Prix (si payant)

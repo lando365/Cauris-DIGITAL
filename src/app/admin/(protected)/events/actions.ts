@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
+import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
 import { eventSchema } from '@/lib/validations/event';
 
 function extractInput(formData: FormData) {
@@ -83,6 +84,7 @@ export async function updateEvent(
   }
 
   const { startDate, endDate, ...rest } = parsed.data;
+  const before = await prisma.event.findUnique({ where: { id }, select: { imageUrl: true } });
   await prisma.event.update({
     where: { id },
     data: {
@@ -91,6 +93,7 @@ export async function updateEvent(
       endDate: endDate ? new Date(endDate) : null,
     },
   });
+  await deleteReplacedBlob(before?.imageUrl, parsed.data.imageUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/events');
   redirect('/admin/events');
@@ -99,6 +102,7 @@ export async function updateEvent(
 export async function deleteEvent(id: string) {
   const user = await requireAdminUser('ADMIN');
   const deleted = await prisma.event.delete({ where: { id } });
+  await deleteBlobIfManaged(deleted.imageUrl); // CDC V2 §5.5
 
   await logAudit({
     action: 'DELETE',
