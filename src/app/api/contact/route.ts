@@ -82,6 +82,12 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+    if (message.length > 10_000) {
+      return NextResponse.json(
+        { error: 'Votre message ne peut pas dépasser 10 000 caractères.' }, // CDC V2 §7.5
+        { status: 400 },
+      );
+    }
     if (!consent) {
       return NextResponse.json(
         { error: 'Vous devez accepter la politique de confidentialité.' },

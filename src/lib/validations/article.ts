@@ -14,7 +14,11 @@ export const articleSchema = z.object({
     .regex(slugRegex, 'Le slug ne doit contenir que des lettres minuscules, chiffres et tirets.'),
   title: z.string().trim().min(1, 'Le titre est requis.'), // RM-A02
   excerpt: z.string().trim().min(1, "L'extrait est requis."),
-  content: z.string().trim().min(1, 'Le contenu est requis.'), // RM-A02
+  content: z
+    .string()
+    .trim()
+    .min(1, 'Le contenu est requis.') // RM-A02
+    .max(100_000, 'Le contenu ne peut pas dépasser 100 000 caractères.'), // CDC V2 §7.5
   category: z.enum(CATEGORIES),
   coverImageUrl: z
     .string()
