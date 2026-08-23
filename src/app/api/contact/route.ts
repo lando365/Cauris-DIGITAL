@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { SITE_CONFIG } from '@/lib/constants';
@@ -158,7 +159,11 @@ export async function POST(request: Request) {
     if (company) dbMessageParts.push(`Société : ${company}`);
     if (phone) dbMessageParts.push(`Téléphone : ${phone}`);
 
-    const ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null;
+    // CDC V2 §7.7 : "Logs IP : 30 jours (hachage)" — l'IP n'est jamais stockée en
+    // clair, seulement son empreinte, suffisante pour du rate-limiting/anti-abus
+    // sans conserver une donnée personnelle directement identifiante.
+    const rawIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+    const ipAddress = rawIp ? hashIp(rawIp) : null;
 
     await prisma.contactMessage.create({
       data: {
@@ -310,6 +315,13 @@ function escape(str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+/**
+ * Empreinte SHA-256 d'une adresse IP (CDC V2 §7.7) — jamais l'IP en clair.
+ */
+function hashIp(ip: string): string {
+  return createHash('sha256').update(ip).digest('hex');
 }
 
 interface RecaptchaResult {
