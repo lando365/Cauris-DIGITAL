@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
+import { logAudit } from '@/lib/audit-log';
 import { articleSchema } from '@/lib/validations/article';
 import { computeReadingTime } from '@/lib/reading-time';
 
@@ -39,7 +40,7 @@ export async function createArticle(
   }
 
   const { publishedAt, ...rest } = parsed.data;
-  await prisma.article.create({
+  const created = await prisma.article.create({
     data: {
       ...rest,
       readingTime: computeReadingTime(parsed.data.content),
@@ -47,6 +48,14 @@ export async function createArticle(
       publishedAt:
         parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
     },
+  });
+
+  await logAudit({
+    action: 'CREATE',
+    entityType: 'Article',
+    entityId: created.id,
+    entityLabel: created.title,
+    user,
   });
 
   revalidatePath('/admin/articles');
@@ -87,7 +96,16 @@ export async function updateArticle(
 
 export async function deleteArticle(id: string) {
   // RM-A05 : seul un ADMIN peut supprimer
-  await requireAdminUser('ADMIN');
-  await prisma.article.delete({ where: { id } });
+  const user = await requireAdminUser('ADMIN');
+  const deleted = await prisma.article.delete({ where: { id } });
+
+  await logAudit({
+    action: 'DELETE',
+    entityType: 'Article',
+    entityId: deleted.id,
+    entityLabel: deleted.title,
+    user,
+  });
+
   revalidatePath('/admin/articles');
 }

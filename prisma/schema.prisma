@@ -73,6 +73,12 @@ enum SubscriberStatus {
   UNSUBSCRIBED
 }
 
+enum AuditAction {
+  CREATE
+  DELETE
+  ROLE_CHANGE
+}
+
 // ---------------------------------------------------------------------------
 // User — CDC V2 §5.3.1 (comptes administrateurs et éditeurs)
 // ---------------------------------------------------------------------------
@@ -91,11 +97,12 @@ model User {
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
-  articles Article[]
-  startups Startup[]
-  events   Event[]
-  partners Partner[]
-  sessions Session[]
+  articles  Article[]
+  startups  Startup[]
+  events    Event[]
+  partners  Partner[]
+  sessions  Session[]
+  auditLogs AuditLog[]
 
   @@map("users")
 }
@@ -258,4 +265,25 @@ model NewsletterSubscriber {
   createdAt      DateTime         @default(now())
 
   @@map("newsletter_subscribers")
+}
+
+// ---------------------------------------------------------------------------
+// AuditLog — CDC V2 §7.6 (journalisation des actions admin sensibles)
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  action      AuditAction
+  entityType  String // "Startup", "Article", "Event", "Partner", "User"
+  entityId    String
+  entityLabel String? // instantané lisible (nom/titre/email) car l'entité peut être supprimée ensuite
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail   String // instantané, survit à la suppression du compte auteur
+  metadata    Json? // ex. { fromRole: "EDITOR", toRole: "ADMIN" } pour ROLE_CHANGE
+  createdAt   DateTime    @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt(sort: Desc)])
+  @@map("audit_logs")
 }

@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
+import { logAudit } from '@/lib/audit-log';
 import { createUserSchema, updateUserSchema, passwordSchema } from '@/lib/validations/user';
 
 export type UserFormState = { error?: string } | undefined;
@@ -14,7 +15,7 @@ export async function createUser(
   _prevState: UserFormState,
   formData: FormData
 ): Promise<UserFormState> {
-  await requireAdminUser('ADMIN'); // RM-U03
+  const actor = await requireAdminUser('ADMIN'); // RM-U03
 
   const parsed = createUserSchema.safeParse({
     email: formData.get('email'),
@@ -32,13 +33,22 @@ export async function createUser(
   }
 
   const passwordHash = await bcrypt.hash(parsed.data.password, 12);
-  await prisma.user.create({
+  const created = await prisma.user.create({
     data: {
       email: parsed.data.email,
       name: parsed.data.name,
       role: parsed.data.role,
       passwordHash,
     },
+  });
+
+  await logAudit({
+    action: 'CREATE',
+    entityType: 'User',
+    entityId: created.id,
+    entityLabel: created.email,
+    user: actor,
+    metadata: { role: created.role },
   });
 
   revalidatePath('/admin/users');
@@ -70,7 +80,20 @@ export async function updateUser(
     return { error: 'Vous ne pouvez pas modifier votre propre rôle.' }; // RM-U04
   }
 
+  const roleChanged = parsed.data.role !== target.role;
+
   await prisma.user.update({ where: { id }, data: parsed.data });
+
+  if (roleChanged) {
+    await logAudit({
+      action: 'ROLE_CHANGE',
+      entityType: 'User',
+      entityId: target.id,
+      entityLabel: target.email,
+      user: currentUser,
+      metadata: { fromRole: target.role, toRole: parsed.data.role },
+    });
+  }
 
   revalidatePath('/admin/users');
   redirect('/admin/users');

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
+import { logAudit } from '@/lib/audit-log';
 import { startupSchema, parseListField } from '@/lib/validations/startup';
 
 function extractInput(formData: FormData) {
@@ -49,8 +50,16 @@ export async function createStartup(
     return { error: 'Un slug identique existe déjà.' }; // RM-S01
   }
 
-  await prisma.startup.create({
+  const created = await prisma.startup.create({
     data: { ...parsed.data, createdBy: user.id },
+  });
+
+  await logAudit({
+    action: 'CREATE',
+    entityType: 'Startup',
+    entityId: created.id,
+    entityLabel: created.name,
+    user,
   });
 
   revalidatePath('/admin/startups');
@@ -82,7 +91,16 @@ export async function updateStartup(
 
 export async function deleteStartup(id: string) {
   // RM-S06 : seul un ADMIN peut supprimer
-  await requireAdminUser('ADMIN');
-  await prisma.startup.delete({ where: { id } });
+  const user = await requireAdminUser('ADMIN');
+  const deleted = await prisma.startup.delete({ where: { id } });
+
+  await logAudit({
+    action: 'DELETE',
+    entityType: 'Startup',
+    entityId: deleted.id,
+    entityLabel: deleted.name,
+    user,
+  });
+
   revalidatePath('/admin/startups');
 }

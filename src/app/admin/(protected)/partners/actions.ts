@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
+import { logAudit } from '@/lib/audit-log';
 import { partnerSchema } from '@/lib/validations/partner';
 
 function extractInput(formData: FormData) {
@@ -30,7 +31,15 @@ export async function createPartner(
     return { error: parsed.error.issues[0]?.message ?? 'Données invalides.' };
   }
 
-  await prisma.partner.create({ data: { ...parsed.data, createdBy: user.id } });
+  const created = await prisma.partner.create({ data: { ...parsed.data, createdBy: user.id } });
+
+  await logAudit({
+    action: 'CREATE',
+    entityType: 'Partner',
+    entityId: created.id,
+    entityLabel: created.name,
+    user,
+  });
 
   revalidatePath('/admin/partners');
   redirect('/admin/partners');
@@ -55,7 +64,16 @@ export async function updatePartner(
 }
 
 export async function deletePartner(id: string) {
-  await requireAdminUser('ADMIN');
-  await prisma.partner.delete({ where: { id } });
+  const user = await requireAdminUser('ADMIN');
+  const deleted = await prisma.partner.delete({ where: { id } });
+
+  await logAudit({
+    action: 'DELETE',
+    entityType: 'Partner',
+    entityId: deleted.id,
+    entityLabel: deleted.name,
+    user,
+  });
+
   revalidatePath('/admin/partners');
 }
