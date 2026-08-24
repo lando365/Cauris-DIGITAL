@@ -1,0 +1,65 @@
+name: Sauvegarde hebdomadaire de la base de données
+
+# CDC V2 §9.6 : "planifier un export SQL hebdomadaire automatisé via un
+# script cron (GitHub Actions) stocké sur un dépôt privé."
+#
+# Ce dépôt (cauris-digital) est PUBLIC — les dumps ne doivent jamais y
+# être committés ni exposés via les artefacts par défaut de ce workflow
+# (visibles publiquement sur un repo public). Ils sont poussés vers un
+# dépôt GitHub privé séparé, dédié aux sauvegardes.
+#
+# Secrets requis sur CE dépôt (Settings > Secrets and variables > Actions) :
+#   - BACKUP_DATABASE_URL : connexion PostgreSQL directe (non poolée,
+#     port 5432 — équivalent de DIRECT_URL, pas DATABASE_URL/pgbouncer).
+#   - BACKUP_REPO          : "owner/nom-du-repo-prive-de-backups".
+#   - BACKUP_REPO_TOKEN    : Personal Access Token avec accès en écriture
+#     (Contents: Read and write) uniquement sur ce dépôt de backups.
+
+on:
+  schedule:
+    - cron: '0 3 * * 0' # tous les dimanches à 03:00 UTC
+  workflow_dispatch: {} # déclenchement manuel pour tester
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Installer les outils PostgreSQL (pg_dump)
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Exporter la base (pg_dump)
+        env:
+          BACKUP_DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          mkdir -p dump
+          FILENAME="backup-$(date -u +%Y-%m-%d).sql.gz"
+          pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges | gzip -9 > "dump/$FILENAME"
+          echo "FILENAME=$FILENAME" >> "$GITHUB_ENV"
+
+      - name: Cloner le dépôt privé de sauvegardes
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.BACKUP_REPO }}
+          token: ${{ secrets.BACKUP_REPO_TOKEN }}
+          path: backups-repo
+
+      - name: Ajouter le dump et purger les sauvegardes > 3 mois
+        run: |
+          set -euo pipefail
+          mkdir -p backups-repo/backups
+          cp "dump/$FILENAME" "backups-repo/backups/$FILENAME"
+
+          # CDC V2 §9.6 — conservation longue durée : 3 mois.
+          find backups-repo/backups -name 'backup-*.sql.gz' -mtime +90 -delete
+
+          cd backups-repo
+          git config user.name "cauris-digital-backup-bot"
+          git config user.email "actions@github.com"
+          git add backups/
+          if ! git diff --cached --quiet; then
+            git commit -m "backup: $FILENAME"
+            git push
+          else
+            echo "Rien à committer."
+          fi
