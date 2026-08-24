@@ -25,10 +25,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Installer pg_dump (version 17, alignée sur le serveur Supabase)
-        # Le dépôt PGDG est déjà préconfiguré sur les runners ubuntu-latest
-        # (confirmé par le suffixe "pgdg24.04" de la version par défaut) —
-        # pas besoin de l'ajouter manuellement, juste demander la v17.
-        run: sudo apt-get update && sudo apt-get install -y postgresql-client-17
+        # Le paquet Ubuntu natif s'appelle "pgdg24.04" mais vient bien du
+        # dépôt Ubuntu standard (v16 seulement) — le vrai dépôt PGDG
+        # (apt.postgresql.org, qui fournit postgresql-client-17) doit être
+        # ajouté explicitement, il n'est pas préconfiguré sur ubuntu-latest.
+        run: |
+          set -euo pipefail
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-17
 
       - name: Exporter la base (pg_dump)
         env:
