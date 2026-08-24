@@ -48,12 +48,23 @@ jobs:
           /usr/lib/postgresql/17/bin/pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges | gzip -9 > "dump/$FILENAME"
           echo "FILENAME=$FILENAME" >> "$GITHUB_ENV"
 
-      - name: Cloner le dépôt privé de sauvegardes
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ secrets.BACKUP_REPO }}
-          token: ${{ secrets.BACKUP_REPO_TOKEN }}
-          path: backups-repo
+      - name: Cloner (ou initialiser s'il est vide) le dépôt privé de sauvegardes
+        env:
+          BACKUP_REPO: ${{ secrets.BACKUP_REPO }}
+          BACKUP_REPO_TOKEN: ${{ secrets.BACKUP_REPO_TOKEN }}
+        run: |
+          set -euo pipefail
+          REMOTE_URL="https://x-access-token:${BACKUP_REPO_TOKEN}@github.com/${BACKUP_REPO}.git"
+          if git clone --depth 1 "$REMOTE_URL" backups-repo; then
+            echo "Dépôt cloné."
+          else
+            # Dépôt neuf sans commit ni branche par défaut — 1ère exécution.
+            echo "Dépôt vide : initialisation d'une branche main locale."
+            mkdir -p backups-repo
+            cd backups-repo
+            git init -b main
+            git remote add origin "$REMOTE_URL"
+          fi
 
       - name: Ajouter le dump et purger les sauvegardes > 3 mois
         run: |
@@ -70,7 +81,7 @@ jobs:
           git add backups/
           if ! git diff --cached --quiet; then
             git commit -m "backup: $FILENAME"
-            git push
+            git push origin main
           else
             echo "Rien à committer."
           fi
