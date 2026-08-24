@@ -43,7 +43,9 @@ jobs:
           set -euo pipefail
           mkdir -p dump
           FILENAME="backup-$(date -u +%Y-%m-%d).sql.gz"
-          pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges | gzip -9 > "dump/$FILENAME"
+          # Chemin explicite : le runner a un pg_dump v16 préinstallé qui
+          # gagne sur le PATH générique même après l'install de la v17.
+          /usr/lib/postgresql/17/bin/pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges | gzip -9 > "dump/$FILENAME"
           echo "FILENAME=$FILENAME" >> "$GITHUB_ENV"
 
       - name: Cloner le dépôt privé de sauvegardes
