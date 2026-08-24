@@ -38,7 +38,10 @@ export default function ProgramsOverview() {
                   {program.description}
                 </p>
                 <p className="flex items-start gap-2 text-xs text-cauris-gray-secondary mb-6">
-                  <Globe className="w-4 h-4 shrink-0 mt-0.5 text-cauris-orange" aria-hidden="true" />
+                  <Globe
+                    className="w-4 h-4 shrink-0 mt-0.5 text-cauris-orange"
+                    aria-hidden="true"
+                  />
                   <span>{program.format}</span>
                 </p>
                 <ul className="space-y-2 mb-8 text-sm text-cauris-gray-text">

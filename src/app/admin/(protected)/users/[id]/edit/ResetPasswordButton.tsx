@@ -25,7 +25,9 @@ export function ResetPasswordButton({ userId }: { userId: string }) {
       <SubmitButton />
       {state?.newPassword && (
         <div className="rounded-md border border-cauris-orange bg-cauris-cream p-3 text-sm">
-          <p className="font-medium text-cauris-black">Nouveau mot de passe (affiché une seule fois) :</p>
+          <p className="font-medium text-cauris-black">
+            Nouveau mot de passe (affiché une seule fois) :
+          </p>
           <code className="mt-1 block break-all">{state.newPassword}</code>
         </div>
       )}

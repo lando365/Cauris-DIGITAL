@@ -20,14 +20,14 @@ export default function Testimonials() {
   return (
     <section className="section bg-cauris-cream/40">
       <div className="container-cauris">
-        <SectionTitle
-          eyebrow="Témoignages"
-          title="Ils ont fait confiance à CAURIS DIGITAL"
-        />
+        <SectionTitle eyebrow="Témoignages" title="Ils ont fait confiance à CAURIS DIGITAL" />
 
         <div className="mt-14 max-w-3xl mx-auto">
           <div className="card bg-white p-8 lg:p-12 border border-gray-100 relative">
-            <Quote className="absolute top-6 right-6 w-12 h-12 text-cauris-orange/15" aria-hidden="true" />
+            <Quote
+              className="absolute top-6 right-6 w-12 h-12 text-cauris-orange/15"
+              aria-hidden="true"
+            />
             <p className="font-heading text-xl lg:text-2xl text-cauris-black leading-relaxed mb-8">
               « {current.quote} »
             </p>

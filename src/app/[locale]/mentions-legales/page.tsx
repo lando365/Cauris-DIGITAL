@@ -22,8 +22,8 @@ export default function MentionsLegalesPage() {
               Mentions légales
             </h1>
             <p className="text-base text-cauris-gray-secondary italic">
-              Document à faire valider par un juriste avant mise en ligne. Cette base de départ
-              est conforme aux pratiques standards.
+              Document à faire valider par un juriste avant mise en ligne. Cette base de départ est
+              conforme aux pratiques standards.
             </p>
           </div>
         </div>
@@ -59,8 +59,8 @@ export default function MentionsLegalesPage() {
             </h2>
             <div className="text-cauris-gray-text leading-relaxed mb-10">
               <p>
-                Ce site est hébergé par <strong>[Nom de l&apos;hébergeur]</strong>,{' '}
-                [Adresse de l&apos;hébergeur], [Email ou téléphone de l&apos;hébergeur].
+                Ce site est hébergé par <strong>[Nom de l&apos;hébergeur]</strong>, [Adresse de
+                l&apos;hébergeur], [Email ou téléphone de l&apos;hébergeur].
               </p>
             </div>
 
@@ -70,9 +70,9 @@ export default function MentionsLegalesPage() {
             <div className="text-cauris-gray-text leading-relaxed mb-10">
               <p>
                 L&apos;ensemble du contenu de ce site (textes, images, logos, vidéos, graphismes)
-                est protégé par le droit d&apos;auteur et appartient à CAURIS DIGITAL, sauf
-                mention contraire. Toute reproduction, même partielle, est interdite sans
-                autorisation écrite préalable.
+                est protégé par le droit d&apos;auteur et appartient à CAURIS DIGITAL, sauf mention
+                contraire. Toute reproduction, même partielle, est interdite sans autorisation
+                écrite préalable.
               </p>
             </div>
 

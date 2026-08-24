@@ -21,7 +21,9 @@ export default function NewUserPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-montserrat text-xl font-bold text-cauris-black">Nouvel utilisateur</h1>
+      <h1 className="mb-6 font-montserrat text-xl font-bold text-cauris-black">
+        Nouvel utilisateur
+      </h1>
       <form action={formAction} className="max-w-md space-y-4">
         <div>
           <label htmlFor="name" className="mb-1 block text-sm font-medium text-cauris-gray-text">
@@ -61,7 +63,10 @@ export default function NewUserPage() {
           </select>
         </div>
         <div>
-          <label htmlFor="password" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="password"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Mot de passe initial
           </label>
           <input

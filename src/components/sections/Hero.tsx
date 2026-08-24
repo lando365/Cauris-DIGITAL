@@ -40,8 +40,7 @@ export default function Hero() {
           </span>
 
           <h1 className="font-heading font-extrabold text-white text-4xl sm:text-5xl lg:text-7xl leading-[1.05] mb-6">
-            {t('titleStart')}{' '}
-            <span className="text-gradient-orange">{t('titleAccent')}</span>{' '}
+            {t('titleStart')} <span className="text-gradient-orange">{t('titleAccent')}</span>{' '}
             {t('titleEnd')}
           </h1>
 

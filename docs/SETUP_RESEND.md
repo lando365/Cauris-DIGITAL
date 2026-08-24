@@ -49,6 +49,7 @@ npm run dev
 ```
 
 Puis :
+
 1. Aller sur http://localhost:3000/contact
 2. Remplir le formulaire avec ton vrai email
 3. Cliquer sur **« Envoyer le message »**
@@ -73,6 +74,7 @@ Pour pouvoir envoyer **depuis** une adresse `@caurisdigital.org` (au lieu de `on
 ## 6. Pour le déploiement Vercel
 
 Quand tu déploieras sur Vercel :
+
 1. Aller dans **Settings → Environment Variables** du projet
 2. Ajouter les 3 variables :
    - `RESEND_API_KEY`
@@ -82,12 +84,12 @@ Quand tu déploieras sur Vercel :
 
 ## 🆘 Dépannage
 
-| Problème | Solution |
-|---|---|
-| L'email n'arrive pas | Vérifier le dossier Spam. Vérifier que `CONTACT_EMAIL_TO` est correct. |
-| Erreur "Forbidden" Resend | Vérifier que la clé API n'a pas été révoquée. En créer une nouvelle. |
-| Erreur "Domain not verified" | Utiliser `onboarding@resend.dev` comme `CONTACT_EMAIL_FROM` en attendant la vérif domaine. |
-| `RESEND_API_KEY` non détectée | Redémarrer `npm run dev`. Les variables `.env.local` ne sont lues qu'au démarrage. |
+| Problème                      | Solution                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------ |
+| L'email n'arrive pas          | Vérifier le dossier Spam. Vérifier que `CONTACT_EMAIL_TO` est correct.                     |
+| Erreur "Forbidden" Resend     | Vérifier que la clé API n'a pas été révoquée. En créer une nouvelle.                       |
+| Erreur "Domain not verified"  | Utiliser `onboarding@resend.dev` comme `CONTACT_EMAIL_FROM` en attendant la vérif domaine. |
+| `RESEND_API_KEY` non détectée | Redémarrer `npm run dev`. Les variables `.env.local` ne sont lues qu'au démarrage.         |
 
 ## ✅ Mode dev sans clé
 
@@ -158,12 +160,12 @@ utilisé en dev, mais elle est **obligatoire en production**.
 
 ## 🆘 Dépannage newsletter
 
-| Problème | Solution |
-|---|---|
-| "Confirmation enregistrée (mode dev)" | C'est que `RESEND_AUDIENCE_ID` est vide. Vérifie ton `.env.local`. |
-| L'email de confirmation n'arrive pas | Vérifier Spams. Vérifier que `CONTACT_EMAIL_FROM` est correct dans `.env.local`. |
+| Problème                                                | Solution                                                                                                                                             |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Confirmation enregistrée (mode dev)"                   | C'est que `RESEND_AUDIENCE_ID` est vide. Vérifie ton `.env.local`.                                                                                   |
+| L'email de confirmation n'arrive pas                    | Vérifier Spams. Vérifier que `CONTACT_EMAIL_FROM` est correct dans `.env.local`.                                                                     |
 | Le lien de confirmation redirige vers une page d'erreur | Le lien a plus de 48h, ou `NEWSLETTER_TOKEN_SECRET` a changé entre l'envoi et le clic (redémarrage serveur avec un secret différent). Réinscris-toi. |
-| Erreur "Audience not found" | L'ID copié est incorrect — vérifier l'URL exacte dans le dashboard Resend. |
+| Erreur "Audience not found"                             | L'ID copié est incorrect — vérifier l'URL exacte dans le dashboard Resend.                                                                           |
 
 ## 📊 Envoyer une vraie newsletter plus tard
 

@@ -52,7 +52,10 @@ export function PartnerForm({
         defaultValue={partner?.logoUrl}
       />
       <div>
-        <label htmlFor="websiteUrl" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+        <label
+          htmlFor="websiteUrl"
+          className="mb-1 block text-sm font-medium text-cauris-gray-text"
+        >
           Site web
         </label>
         <input
@@ -64,7 +67,10 @@ export function PartnerForm({
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="category" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="category"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Catégorie
           </label>
           <select
@@ -81,7 +87,10 @@ export function PartnerForm({
           </select>
         </div>
         <div>
-          <label htmlFor="displayOrder" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="displayOrder"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Ordre d'affichage
           </label>
           <input

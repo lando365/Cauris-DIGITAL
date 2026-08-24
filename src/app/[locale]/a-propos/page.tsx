@@ -9,7 +9,7 @@ import { VALUES, TEAM_PHOTOS, BRAND_IMAGES } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'À propos de CAURIS DIGITAL — Incubateur numérique, Yaoundé, Cameroun',
   description:
-    'Découvrez CAURIS DIGITAL, son histoire, sa mission et l\'équipe qui accompagne les entrepreneurs tech africains depuis Yaoundé, avec un mentorat mondial en ligne.',
+    "Découvrez CAURIS DIGITAL, son histoire, sa mission et l'équipe qui accompagne les entrepreneurs tech africains depuis Yaoundé, avec un mentorat mondial en ligne.",
 };
 
 const VALUE_ICONS = {
@@ -30,14 +30,14 @@ const TEAM = [
     name: '[Prénom NOM]',
     role: 'Directeur Général & Co-fondateur',
     photo: TEAM_PHOTOS.directorGeneral,
-    bio: 'Entrepreneur numérique avec [X] ans d\'expérience dans l\'accompagnement de startups africaines. Diplômé en [discipline] de [université]. Passionné par l\'impact de la technologie sur les économies émergentes.',
+    bio: "Entrepreneur numérique avec [X] ans d'expérience dans l'accompagnement de startups africaines. Diplômé en [discipline] de [université]. Passionné par l'impact de la technologie sur les économies émergentes.",
     linkedin: '#',
   },
   {
     name: '[Prénom NOM]',
     role: 'Directrice des Programmes',
     photo: TEAM_PHOTOS.programDirector,
-    bio: 'Spécialiste de l\'innovation et de l\'accompagnement entrepreneurial. [X] ans d\'expérience dans le secteur de l\'incubation en Afrique centrale. Co-fondatrice de [projet]. Diplômée de [université].',
+    bio: "Spécialiste de l'innovation et de l'accompagnement entrepreneurial. [X] ans d'expérience dans le secteur de l'incubation en Afrique centrale. Co-fondatrice de [projet]. Diplômée de [université].",
     linkedin: '#',
   },
   {
@@ -51,7 +51,7 @@ const TEAM = [
     name: '[Prénom NOM]',
     role: 'Chargée de Communication & Partenariats',
     photo: TEAM_PHOTOS.communicationLead,
-    bio: 'Experte en communication digitale et en relations institutionnelles. [X] ans d\'expérience dans la promotion de l\'écosystème tech africain. Passionnée par le storytelling et la visibilité des startups africaines.',
+    bio: "Experte en communication digitale et en relations institutionnelles. [X] ans d'expérience dans la promotion de l'écosystème tech africain. Passionnée par le storytelling et la visibilité des startups africaines.",
     linkedin: '#',
   },
 ];
@@ -82,8 +82,8 @@ export default function AboutPage() {
               Qui nous sommes
             </h1>
             <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Un incubateur africain construit par des Africains, pour des Africains —
-              et ouvert au monde entier.
+              Un incubateur africain construit par des Africains, pour des Africains — et ouvert au
+              monde entier.
             </p>
           </div>
         </div>
@@ -102,9 +102,10 @@ export default function AboutPage() {
                 />
                 <div className="mt-8 space-y-5 text-cauris-gray-text leading-relaxed">
                   <p>
-                    CAURIS DIGITAL est né d&apos;un constat simple : l&apos;Afrique regorge de talents
-                    technologiques, d&apos;idées brillantes et d&apos;entrepreneurs courageux. Ce qui
-                    manque, c&apos;est un écosystème structuré pour les faire grandir.
+                    CAURIS DIGITAL est né d&apos;un constat simple : l&apos;Afrique regorge de
+                    talents technologiques, d&apos;idées brillantes et d&apos;entrepreneurs
+                    courageux. Ce qui manque, c&apos;est un écosystème structuré pour les faire
+                    grandir.
                   </p>
                   <p>
                     Fondé à Yaoundé, au cœur du Cameroun, CAURIS DIGITAL a été créé pour combler ce
@@ -122,10 +123,10 @@ export default function AboutPage() {
                     l&apos;accompagnement.
                   </p>
                   <p>
-                    Nous nous inspirons des meilleurs incubateurs mondiaux — Centech à Montréal,
-                    Y Combinator à San Francisco, Station F à Paris — pour construire quelque chose
-                    d&apos;unique : un modèle d&apos;incubation calibré pour les réalités africaines,
-                    avec des solutions conçues pour les marchés africains.
+                    Nous nous inspirons des meilleurs incubateurs mondiaux — Centech à Montréal, Y
+                    Combinator à San Francisco, Station F à Paris — pour construire quelque chose
+                    d&apos;unique : un modèle d&apos;incubation calibré pour les réalités
+                    africaines, avec des solutions conçues pour les marchés africains.
                   </p>
                 </div>
               </Reveal>
@@ -148,8 +149,8 @@ export default function AboutPage() {
                   </p>
                   <p className="text-base leading-relaxed">
                     Stimuler l&apos;entrepreneuriat numérique en Afrique francophone en formant,
-                    incubant et connectant les entrepreneurs tech de demain — de la conceptualisation
-                    jusqu&apos;à la commercialisation de leur produit.
+                    incubant et connectant les entrepreneurs tech de demain — de la
+                    conceptualisation jusqu&apos;à la commercialisation de leur produit.
                   </p>
                 </div>
               </div>
@@ -187,7 +188,8 @@ export default function AboutPage() {
                 </h2>
                 <p className="leading-relaxed text-white/95">
                   Faire de l&apos;Afrique francophone un continent producteur de solutions
-                  technologiques mondiales — et non un simple consommateur de technologies importées.
+                  technologiques mondiales — et non un simple consommateur de technologies
+                  importées.
                 </p>
               </article>
             </Reveal>

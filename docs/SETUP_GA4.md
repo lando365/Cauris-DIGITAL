@@ -7,6 +7,7 @@ Ce guide t'accompagne pour activer le suivi des visites sur le site CAURIS DIGIT
 ## ⚖️ Conformité RGPD
 
 L'intégration GA4 dans ce projet est **RGPD-friendly** :
+
 - ✅ GA4 ne se charge **QUE** si l'utilisateur accepte les cookies via le bandeau
 - ✅ Anonymisation IP activée par défaut (`anonymize_ip: true`)
 - ✅ Cookie `SameSite=None; Secure`
@@ -107,15 +108,15 @@ npm run dev
 
 Avec **« Améliorer les mesures »** activé (étape 2.4) :
 
-| Événement | Quand |
-|---|---|
-| `page_view` | Chaque chargement et changement de route |
-| `scroll` | Quand l'utilisateur atteint 90% de la page |
-| `click` | Sur tous les liens sortants |
-| `file_download` | Sur les téléchargements de fichiers (PDF, etc.) |
-| `video_*` | Sur les vidéos YouTube embed |
-| `form_start` / `form_submit` | Démarrage et soumission des formulaires |
-| `search` | Si l'utilisateur utilise une recherche interne |
+| Événement                    | Quand                                           |
+| ---------------------------- | ----------------------------------------------- |
+| `page_view`                  | Chaque chargement et changement de route        |
+| `scroll`                     | Quand l'utilisateur atteint 90% de la page      |
+| `click`                      | Sur tous les liens sortants                     |
+| `file_download`              | Sur les téléchargements de fichiers (PDF, etc.) |
+| `video_*`                    | Sur les vidéos YouTube embed                    |
+| `form_start` / `form_submit` | Démarrage et soumission des formulaires         |
+| `search`                     | Si l'utilisateur utilise une recherche interne  |
 
 ## 9. Personnaliser le tracking (optionnel)
 
@@ -133,13 +134,13 @@ window.gtag?.('event', 'apply_clicked', {
 
 ## 🆘 Dépannage
 
-| Problème | Solution |
-|---|---|
-| GA ne se charge pas même après acceptation | Vérifier que `NEXT_PUBLIC_GA_MEASUREMENT_ID` est défini dans `.env.local` et redémarrer `npm run dev` |
-| Pas de données dans GA | Attendre 24-48h pour les rapports historiques. **Temps réel** doit fonctionner immédiatement. |
-| Erreur "Property invalid" | Vérifier que l'ID commence bien par `G-` (pas `UA-` qui est l'ancien Universal Analytics) |
-| Cookie banner ne réapparaît plus pour tester | Ouvrir DevTools → Application → Local Storage → supprimer `cauris-cookie-consent` |
-| GA tracke pendant les tests automatiques | Filtrer ton IP dans Admin → Filtres de données |
+| Problème                                     | Solution                                                                                              |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| GA ne se charge pas même après acceptation   | Vérifier que `NEXT_PUBLIC_GA_MEASUREMENT_ID` est défini dans `.env.local` et redémarrer `npm run dev` |
+| Pas de données dans GA                       | Attendre 24-48h pour les rapports historiques. **Temps réel** doit fonctionner immédiatement.         |
+| Erreur "Property invalid"                    | Vérifier que l'ID commence bien par `G-` (pas `UA-` qui est l'ancien Universal Analytics)             |
+| Cookie banner ne réapparaît plus pour tester | Ouvrir DevTools → Application → Local Storage → supprimer `cauris-cookie-consent`                     |
+| GA tracke pendant les tests automatiques     | Filtrer ton IP dans Admin → Filtres de données                                                        |
 
 ---
 

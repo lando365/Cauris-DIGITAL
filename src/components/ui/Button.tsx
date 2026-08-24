@@ -12,7 +12,8 @@ interface BaseProps {
   children: React.ReactNode;
 }
 
-interface ButtonAsButton extends BaseProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'children'> {
+interface ButtonAsButton
+  extends BaseProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'children'> {
   href?: undefined;
 }
 
@@ -44,12 +45,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const isExternal = props.external || /^https?:\/\//.test(props.href);
     if (isExternal) {
       return (
-        <a
-          href={props.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={classes}
-        >
+        <a href={props.href} target="_blank" rel="noopener noreferrer" className={classes}>
           {children}
         </a>
       );

@@ -7,7 +7,7 @@ import { mapStartup } from '@/lib/content-mappers';
 export const metadata: Metadata = {
   title: 'Startups CAURIS DIGITAL — Les entreprises tech africaines que nous propulsons',
   description:
-    'Découvrez les startups technologiques africaines accompagnées par CAURIS DIGITAL : Agritech, Fintech, Edtech, Healthtech, Smart Cities. Des entrepreneurs qui changent l\'Afrique.',
+    "Découvrez les startups technologiques africaines accompagnées par CAURIS DIGITAL : Agritech, Fintech, Edtech, Healthtech, Smart Cities. Des entrepreneurs qui changent l'Afrique.",
 };
 
 // CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
@@ -33,9 +33,9 @@ export default async function StartupsPage() {
               de demain — avec le soutien de CAURIS DIGITAL.
             </p>
             <p className="mt-4 text-base text-cauris-gray-secondary leading-relaxed">
-              Chaque startup de notre portefeuille a été sélectionnée pour la qualité de son
-              équipe, la pertinence de sa solution et son potentiel d&apos;impact. Qu&apos;elles
-              soient encore en incubation ou déjà sur le marché, ce sont elles qui prouvent que
+              Chaque startup de notre portefeuille a été sélectionnée pour la qualité de son équipe,
+              la pertinence de sa solution et son potentiel d&apos;impact. Qu&apos;elles soient
+              encore en incubation ou déjà sur le marché, ce sont elles qui prouvent que
               l&apos;innovation africaine existe, qu&apos;elle est forte et qu&apos;elle mérite
               d&apos;être soutenue.
             </p>

@@ -9,9 +9,10 @@ export const metadata: Metadata = {
 
 const MESSAGES: Record<string, string> = {
   expire:
-    'Ce lien a expiré (il n\'est valable que 48 heures). Réinscrivez-vous depuis le pied de page pour recevoir un nouveau lien.',
-  invalide: 'Ce lien n\'est pas valide. Vérifiez que vous avez copié l\'adresse complète depuis l\'email.',
-  manquant: 'Aucun lien de confirmation n\'a été fourni.',
+    "Ce lien a expiré (il n'est valable que 48 heures). Réinscrivez-vous depuis le pied de page pour recevoir un nouveau lien.",
+  invalide:
+    "Ce lien n'est pas valide. Vérifiez que vous avez copié l'adresse complète depuis l'email.",
+  manquant: "Aucun lien de confirmation n'a été fourni.",
   serveur: 'Une erreur technique est survenue. Réessayez dans quelques minutes.',
 };
 

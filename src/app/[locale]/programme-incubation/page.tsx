@@ -22,7 +22,7 @@ import { PROGRAMS, BRAND_IMAGES } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'Programme Incubation — CAURIS DIGITAL | 6 mois pour lancer votre startup tech',
   description:
-    'Rejoignez le programme d\'incubation de 6 mois de CAURIS DIGITAL. Mentorat, ressources, réseau et accompagnement pour lancer votre startup tech depuis l\'Afrique.',
+    "Rejoignez le programme d'incubation de 6 mois de CAURIS DIGITAL. Mentorat, ressources, réseau et accompagnement pour lancer votre startup tech depuis l'Afrique.",
 };
 
 const incubation = PROGRAMS.find((p) => p.id === 'incubation')!;
@@ -38,7 +38,7 @@ const PHASES = [
     period: 'Mois 3-4',
     title: 'Construction',
     description:
-      'Développement du produit ou service. Premiers utilisateurs test. Itérations rapides basées sur les retours. Construction de l\'équipe. Ateliers : product management, développement commercial, communication.',
+      "Développement du produit ou service. Premiers utilisateurs test. Itérations rapides basées sur les retours. Construction de l'équipe. Ateliers : product management, développement commercial, communication.",
   },
   {
     period: 'Mois 5-6',
@@ -49,11 +49,11 @@ const PHASES = [
 ];
 
 const PROFILE_CRITERIA = [
-  'Vous avez une idée de startup technologique avec un potentiel de marché en Afrique ou à l\'international',
+  "Vous avez une idée de startup technologique avec un potentiel de marché en Afrique ou à l'international",
   'Vous avez (ou cherchez) une équipe complémentaire — technique, business ou les deux',
   'Vous êtes disponible pour vous engager sérieusement pendant 6 mois',
   'Vous êtes ouvert au feedback, même difficile, et prêt à pivoter si nécessaire',
-  'Votre projet s\'inscrit dans un de nos secteurs prioritaires (Agritech, Fintech, Edtech, Healthtech, Smart Cities)',
+  "Votre projet s'inscrit dans un de nos secteurs prioritaires (Agritech, Fintech, Edtech, Healthtech, Smart Cities)",
   'Vous êtes basé en Afrique francophone ou disposé à interagir en français',
 ];
 
@@ -74,13 +74,13 @@ const APPLICATION_STEPS = [
     icon: Mail,
     title: 'Étape 3 — Annonce',
     description:
-      'Annonce des résultats. Les startups sélectionnées reçoivent leur lettre d\'admission et signent la convention de participation.',
+      "Annonce des résultats. Les startups sélectionnées reçoivent leur lettre d'admission et signent la convention de participation.",
   },
   {
     icon: Rocket,
     title: 'Étape 4 — Lancement',
     description:
-      'Lancement du programme. Journée d\'orientation collective (en ligne ou en présentiel) et début des sessions de mentorat.',
+      "Lancement du programme. Journée d'orientation collective (en ligne ou en présentiel) et début des sessions de mentorat.",
   },
 ];
 
@@ -91,7 +91,7 @@ const PROGRAM_TESTIMONIALS = [
     location: '[Pays]',
     promo: 'Promo [Année]',
     quote:
-      'J\'ai candidaté depuis Brazzaville, sans savoir si ça marcherait à distance. Le programme m\'a montré que la qualité du mentorat ne dépend pas de la géographie. J\'ai eu accès aux mêmes ressources que ceux qui étaient à Yaoundé.',
+      "J'ai candidaté depuis Brazzaville, sans savoir si ça marcherait à distance. Le programme m'a montré que la qualité du mentorat ne dépend pas de la géographie. J'ai eu accès aux mêmes ressources que ceux qui étaient à Yaoundé.",
   },
   {
     name: '[Prénom NOM]',
@@ -99,7 +99,7 @@ const PROGRAM_TESTIMONIALS = [
     location: '[Pays]',
     promo: 'Promo [Année]',
     quote:
-      'Le moment le plus fort : le Demo Day. Présenter devant des investisseurs réels, avec un vrai produit et de vrais clients — après seulement 6 mois. Je n\'aurais jamais cru y arriver si vite sans CAURIS DIGITAL.',
+      "Le moment le plus fort : le Demo Day. Présenter devant des investisseurs réels, avec un vrai produit et de vrais clients — après seulement 6 mois. Je n'aurais jamais cru y arriver si vite sans CAURIS DIGITAL.",
   },
 ];
 
@@ -119,7 +119,8 @@ export default function IncubationProgramPage() {
               </h1>
               <p className="text-lg text-cauris-gray-text leading-relaxed mb-8">
                 <strong className="text-cauris-black">6 mois</strong> pour transformer votre idée en
-                entreprise. <strong className="text-cauris-black">Gratuit. Exigeant. Transformateur.</strong>
+                entreprise.{' '}
+                <strong className="text-cauris-black">Gratuit. Exigeant. Transformateur.</strong>
               </p>
 
               <div className="mb-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-cauris-gray-text">
@@ -260,11 +261,7 @@ export default function IncubationProgramPage() {
         <div className="container-cauris">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start max-w-6xl mx-auto">
             <Reveal>
-              <SectionTitle
-                eyebrow="Profil recherché"
-                title="Qui peut candidater ?"
-                align="left"
-              />
+              <SectionTitle eyebrow="Profil recherché" title="Qui peut candidater ?" align="left" />
               <p className="mt-6 text-cauris-gray-text leading-relaxed">
                 Nous ne cherchons pas la perfection. Nous cherchons la conviction, la rigueur et le
                 potentiel. Voici les critères que nous évaluons :
@@ -296,8 +293,8 @@ export default function IncubationProgramPage() {
                 </h3>
                 <p className="text-white/85 leading-relaxed mb-5">
                   Que vous soyez à Dakar, Abidjan, Lomé, Kinshasa, Paris ou Montréal, vous pouvez
-                  rejoindre le programme depuis chez vous. Notre plateforme de mentorat asynchrone
-                  + sessions live garantit la même qualité d&apos;accompagnement, où que vous soyez.
+                  rejoindre le programme depuis chez vous. Notre plateforme de mentorat asynchrone +
+                  sessions live garantit la même qualité d&apos;accompagnement, où que vous soyez.
                 </p>
                 <div className="grid grid-cols-2 gap-4 pt-5 border-t border-white/10">
                   <div>
@@ -318,21 +315,19 @@ export default function IncubationProgramPage() {
       {/* Témoignages */}
       <section className="section">
         <div className="container-cauris">
-          <SectionTitle
-            eyebrow="Ils l'ont vécu"
-            title="Ce qu'en disent nos anciens participants"
-          />
+          <SectionTitle eyebrow="Ils l'ont vécu" title="Ce qu'en disent nos anciens participants" />
           <div className="mt-14 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {PROGRAM_TESTIMONIALS.map((t, i) => (
               <Reveal key={`${t.name}-${i}`} delay={i * 100}>
                 <article className="card bg-white p-7 lg:p-8 border border-gray-100 h-full">
-                  <p className="text-cauris-gray-text leading-relaxed mb-5 italic">
-                    « {t.quote} »
-                  </p>
+                  <p className="text-cauris-gray-text leading-relaxed mb-5 italic">« {t.quote} »</p>
                   <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-bold text-sm">
                       {/* On extrait la première lettre non-spéciale (ignore les crochets des placeholders [Prénom NOM]) */}
-                      {t.name.replace(/[\[\]]/g, '').trim().charAt(0) || 'P'}
+                      {t.name
+                        .replace(/[\[\]]/g, '')
+                        .trim()
+                        .charAt(0) || 'P'}
                     </div>
                     <div>
                       <p className="font-semibold text-cauris-black text-sm">
@@ -393,7 +388,9 @@ export default function IncubationProgramPage() {
                 <Trophy className="w-4 h-4 text-cauris-orange shrink-0" aria-hidden="true" />
                 Trophée remis aux 12 startups sélectionnées
               </span>
-              <span className="hidden sm:inline" aria-hidden="true">·</span>
+              <span className="hidden sm:inline" aria-hidden="true">
+                ·
+              </span>
               <span className="inline-flex items-center gap-1.5">
                 <Users className="w-4 h-4 text-cauris-orange shrink-0" aria-hidden="true" />
                 Promotion limitée

@@ -43,7 +43,7 @@ export default function CookieBanner() {
     // RGPD-aware) puissent réagir au changement de consentement en temps réel.
     if (typeof window !== 'undefined') {
       window.dispatchEvent(
-        new CustomEvent('cauris-cookie-consent', { detail: { consent: choice } }),
+        new CustomEvent('cauris-cookie-consent', { detail: { consent: choice } })
       );
     }
   };
@@ -59,7 +59,7 @@ export default function CookieBanner() {
       aria-describedby="cookie-banner-desc"
       className={cn(
         'fixed bottom-0 inset-x-0 z-50 px-4 pb-4 sm:px-6 sm:pb-6',
-        'animate-fade-in-up',
+        'animate-fade-in-up'
       )}
     >
       <div className="max-w-4xl mx-auto bg-white rounded-card shadow-card-hover border border-gray-200 overflow-hidden">

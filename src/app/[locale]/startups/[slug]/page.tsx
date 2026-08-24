@@ -40,7 +40,9 @@ async function getRelatedStartups(current: DisplayStartup, limit = 3): Promise<D
   const sameCountry = mapped.filter(
     (s) => s.countryName === current.countryName && s.sector !== current.sector
   );
-  const rest = mapped.filter((s) => s.sector !== current.sector && s.countryName !== current.countryName);
+  const rest = mapped.filter(
+    (s) => s.sector !== current.sector && s.countryName !== current.countryName
+  );
   return [...sameSector, ...sameCountry, ...rest].slice(0, limit);
 }
 
@@ -73,7 +75,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * Couleur du badge statut.
  */
 function getStatusStyle(status: string): string {
-  if (status === 'Diplômée') return 'bg-cauris-success/10 text-cauris-success-text border-cauris-success/30';
+  if (status === 'Diplômée')
+    return 'bg-cauris-success/10 text-cauris-success-text border-cauris-success/30';
   if (status === 'Alumni') return 'bg-cauris-black/5 text-cauris-black border-cauris-black/20';
   return 'bg-cauris-orange/10 text-cauris-orange border-cauris-orange/30';
 }
@@ -242,10 +245,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                   {startup.metrics && startup.metrics.length > 0 && (
                     <div className="bg-cauris-black text-white rounded-card p-6 lg:p-7">
                       <h3 className="flex items-center gap-2 font-heading font-bold text-lg mb-5">
-                        <TrendingUp
-                          className="w-5 h-5 text-cauris-orange"
-                          aria-hidden="true"
-                        />
+                        <TrendingUp className="w-5 h-5 text-cauris-orange" aria-hidden="true" />
                         Chiffres-clés
                       </h3>
                       <div className="space-y-4">
@@ -344,8 +344,9 @@ export default async function StartupDetailPage({ params }: PageProps) {
               Votre startup pourrait être la prochaine.
             </h2>
             <p className="text-lg text-white/90 mb-8 leading-relaxed">
-              Comme {startup.name}, rejoignez le programme d&apos;{startup.status === 'Diplômée' ? 'incubation' : 'accompagnement'} de
-              CAURIS DIGITAL pour transformer votre idée en succès.
+              Comme {startup.name}, rejoignez le programme d&apos;
+              {startup.status === 'Diplômée' ? 'incubation' : 'accompagnement'} de CAURIS DIGITAL
+              pour transformer votre idée en succès.
             </p>
             <Link
               href="/contact?objet=candidature"

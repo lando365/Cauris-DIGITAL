@@ -56,7 +56,8 @@ export async function POST(request: Request) {
     const sector = str(formData.get('sector'));
     const stage = str(formData.get('stage'));
     const pitchDeckEntry = formData.get('pitchDeck');
-    const pitchDeck = pitchDeckEntry instanceof File && pitchDeckEntry.size > 0 ? pitchDeckEntry : null;
+    const pitchDeck =
+      pitchDeckEntry instanceof File && pitchDeckEntry.size > 0 ? pitchDeckEntry : null;
 
     // Champs spécifiques "Partenariat corporate"
     const company = str(formData.get('company'));
@@ -70,8 +71,8 @@ export async function POST(request: Request) {
     // 2. Validation des champs communs
     if (!firstName || !lastName || !email || !subject || !message) {
       return NextResponse.json(
-        { error: 'Tous les champs marqués d\'une * sont obligatoires.' },
-        { status: 400 },
+        { error: "Tous les champs marqués d'une * sont obligatoires." },
+        { status: 400 }
       );
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -80,19 +81,19 @@ export async function POST(request: Request) {
     if (message.length < 20) {
       return NextResponse.json(
         { error: 'Votre message doit faire au moins 20 caractères.' },
-        { status: 400 },
+        { status: 400 }
       );
     }
     if (message.length > 10_000) {
       return NextResponse.json(
         { error: 'Votre message ne peut pas dépasser 10 000 caractères.' }, // CDC V2 §7.5
-        { status: 400 },
+        { status: 400 }
       );
     }
     if (!consent) {
       return NextResponse.json(
         { error: 'Vous devez accepter la politique de confidentialité.' },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -100,13 +101,19 @@ export async function POST(request: Request) {
     const isStartupApplication = STARTUP_APPLICATION_SUBJECTS.has(subject);
     if (isStartupApplication && (!startupName || !sector || !stage)) {
       return NextResponse.json(
-        { error: 'Nom de la startup, secteur et stade du projet sont obligatoires pour une candidature.' },
-        { status: 400 },
+        {
+          error:
+            'Nom de la startup, secteur et stade du projet sont obligatoires pour une candidature.',
+        },
+        { status: 400 }
       );
     }
     if (pitchDeck) {
       if (pitchDeck.type !== 'application/pdf') {
-        return NextResponse.json({ error: 'Le pitch deck doit être un fichier PDF.' }, { status: 400 });
+        return NextResponse.json(
+          { error: 'Le pitch deck doit être un fichier PDF.' },
+          { status: 400 }
+        );
       }
       if (pitchDeck.size > MAX_PITCH_DECK_BYTES) {
         return NextResponse.json({ error: 'Le pitch deck dépasse 5 Mo.' }, { status: 400 });
@@ -117,7 +124,7 @@ export async function POST(request: Request) {
     if (subject === CORPORATE_SUBJECT && (!company || !phone)) {
       return NextResponse.json(
         { error: 'Société et téléphone sont obligatoires pour une demande de partenariat.' },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -131,16 +138,19 @@ export async function POST(request: Request) {
         console.warn('[contact] reCAPTCHA invalide:', recaptchaResult.errorCodes);
         return NextResponse.json(
           { error: 'Vérification anti-spam échouée. Réessayez en rafraîchissant la page.' },
-          { status: 400 },
+          { status: 400 }
         );
       }
       if (recaptchaResult.score < 0.5) {
         console.warn(
-          `[contact] reCAPTCHA score trop bas: ${recaptchaResult.score} — rejet probable bot`,
+          `[contact] reCAPTCHA score trop bas: ${recaptchaResult.score} — rejet probable bot`
         );
         return NextResponse.json(
-          { error: 'Votre soumission semble suspecte. Si vous êtes humain, contactez-nous par email directement.' },
-          { status: 403 },
+          {
+            error:
+              'Votre soumission semble suspecte. Si vous êtes humain, contactez-nous par email directement.',
+          },
+          { status: 403 }
         );
       }
       console.log(`[contact] reCAPTCHA OK (score: ${recaptchaResult.score})`);
@@ -242,7 +252,15 @@ export async function POST(request: Request) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.warn('[contact] RESEND_API_KEY non configurée. Mode log uniquement.');
-      console.log('[contact]', { fullName, email, subject, country, startupName, company, message: safeMessage.slice(0, 80) + '…' });
+      console.log('[contact]', {
+        fullName,
+        email,
+        subject,
+        country,
+        startupName,
+        company,
+        message: safeMessage.slice(0, 80) + '…',
+      });
       return NextResponse.json({
         success: true,
         message: 'Votre message a bien été reçu. Réponse dans les plus brefs délais.',
@@ -272,8 +290,8 @@ export async function POST(request: Request) {
     if (error) {
       console.error('[contact] Erreur Resend:', error);
       return NextResponse.json(
-        { error: 'Impossible d\'envoyer le message pour le moment. Réessayez plus tard.' },
-        { status: 500 },
+        { error: "Impossible d'envoyer le message pour le moment. Réessayez plus tard." },
+        { status: 500 }
       );
     }
 

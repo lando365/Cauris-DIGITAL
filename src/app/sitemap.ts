@@ -37,10 +37,10 @@ function localizedEntries(
   path: string,
   lastModified: Date,
   changeFrequency: ChangeFrequency,
-  priority: number,
+  priority: number
 ): MetadataRoute.Sitemap {
   const languages = Object.fromEntries(
-    routing.locales.map((locale) => [locale, `${SITE_URL}/${locale}${path}`]),
+    routing.locales.map((locale) => [locale, `${SITE_URL}/${locale}${path}`])
   );
 
   return routing.locales.map((locale) => ({
@@ -56,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticEntries = STATIC_PAGES.flatMap((p) =>
-    localizedEntries(p.path, now, p.changeFrequency, p.priority),
+    localizedEntries(p.path, now, p.changeFrequency, p.priority)
   );
 
   const [articles, startups] = await Promise.all([
@@ -73,13 +73,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       `/actualites/${article.slug}`,
       article.publishedAt ?? article.createdAt,
       'monthly',
-      0.5,
-    ),
+      0.5
+    )
   );
 
   // Pages de détail startup dynamiques
   const startupEntries = startups.flatMap((startup) =>
-    localizedEntries(`/startups/${startup.slug}`, startup.updatedAt, 'monthly', 0.5),
+    localizedEntries(`/startups/${startup.slug}`, startup.updatedAt, 'monthly', 0.5)
   );
 
   return [...staticEntries, ...articleEntries, ...startupEntries];

@@ -7,6 +7,7 @@ Bienvenue ! Ce guide vous explique comment **lancer le site en local**, **publie
 ## Étape 1 — Lancer le site en local (5 minutes)
 
 ### Prérequis
+
 - **Node.js 18.17+ ou 20+** (recommandé : 22) — [téléchargement](https://nodejs.org/)
 - **Git** — [téléchargement](https://git-scm.com/downloads)
 
@@ -42,6 +43,7 @@ Le site est accessible sur **http://localhost:3000** dans votre navigateur.
 4. Cliquez sur **Create repository**.
 
 GitHub vous affiche une page avec des commandes. Notez l'URL du repo, qui ressemble à :
+
 ```
 https://github.com/Sandranaijoh99/cauris-digital.git
 ```
@@ -82,6 +84,7 @@ git push -u origin main
 ```
 
 **Si Git vous demande votre mot de passe** : il faut un **token d'accès personnel**, pas votre mot de passe GitHub.
+
 1. https://github.com/settings/tokens → **Generate new token (classic)**
 2. Cochez `repo` (full control of private repositories)
 3. Copiez le token et collez-le quand Git le demande comme mot de passe.
@@ -116,16 +119,16 @@ git push
 
 ### Convention de commits (Conventional Commits)
 
-| Préfixe | Usage |
-|---|---|
-| `feat:` | Nouvelle fonctionnalité |
-| `fix:` | Correction de bug |
-| `docs:` | Documentation |
-| `style:` | Mise en forme (CSS, espaces…) |
+| Préfixe     | Usage                               |
+| ----------- | ----------------------------------- |
+| `feat:`     | Nouvelle fonctionnalité             |
+| `fix:`      | Correction de bug                   |
+| `docs:`     | Documentation                       |
+| `style:`    | Mise en forme (CSS, espaces…)       |
 | `refactor:` | Refacto sans changement fonctionnel |
-| `perf:` | Optimisation performance |
-| `test:` | Ajout/modif de tests |
-| `chore:` | Maintenance, dépendances |
+| `perf:`     | Optimisation performance            |
+| `test:`     | Ajout/modif de tests                |
+| `chore:`    | Maintenance, dépendances            |
 
 ---
 
@@ -147,6 +150,7 @@ Une fois le code sur GitHub, **2 minutes pour mettre en ligne** :
 ### Brancher un domaine personnalisé
 
 Quand vous achèterez `caurisdigital.org` (Namecheap, OVH, Infomaniak…) :
+
 1. Vercel → projet → **Settings → Domains**
 2. Ajoutez `caurisdigital.org`
 3. Vercel vous donne les DNS à configurer chez votre registrar.
@@ -157,19 +161,24 @@ Quand vous achèterez `caurisdigital.org` (Namecheap, OVH, Infomaniak…) :
 ## Étape 5 — Suite du développement
 
 ### V1.5 — Pages restantes
+
 - `/startups` — Portefeuille avec filtres
 - `/programme-acceleration`
 - `/innovation-corporative`
 - `/evenements`, `/actualites`, `/partenaires`, `/faq`
 
 ### V2 — CMS Sanity
+
 Pour permettre à l'équipe CAURIS d'ajouter des articles, startups et événements **sans toucher au code** :
+
 1. Créez un compte sur [sanity.io](https://www.sanity.io) (gratuit jusqu'à 3 utilisateurs).
 2. Renseignez `NEXT_PUBLIC_SANITY_PROJECT_ID` dans `.env.local`.
 3. On installera `next-sanity` et on définira les schémas dans `src/sanity/schemas/`.
 
 ### V2 — Email réel pour le formulaire contact
+
 Choisir un service :
+
 - **Resend** (recommandé, 100 emails/jour gratuit) — [resend.com](https://resend.com)
 - **SendGrid** (free tier 100/jour)
 - **SMTP classique** (OVH, Gmail, etc.)
@@ -177,6 +186,7 @@ Choisir un service :
 Renseignez les variables dans `.env.local` puis adaptez `src/app/api/contact/route.ts`.
 
 ### V2 — Newsletter Mailchimp/Brevo
+
 Voir `src/app/api/newsletter/route.ts` — la structure est prête, il manque juste l'appel API au prestataire.
 
 ---
@@ -184,15 +194,19 @@ Voir `src/app/api/newsletter/route.ts` — la structure est prête, il manque ju
 ## Dépannage
 
 ### "npm: command not found"
+
 → Installez Node.js : https://nodejs.org/
 
 ### "Permission denied" lors du push
+
 → Utilisez un token d'accès personnel GitHub (pas votre mot de passe). Voir 2.2 ci-dessus.
 
 ### Erreur de build "Failed to fetch font Inter"
+
 → C'est un faux positif réseau pendant le développement. Sur Vercel, ça fonctionne sans problème.
 
 ### Le port 3000 est déjà utilisé
+
 → Tuez le process : `npx kill-port 3000` puis relancez `npm run dev`.
 
 ---

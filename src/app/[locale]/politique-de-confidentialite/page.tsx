@@ -14,7 +14,7 @@ const SECTIONS = [
     id: 'donnees-collectees',
     title: '1. Données collectées',
     content:
-      'Nous collectons les données personnelles que vous nous transmettez volontairement via nos formulaires (nom, prénom, email, pays, message). Nous collectons également des données de navigation anonymisées via Google Analytics 4 (pages visitées, durée de session, source de trafic) à des fins d\'amélioration du site.',
+      "Nous collectons les données personnelles que vous nous transmettez volontairement via nos formulaires (nom, prénom, email, pays, message). Nous collectons également des données de navigation anonymisées via Google Analytics 4 (pages visitées, durée de session, source de trafic) à des fins d'amélioration du site.",
   },
   {
     id: 'finalite',
@@ -32,7 +32,7 @@ const SECTIONS = [
     id: 'droits',
     title: '4. Vos droits',
     content:
-      'Conformément aux lois applicables sur la protection des données, vous disposez d\'un droit d\'accès, de rectification, de suppression et d\'opposition sur vos données.',
+      "Conformément aux lois applicables sur la protection des données, vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition sur vos données.",
   },
   {
     id: 'cookies',

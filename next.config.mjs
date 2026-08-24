@@ -40,7 +40,7 @@ const nextConfig = {
       "img-src 'self' data: blob: https://images.unsplash.com https://cdn.sanity.io https://*.public.blob.vercel-storage.com https://www.google-analytics.com https://www.googletagmanager.com",
       "font-src 'self' data:",
       "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com",
-      "frame-src https://www.google.com",
+      'frame-src https://www.google.com',
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

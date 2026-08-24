@@ -6,7 +6,12 @@ import { prisma } from '@/lib/prisma';
 export async function GET(_req: Request, { params }: { params: { slug: string } }) {
   const article = await prisma.article.findUnique({ where: { slug: params.slug } });
 
-  if (!article || article.status !== 'PUBLISHED' || article.publishedAt === null || article.publishedAt > new Date()) {
+  if (
+    !article ||
+    article.status !== 'PUBLISHED' ||
+    article.publishedAt === null ||
+    article.publishedAt > new Date()
+  ) {
     return NextResponse.json(
       { error: { code: 'NOT_FOUND', message: 'Article introuvable.' } },
       { status: 404 }

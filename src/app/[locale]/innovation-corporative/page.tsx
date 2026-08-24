@@ -23,7 +23,7 @@ import { BRAND_IMAGES } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'Innovation Corporative — CAURIS DIGITAL | Co-innover avec les startups africaines',
   description:
-    'CAURIS DIGITAL accompagne les grandes entreprises dans leur stratégie d\'open innovation en Afrique. Scouting, co-création et pilotes avec les meilleures startups tech africaines.',
+    "CAURIS DIGITAL accompagne les grandes entreprises dans leur stratégie d'open innovation en Afrique. Scouting, co-création et pilotes avec les meilleures startups tech africaines.",
 };
 
 const SERVICES = [
@@ -53,7 +53,7 @@ const SERVICES = [
   },
   {
     icon: CalendarDays,
-    title: 'Journée de l\'Innovation Ouverte',
+    title: "Journée de l'Innovation Ouverte",
     description:
       'Un événement annuel organisé par CAURIS DIGITAL qui rassemble startups, corporates, investisseurs et institutions autour des enjeux tech africains. Pitchs, tables rondes, networking et annonces de partenariats.',
   },
@@ -63,20 +63,17 @@ const BENEFITS = [
   {
     icon: Eye,
     title: 'Visibilité forte',
-    description:
-      'Sur le site, les événements et les communications de CAURIS DIGITAL.',
+    description: 'Sur le site, les événements et les communications de CAURIS DIGITAL.',
   },
   {
     icon: Star,
     title: 'Accès prioritaire aux startups',
-    description:
-      'Avant Demo Day, contactez les pépites de nos promotions en avant-première.',
+    description: 'Avant Demo Day, contactez les pépites de nos promotions en avant-première.',
   },
   {
     icon: Building2,
     title: 'Siège observateur',
-    description:
-      'Au Conseil d\'Orientation Stratégique de CAURIS DIGITAL.',
+    description: "Au Conseil d'Orientation Stratégique de CAURIS DIGITAL.",
   },
   {
     icon: Briefcase,
@@ -87,14 +84,13 @@ const BENEFITS = [
   {
     icon: FileText,
     title: 'Rapport semestriel',
-    description:
-      'Sur l\'évolution de l\'écosystème tech africain rédigé par notre équipe.',
+    description: "Sur l'évolution de l'écosystème tech africain rédigé par notre équipe.",
   },
   {
     icon: Megaphone,
     title: 'Co-branding',
     description:
-      'Opportunités de communication partagée sur nos réseaux et lors d\'événements communs.',
+      "Opportunités de communication partagée sur nos réseaux et lors d'événements communs.",
   },
 ];
 
@@ -127,8 +123,8 @@ export default function InnovationCorporativePage() {
               <span className="text-gradient-orange">CAURIS DIGITAL</span>
             </h1>
             <p className="text-lg lg:text-xl text-white/85 leading-relaxed mb-10 max-w-3xl">
-              Connectez votre entreprise aux startups tech africaines les plus prometteuses.
-              Accédez à l&apos;innovation de demain — aujourd&apos;hui.
+              Connectez votre entreprise aux startups tech africaines les plus prometteuses. Accédez
+              à l&apos;innovation de demain — aujourd&apos;hui.
             </p>
 
             <Button
@@ -154,21 +150,24 @@ export default function InnovationCorporativePage() {
             />
             <div className="mt-8 space-y-5 text-cauris-gray-text leading-relaxed">
               <p>
-                L&apos;Afrique est le continent à la croissance la plus rapide du monde. Ses
-                marchés sont en pleine transformation numérique. Ses startups développent des
-                solutions radicalement nouvelles — souvent plus adaptées aux contraintes locales
-                que les produits importés.
+                L&apos;Afrique est le continent à la croissance la plus rapide du monde. Ses marchés
+                sont en pleine transformation numérique. Ses startups développent des solutions
+                radicalement nouvelles — souvent plus adaptées aux contraintes locales que les
+                produits importés.
               </p>
               <p>
-                CAURIS DIGITAL est <strong className="text-cauris-black">votre porte d&apos;entrée vers cet écosystème</strong>.
-                En devenant partenaire corporate, votre entreprise accède à un flux constant de
+                CAURIS DIGITAL est{' '}
+                <strong className="text-cauris-black">
+                  votre porte d&apos;entrée vers cet écosystème
+                </strong>
+                . En devenant partenaire corporate, votre entreprise accède à un flux constant de
                 startups sélectionnées, à des opportunités de co-développement et à un
                 positionnement fort dans l&apos;économie numérique africaine.
               </p>
               <p>
-                Nous travaillons avec des grandes entreprises, des banques, des opérateurs
-                télécom, des ONG et des organisations internationales qui cherchent à innover en
-                Afrique — sans partir de zéro.
+                Nous travaillons avec des grandes entreprises, des banques, des opérateurs télécom,
+                des ONG et des organisations internationales qui cherchent à innover en Afrique —
+                sans partir de zéro.
               </p>
             </div>
           </div>
@@ -246,16 +245,12 @@ export default function InnovationCorporativePage() {
         <div className="container-cauris">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">
             <Reveal>
-              <SectionTitle
-                eyebrow="Pour qui ?"
-                title="Avec qui travaillons-nous ?"
-                align="left"
-              />
+              <SectionTitle eyebrow="Pour qui ?" title="Avec qui travaillons-nous ?" align="left" />
               <p className="mt-6 text-cauris-gray-text leading-relaxed">
                 Notre programme corporate s&apos;adresse aux organisations qui croient en
                 l&apos;innovation africaine et veulent en être actrices. Nous sélectionnons nos
-                partenaires en fonction de leur engagement réel et de leur capacité à apporter de
-                la valeur à nos startups.
+                partenaires en fonction de leur engagement réel et de leur capacité à apporter de la
+                valeur à nos startups.
               </p>
               <ul className="mt-6 space-y-3">
                 {TARGET_AUDIENCE.map((item) => (

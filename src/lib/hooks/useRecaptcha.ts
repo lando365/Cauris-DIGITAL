@@ -79,7 +79,7 @@ export function useRecaptcha(): UseRecaptchaReturn {
         return null;
       }
     },
-    [siteKey],
+    [siteKey]
   );
 
   return { getToken, isEnabled, isReady };

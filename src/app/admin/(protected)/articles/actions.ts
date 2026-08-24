@@ -46,8 +46,7 @@ export async function createArticle(
       ...rest,
       readingTime: computeReadingTime(parsed.data.content),
       authorId: user.id,
-      publishedAt:
-        parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
+      publishedAt: parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
     },
   });
 
@@ -81,14 +80,16 @@ export async function updateArticle(
   }
 
   const { publishedAt, ...rest } = parsed.data;
-  const before = await prisma.article.findUnique({ where: { id }, select: { coverImageUrl: true } });
+  const before = await prisma.article.findUnique({
+    where: { id },
+    select: { coverImageUrl: true },
+  });
   await prisma.article.update({
     where: { id },
     data: {
       ...rest,
       readingTime: computeReadingTime(parsed.data.content),
-      publishedAt:
-        parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
+      publishedAt: parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
     },
   });
   await deleteReplacedBlob(before?.coverImageUrl, parsed.data.coverImageUrl); // CDC V2 §5.5

@@ -20,9 +20,18 @@ export async function GET() {
     );
   }
 
-  const subscribers = await prisma.newsletterSubscriber.findMany({ orderBy: { createdAt: 'desc' } });
+  const subscribers = await prisma.newsletterSubscriber.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
 
-  const header = ['Email', 'Prénom', 'Statut', 'Source', "Date d'inscription", 'Date de désinscription'];
+  const header = [
+    'Email',
+    'Prénom',
+    'Statut',
+    'Source',
+    "Date d'inscription",
+    'Date de désinscription',
+  ];
   const rows = subscribers.map((s) =>
     [
       s.email,

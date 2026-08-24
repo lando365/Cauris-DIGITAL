@@ -46,7 +46,7 @@ export default function Accordion({ items, multiple = true }: AccordionProps) {
             key={i}
             className={cn(
               'bg-white rounded-card border transition-colors',
-              isOpen ? 'border-cauris-orange/40 shadow-card' : 'border-gray-100',
+              isOpen ? 'border-cauris-orange/40 shadow-card' : 'border-gray-100'
             )}
           >
             <button
@@ -63,7 +63,7 @@ export default function Accordion({ items, multiple = true }: AccordionProps) {
               <ChevronDown
                 className={cn(
                   'w-5 h-5 mt-1 shrink-0 text-cauris-orange transition-transform duration-300',
-                  isOpen && 'rotate-180',
+                  isOpen && 'rotate-180'
                 )}
                 aria-hidden="true"
               />
@@ -74,13 +74,11 @@ export default function Accordion({ items, multiple = true }: AccordionProps) {
               aria-labelledby={buttonId}
               className={cn(
                 'grid transition-[grid-template-rows] duration-300 ease-cauris',
-                isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+                isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
               )}
             >
               <div className="overflow-hidden">
-                <p className="px-5 lg:px-6 pb-5 text-cauris-gray-text leading-relaxed">
-                  {item.a}
-                </p>
+                <p className="px-5 lg:px-6 pb-5 text-cauris-gray-text leading-relaxed">{item.a}</p>
               </div>
             </div>
           </div>

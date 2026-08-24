@@ -13,7 +13,11 @@ import {
   Twitter,
   Facebook,
 } from 'lucide-react';
-import { ARTICLE_CATEGORY_COLORS, SITE_CONFIG, type Article as DisplayArticle } from '@/lib/constants';
+import {
+  ARTICLE_CATEGORY_COLORS,
+  SITE_CONFIG,
+  type Article as DisplayArticle,
+} from '@/lib/constants';
 import Button from '@/components/ui/Button';
 import ArticleCard from '@/components/ui/ArticleCard';
 import { prisma } from '@/lib/prisma';
@@ -33,7 +37,12 @@ async function getPublishedArticleBySlug(slug: string) {
     where: { slug },
     include: { author: { select: { name: true } } },
   });
-  if (!record || record.status !== 'PUBLISHED' || !record.publishedAt || record.publishedAt > new Date()) {
+  if (
+    !record ||
+    record.status !== 'PUBLISHED' ||
+    !record.publishedAt ||
+    record.publishedAt > new Date()
+  ) {
     return null;
   }
   return mapArticle(record);

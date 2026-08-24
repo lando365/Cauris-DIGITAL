@@ -47,13 +47,13 @@ git push origin main
 
 Vercel détecte automatiquement Next.js. Vérifie ces valeurs (devraient être pré-remplies) :
 
-| Champ | Valeur |
-|---|---|
-| **Framework Preset** | `Next.js` |
-| **Build Command** | `next build` (laisser par défaut) |
-| **Output Directory** | `.next` (laisser par défaut) |
-| **Install Command** | `npm install` |
-| **Node.js Version** | `20.x` ou `22.x` (récent) |
+| Champ                | Valeur                            |
+| -------------------- | --------------------------------- |
+| **Framework Preset** | `Next.js`                         |
+| **Build Command**    | `next build` (laisser par défaut) |
+| **Output Directory** | `.next` (laisser par défaut)      |
+| **Install Command**  | `npm install`                     |
+| **Node.js Version**  | `20.x` ou `22.x` (récent)         |
 
 ---
 
@@ -96,12 +96,12 @@ RECAPTCHA_SECRET_KEY=6L...ta-secret-key
 
 Regarde les logs d'erreur dans le panneau de droite. Erreurs courantes :
 
-| Erreur | Solution |
-|---|---|
+| Erreur                     | Solution                                                       |
+| -------------------------- | -------------------------------------------------------------- |
 | `Module not found: resend` | Vérifier que `package.json` contient bien `"resend": "^4.0.1"` |
-| Type errors | Lancer `npm run type-check` localement et corriger |
-| `RESEND_API_KEY undefined` | Vérifier que la variable est bien ajoutée dans Vercel |
-| Build timeout | Le plan Hobby a 45 min max — devrait largement suffire |
+| Type errors                | Lancer `npm run type-check` localement et corriger             |
+| `RESEND_API_KEY undefined` | Vérifier que la variable est bien ajoutée dans Vercel          |
+| Build timeout              | Le plan Hobby a 45 min max — devrait largement suffire         |
 
 Tu peux **redéployer** en cliquant sur **« Redeploy »** une fois le problème corrigé.
 
@@ -130,6 +130,7 @@ Ouvre ton URL Vercel et teste :
 ### ✅ Checklist de recette (CDC §13.3)
 
 #### Pages principales
+
 - [ ] `/` (Accueil) — Hero, sections, footer chargent
 - [ ] `/a-propos` — équipe, valeurs visibles
 - [ ] `/programme-incubation` — phases, témoignages
@@ -146,6 +147,7 @@ Ouvre ton URL Vercel et teste :
 - [ ] `/politique-de-confidentialite` — texte
 
 #### Fonctionnalités critiques
+
 - [ ] **Formulaire de contact** : envoyer un test → email reçu
 - [ ] **Newsletter** : inscription test → contact ajouté à Resend
 - [ ] **Cookie banner** : apparaît à la première visite
@@ -154,11 +156,13 @@ Ouvre ton URL Vercel et teste :
 - [ ] **Robots** : ouvrir `https://ton-url/robots.txt`
 
 #### Partage social
+
 - [ ] **Image OG** : ouvrir `https://ton-url/opengraph-image` → image générée
 - [ ] **Test Facebook OG** : [developers.facebook.com/tools/debug](https://developers.facebook.com/tools/debug/) → coller l'URL
 - [ ] **Test LinkedIn** : [linkedin.com/post-inspector](https://www.linkedin.com/post-inspector/) → coller l'URL
 
 #### Performance
+
 - [ ] **Lighthouse mobile ≥ 85** (Chrome DevTools → Lighthouse → Mobile)
 - [ ] **Lighthouse desktop ≥ 90**
 - [ ] **HTTPS actif** (cadenas vert dans la barre d'adresse)

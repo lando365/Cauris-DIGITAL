@@ -21,22 +21,22 @@ export default function IntroBlock() {
             </h2>
             <div className="space-y-4 text-cauris-gray-text leading-relaxed">
               <p>
-                CAURIS DIGITAL propulse les projets d&apos;innovation technologique à fort potentiel,
-                en mettant au service des entrepreneurs un écosystème complet de ressources,
-                d&apos;outils, de formations et de connexions — pour les accompagner de la
-                conceptualisation jusqu&apos;à la commercialisation de leur produit.
+                CAURIS DIGITAL propulse les projets d&apos;innovation technologique à fort
+                potentiel, en mettant au service des entrepreneurs un écosystème complet de
+                ressources, d&apos;outils, de formations et de connexions — pour les accompagner de
+                la conceptualisation jusqu&apos;à la commercialisation de leur produit.
               </p>
               <p>
                 Notre incubateur opère depuis Yaoundé, capitale économique et technologique du
                 Cameroun, avec un ancrage profond dans les réalités africaines. Grâce à notre
                 programme de mentorat entièrement accessible en ligne, nous accompagnons des
-                porteurs de projets dans toute l&apos;Afrique francophone, en Europe et au-delà.
-                La géographie n&apos;est plus un obstacle à l&apos;excellence.
+                porteurs de projets dans toute l&apos;Afrique francophone, en Europe et au-delà. La
+                géographie n&apos;est plus un obstacle à l&apos;excellence.
               </p>
               <p className="font-medium text-cauris-black">
-                Nous croyons que l&apos;Afrique n&apos;a pas besoin d&apos;importer l&apos;innovation.
-                Elle la fabrique, ici, maintenant, avec ses propres codes, ses propres marchés et
-                ses propres solutions.
+                Nous croyons que l&apos;Afrique n&apos;a pas besoin d&apos;importer
+                l&apos;innovation. Elle la fabrique, ici, maintenant, avec ses propres codes, ses
+                propres marchés et ses propres solutions.
               </p>
             </div>
             <div className="mt-8">

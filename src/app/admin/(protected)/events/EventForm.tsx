@@ -5,7 +5,14 @@ import type { Event } from '@prisma/client';
 import type { EventFormState } from './actions';
 import { FileUploadField } from '@/components/admin/FileUploadField';
 
-const TYPES = ['DEMO_DAY', 'ATELIER', 'WEBINAIRE', 'HACKATHON', 'NETWORKING', 'CONFERENCE'] as const;
+const TYPES = [
+  'DEMO_DAY',
+  'ATELIER',
+  'WEBINAIRE',
+  'HACKATHON',
+  'NETWORKING',
+  'CONFERENCE',
+] as const;
 
 function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
@@ -65,7 +72,10 @@ export function EventForm({
         />
       </div>
       <div>
-        <label htmlFor="description" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+        <label
+          htmlFor="description"
+          className="mb-1 block text-sm font-medium text-cauris-gray-text"
+        >
           Description
         </label>
         <textarea
@@ -97,7 +107,10 @@ export function EventForm({
           </select>
         </div>
         <div>
-          <label htmlFor="location" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="location"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Lieu (ou « En ligne »)
           </label>
           <input
@@ -109,7 +122,10 @@ export function EventForm({
           />
         </div>
         <div>
-          <label htmlFor="startDate" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="startDate"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Date et heure de début
           </label>
           <input
@@ -136,7 +152,10 @@ export function EventForm({
       </div>
 
       <div>
-        <label htmlFor="registerUrl" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+        <label
+          htmlFor="registerUrl"
+          className="mb-1 block text-sm font-medium text-cauris-gray-text"
+        >
           Lien d'inscription (https://…)
         </label>
         <input
