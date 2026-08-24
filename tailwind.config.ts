@@ -53,21 +53,21 @@ const config: Config = {
         // Tailles de titres conformes au CDC
         'display-xl': ['64px', { lineHeight: '1.1', fontWeight: '700' }],
         'display-lg': ['48px', { lineHeight: '1.15', fontWeight: '700' }],
-        'h1': ['48px', { lineHeight: '1.15', fontWeight: '700' }],
-        'h2': ['36px', { lineHeight: '1.2', fontWeight: '600' }],
-        'h3': ['26px', { lineHeight: '1.25', fontWeight: '600' }],
+        h1: ['48px', { lineHeight: '1.15', fontWeight: '700' }],
+        h2: ['36px', { lineHeight: '1.2', fontWeight: '600' }],
+        h3: ['26px', { lineHeight: '1.25', fontWeight: '600' }],
       },
       boxShadow: {
-        'card': '0 4px 16px rgba(0, 0, 0, 0.08)',
+        card: '0 4px 16px rgba(0, 0, 0, 0.08)',
         'card-hover': '0 8px 24px rgba(0, 0, 0, 0.12)',
-        'cta': '0 6px 20px rgba(232, 100, 10, 0.35)',
+        cta: '0 6px 20px rgba(232, 100, 10, 0.35)',
       },
       borderRadius: {
-        'card': '12px',
-        'btn': '6px',
+        card: '12px',
+        btn: '6px',
       },
       spacing: {
-        'section': '80px',
+        section: '80px',
         'section-lg': '120px',
       },
       animation: {
@@ -75,7 +75,7 @@ const config: Config = {
         'fade-in-up': 'fadeInUp 0.7s ease-out',
         'slide-in-left': 'slideInLeft 0.6s ease-out',
         'count-up': 'countUp 2s ease-out',
-        'marquee': 'marquee 40s linear infinite',
+        marquee: 'marquee 40s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -100,11 +100,11 @@ const config: Config = {
         },
       },
       transitionTimingFunction: {
-        'cauris': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        cauris: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };
 
 export default config;

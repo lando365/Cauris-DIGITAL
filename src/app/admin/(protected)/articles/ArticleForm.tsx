@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import type { Article } from '@prisma/client';
 import type { ArticleFormState } from './actions';
 import { FileUploadField } from '@/components/admin/FileUploadField';
+import { MarkdownPreview } from '@/components/admin/MarkdownPreview';
 
 const CATEGORIES = ['ANNONCES', 'PORTRAITS', 'RESSOURCES', 'EVENEMENTS', 'OPINIONS'] as const;
 const STATUSES = ['DRAFT', 'PUBLISHED', 'ARCHIVED'] as const;
@@ -38,6 +40,7 @@ export function ArticleForm({
   submitLabel: string;
 }) {
   const [state, formAction] = useFormState(action, undefined);
+  const [content, setContent] = useState(article?.content ?? '');
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
@@ -86,14 +89,18 @@ export function ArticleForm({
         <label htmlFor="content" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Contenu (Markdown)
         </label>
-        <textarea
-          id="content"
-          name="content"
-          required
-          rows={12}
-          defaultValue={article?.content}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 font-mono text-sm"
-        />
+        <div className="grid gap-3 md:grid-cols-2">
+          <textarea
+            id="content"
+            name="content"
+            required
+            rows={16}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 font-mono text-sm"
+          />
+          <MarkdownPreview content={content} />
+        </div>
         <p className="mt-1 text-xs text-cauris-gray-secondary">
           Le temps de lecture est calculé automatiquement (250 mots/min).
         </p>
@@ -101,7 +108,10 @@ export function ArticleForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="category" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="category"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Catégorie
           </label>
           <select
@@ -137,7 +147,10 @@ export function ArticleForm({
       </div>
 
       <div>
-        <label htmlFor="publishedAt" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+        <label
+          htmlFor="publishedAt"
+          className="mb-1 block text-sm font-medium text-cauris-gray-text"
+        >
           Date de publication (si « PUBLISHED ») — laisser vide pour publier immédiatement
         </label>
         <input
