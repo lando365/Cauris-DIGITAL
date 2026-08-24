@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
+import { getSubscriptionGrowth } from '@/lib/newsletter-stats';
+import { GrowthChart } from '@/components/admin/GrowthChart';
 import { UnsubscribeButton } from './UnsubscribeButton';
 
 export default async function AdminSubscribersPage({
@@ -17,12 +19,13 @@ export default async function AdminSubscribersPage({
     ? { email: { contains: searchParams.q, mode: 'insensitive' as const } }
     : {};
 
-  const [subscribers, totalActive, newThisMonth] = await Promise.all([
+  const [subscribers, totalActive, newThisMonth, growth] = await Promise.all([
     prisma.newsletterSubscriber.findMany({ where, orderBy: { createdAt: 'desc' } }),
     prisma.newsletterSubscriber.count({ where: { status: 'ACTIVE' } }),
     prisma.newsletterSubscriber.count({
       where: { status: 'ACTIVE', createdAt: { gte: startOfMonth } },
     }),
+    getSubscriptionGrowth(30),
   ]);
 
   return (
@@ -48,6 +51,10 @@ export default async function AdminSubscribersPage({
           <p className="text-2xl font-bold text-cauris-orange">{newThisMonth}</p>
           <p className="text-sm text-cauris-gray-secondary">Nouveaux ce mois-ci</p>
         </div>
+      </div>
+
+      <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4">
+        <GrowthChart data={growth} label="Évolution des inscriptions (30 derniers jours)" />
       </div>
 
       <form className="mb-4" method="get">

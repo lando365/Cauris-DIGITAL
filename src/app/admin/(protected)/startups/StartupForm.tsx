@@ -64,17 +64,35 @@ export function StartupForm({
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
+      {startup?.slug && (
+        <a
+          href={`/fr/startups/${startup.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block text-sm font-semibold text-cauris-orange hover:underline"
+        >
+          Aperçu de la page publique ↗
+        </a>
+      )}
+
       <fieldset className="space-y-4">
-        <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">Identité</legend>
+        <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">
+          Identité
+        </legend>
         <Field label="Slug (URL)" name="slug" defaultValue={startup?.slug} required />
         <Field label="Nom" name="name" defaultValue={startup?.name} required />
         <Field label="Phrase d'accroche" name="tagline" defaultValue={startup?.tagline} required />
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">Description</legend>
+        <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">
+          Description
+        </legend>
         <div>
-          <label htmlFor="description" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="description"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Description courte
           </label>
           <textarea
@@ -87,7 +105,10 @@ export function StartupForm({
           />
         </div>
         <div>
-          <label htmlFor="longDescription" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="longDescription"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Description longue (page détail)
           </label>
           <textarea
@@ -139,7 +160,12 @@ export function StartupForm({
           </select>
         </div>
         <Field label="Pays" name="countryName" defaultValue={startup?.countryName} required />
-        <Field label="Code pays (ISO, ex: CM)" name="countryCode" defaultValue={startup?.countryCode} required />
+        <Field
+          label="Code pays (ISO, ex: CM)"
+          name="countryCode"
+          defaultValue={startup?.countryCode}
+          required
+        />
         <Field label="Ville" name="city" defaultValue={startup?.city ?? ''} />
         <Field
           label="Année d'entrée au programme"
@@ -157,14 +183,20 @@ export function StartupForm({
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">Liens & image</legend>
+        <legend className="mb-2 font-montserrat text-sm font-bold text-cauris-black">
+          Liens & image
+        </legend>
         <FileUploadField
           label="Logo"
           name="logoUrl"
           entityType="startup"
           defaultValue={startup?.logoUrl}
         />
-        <Field label="Site web (https://…)" name="websiteUrl" defaultValue={startup?.websiteUrl ?? ''} />
+        <Field
+          label="Site web (https://…)"
+          name="websiteUrl"
+          defaultValue={startup?.websiteUrl ?? ''}
+        />
         <Field label="LinkedIn" name="linkedinUrl" defaultValue={startup?.linkedinUrl ?? ''} />
       </fieldset>
 
@@ -174,7 +206,10 @@ export function StartupForm({
         </legend>
         <p className="text-xs text-cauris-gray-secondary">Une valeur par ligne.</p>
         <div>
-          <label htmlFor="technologies" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="technologies"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Technologies
           </label>
           <textarea
@@ -186,7 +221,10 @@ export function StartupForm({
           />
         </div>
         <div>
-          <label htmlFor="founders" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="founders"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Fondateurs
           </label>
           <textarea
@@ -198,7 +236,10 @@ export function StartupForm({
           />
         </div>
         <div>
-          <label htmlFor="achievements" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+          <label
+            htmlFor="achievements"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
             Étapes marquantes
           </label>
           <textarea
