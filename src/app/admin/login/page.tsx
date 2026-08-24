@@ -1,6 +1,8 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { loginAction } from './actions';
 
 function SubmitButton() {
@@ -18,6 +20,8 @@ function SubmitButton() {
 
 export default function AdminLoginPage() {
   const [error, formAction] = useFormState(loginAction, undefined);
+  const searchParams = useSearchParams();
+  const resetSuccess = searchParams.get('reset') === 'success';
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-cauris-black px-4">
@@ -28,6 +32,12 @@ export default function AdminLoginPage() {
         <p className="mb-6 text-center text-sm text-cauris-gray-secondary">
           Espace administrateur
         </p>
+
+        {resetSuccess && (
+          <p className="mb-4 rounded-md bg-green-50 px-3 py-2 text-center text-sm text-green-700">
+            Mot de passe réinitialisé. Vous pouvez vous connecter.
+          </p>
+        )}
 
         <form action={formAction} className="space-y-4">
           <div>
@@ -65,6 +75,12 @@ export default function AdminLoginPage() {
           )}
 
           <SubmitButton />
+
+          <p className="text-center text-sm">
+            <Link href="/admin/forgot-password" className="text-cauris-gray-secondary hover:underline">
+              Mot de passe oublié ?
+            </Link>
+          </p>
         </form>
       </div>
     </div>

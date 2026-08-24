@@ -16,8 +16,10 @@ const { auth } = NextAuth(authConfig);
 // pas d'accès Prisma/DB possible ici) : redirige vers /admin/login si absent.
 // Le contrôle autoritaire (session non révoquée, rôle) est fait côté serveur par
 // requireAdminUser() — voir src/lib/require-admin.ts.
+const PUBLIC_ADMIN_PATHS = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
+
 async function adminGate(req: NextRequest) {
-  if (req.nextUrl.pathname === '/admin/login') {
+  if (PUBLIC_ADMIN_PATHS.includes(req.nextUrl.pathname)) {
     return NextResponse.next();
   }
 
