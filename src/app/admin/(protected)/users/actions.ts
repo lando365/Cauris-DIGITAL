@@ -2,12 +2,76 @@
 
 import { randomBytes } from 'crypto';
 import bcrypt from 'bcryptjs';
+import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
+import { createPasswordResetToken } from '@/lib/password-reset-token';
+import { SITE_CONFIG } from '@/lib/constants';
 import { createUserSchema, updateUserSchema, passwordSchema } from '@/lib/validations/user';
+
+// CDC V2 §8.2.7 : "Création d'un compte avec envoi d'email d'invitation."
+// Le mot de passe choisi par l'admin n'est jamais envoyé en clair par email —
+// l'invitation propose plutôt d'en définir un nouveau via le même lien
+// signé que la réinitialisation en libre-service (src/lib/password-reset-token.ts).
+async function sendInvitationEmail(user: {
+  id: string;
+  email: string;
+  name: string;
+  passwordHash: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const token = createPasswordResetToken(user.id, user.passwordHash);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url;
+  const setPasswordUrl = new URL('/admin/reset-password', siteUrl);
+  setPasswordUrl.searchParams.set('token', token);
+
+  if (!apiKey) {
+    console.log(
+      '[invitation] RESEND_API_KEY absente — lien (mode dev) :',
+      setPasswordUrl.toString()
+    );
+    return;
+  }
+
+  const resend = new Resend(apiKey);
+  const from = process.env.CONTACT_EMAIL_FROM ?? 'CAURIS DIGITAL <onboarding@resend.dev>';
+
+  const { error } = await resend.emails.send({
+    from,
+    to: [user.email],
+    subject: 'Votre compte CAURIS DIGITAL — Espace administrateur',
+    html: `
+      <!DOCTYPE html>
+      <html lang="fr">
+        <body style="font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 24px; background: #FFF5EE;">
+          <div style="background: #1A1A2E; padding: 24px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 22px;">
+              <span style="color: #E8640A;">CAURIS DIGITAL</span> — Espace administrateur
+            </h1>
+          </div>
+          <div style="background: white; padding: 32px 28px; border-radius: 0 0 12px 12px;">
+            <p>Bonjour ${user.name},</p>
+            <p>Un compte administrateur vient d'être créé pour vous sur le back-office CAURIS DIGITAL.</p>
+            <p style="text-align: center; margin: 28px 0;">
+              <a href="${setPasswordUrl.toString()}" style="display: inline-block; background: #E8640A; color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                Définir mon mot de passe
+              </a>
+            </p>
+            <p style="color: #6C757D; font-size: 13px;">Ce lien est valable 1 heure et à usage unique.</p>
+          </div>
+        </body>
+      </html>
+    `,
+    text: `Compte CAURIS DIGITAL créé\n\nBonjour ${user.name},\n\nUn compte administrateur vient d'être créé pour vous. Définissez votre mot de passe (lien valable 1h) :\n${setPasswordUrl.toString()}`,
+  });
+
+  if (error) {
+    console.error('[invitation] Erreur Resend:', error);
+  }
+}
 
 export type UserFormState = { error?: string } | undefined;
 
@@ -50,6 +114,8 @@ export async function createUser(
     user: actor,
     metadata: { role: created.role },
   });
+
+  await sendInvitationEmail(created);
 
   revalidatePath('/admin/users');
   redirect('/admin/users');
