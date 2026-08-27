@@ -30,7 +30,9 @@ describe('GET /api/partners (intégration)', () => {
   });
 
   it('filtre par catégorie', async () => {
-    const res = await GET(new NextRequest('http://localhost:3000/api/partners?category=CORPORATIF'));
+    const res = await GET(
+      new NextRequest('http://localhost:3000/api/partners?category=CORPORATIF')
+    );
     const json = await res.json();
     const names = json.data.map((p: { name: string }) => p.name);
 

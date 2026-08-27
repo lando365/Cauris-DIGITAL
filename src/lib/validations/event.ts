@@ -1,6 +1,13 @@
 import { z } from 'zod';
 
-const TYPES = ['DEMO_DAY', 'ATELIER', 'WEBINAIRE', 'HACKATHON', 'NETWORKING', 'CONFERENCE'] as const;
+const TYPES = [
+  'DEMO_DAY',
+  'ATELIER',
+  'WEBINAIRE',
+  'HACKATHON',
+  'NETWORKING',
+  'CONFERENCE',
+] as const;
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 // CDC V2 §5.3.4 (champs) + §3.5.3 (règles métier RM-E01 à RM-E04)

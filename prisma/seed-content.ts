@@ -178,7 +178,7 @@ const EVENTS: SeedEvent[] = [
     location: 'En ligne (Zoom)',
     isOnline: true,
     description:
-      "Atelier de 3 heures animé par notre directrice des programmes : structure du pitch, narratif, financials et préparation aux objections. Limité à 30 participants.",
+      'Atelier de 3 heures animé par notre directrice des programmes : structure du pitch, narratif, financials et préparation aux objections. Limité à 30 participants.',
     isFree: true,
   },
   {
@@ -212,7 +212,7 @@ const EVENTS: SeedEvent[] = [
     location: 'Université de Yaoundé I',
     isOnline: false,
     description:
-      "48 heures pour imaginer les solutions agricoles de demain. 80 participants, 12 équipes finalistes, 3 prix décernés. Édition 2025 sponsorisée par Orange Digital Center.",
+      '48 heures pour imaginer les solutions agricoles de demain. 80 participants, 12 équipes finalistes, 3 prix décernés. Édition 2025 sponsorisée par Orange Digital Center.',
     isFree: true,
   },
   {
@@ -253,7 +253,8 @@ async function seedEvents(adminId: string) {
 
 async function main() {
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
-  if (!admin) throw new Error('Aucun compte ADMIN en base — lancer npm run db:seed avant celui-ci.');
+  if (!admin)
+    throw new Error('Aucun compte ADMIN en base — lancer npm run db:seed avant celui-ci.');
 
   await seedStartups(admin.id);
   await seedArticles(admin.id);

@@ -27,7 +27,7 @@ describe('GET /api/startups/:slug (intégration)', () => {
 
   it('retourne 200 et le détail pour un slug existant', async () => {
     const res = await GET(new Request('http://localhost:3000/api/startups/x'), {
-      params: { slug: TEST_SLUG },
+      params: Promise.resolve({ slug: TEST_SLUG }),
     });
     const json = await res.json();
     expect(res.status).toBe(200);
@@ -36,7 +36,7 @@ describe('GET /api/startups/:slug (intégration)', () => {
 
   it('retourne 404 pour un slug inexistant', async () => {
     const res = await GET(new Request('http://localhost:3000/api/startups/x'), {
-      params: { slug: 'ce-slug-n-existe-pas' },
+      params: Promise.resolve({ slug: 'ce-slug-n-existe-pas' }),
     });
     expect(res.status).toBe(404);
   });

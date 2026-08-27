@@ -38,9 +38,7 @@ export default function ForgotPasswordPage() {
         <h1 className="mb-1 text-center font-montserrat text-xl font-bold text-cauris-black">
           CAURIS DIGITAL
         </h1>
-        <p className="mb-6 text-center text-sm text-cauris-gray-secondary">
-          Mot de passe oublié
-        </p>
+        <p className="mb-6 text-center text-sm text-cauris-gray-secondary">Mot de passe oublié</p>
 
         {status === 'sent' ? (
           <div className="space-y-4 text-center">
@@ -48,14 +46,20 @@ export default function ForgotPasswordPage() {
               Si un compte existe pour cet email, un lien de réinitialisation valable 1 heure vient
               d'être envoyé.
             </p>
-            <Link href="/admin/login" className="text-sm font-semibold text-cauris-orange hover:underline">
+            <Link
+              href="/admin/login"
+              className="text-sm font-semibold text-cauris-orange hover:underline"
+            >
               Retour à la connexion
             </Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+              <label
+                htmlFor="email"
+                className="mb-1 block text-sm font-medium text-cauris-gray-text"
+              >
                 Email
               </label>
               <input

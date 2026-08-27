@@ -25,7 +25,7 @@ export default function SectionTitle({
         'max-w-3xl',
         align === 'center' && 'mx-auto text-center',
         align === 'left' && 'text-left',
-        className,
+        className
       )}
     >
       {eyebrow && (
@@ -38,7 +38,7 @@ export default function SectionTitle({
           'font-heading font-bold text-cauris-black',
           isHero
             ? 'text-4xl sm:text-5xl lg:text-6xl leading-[1.1]'
-            : 'text-3xl sm:text-h2 leading-tight',
+            : 'text-3xl sm:text-h2 leading-tight'
         )}
       >
         {title}

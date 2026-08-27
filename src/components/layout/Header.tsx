@@ -131,7 +131,7 @@ export default function Header() {
         className={cn(
           'fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-cauris',
           scrolled ? 'bg-white/95 backdrop-blur shadow-sm' : 'bg-white',
-          hidden && !mobileOpen ? '-translate-y-full' : 'translate-y-0',
+          hidden && !mobileOpen ? '-translate-y-full' : 'translate-y-0'
         )}
       >
         <div className="container-cauris">
@@ -142,7 +142,9 @@ export default function Header() {
             {/* Navigation desktop */}
             <nav
               className="hidden lg:flex items-center gap-6"
-              aria-label={tMenu('about') /* Re-utilise un libellé existant ; le aria-label parent suffit */}
+              aria-label={
+                tMenu('about') /* Re-utilise un libellé existant ; le aria-label parent suffit */
+              }
             >
               {NAV_ITEMS.map((item) => {
                 const hasSubmenu = !!item.submenu;
@@ -153,9 +155,7 @@ export default function Header() {
                       className="nav-link inline-flex items-center gap-1 py-2 text-[15px]"
                     >
                       {tMenu(item.tKey)}
-                      {hasSubmenu && (
-                        <ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />
-                      )}
+                      {hasSubmenu && <ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />}
                     </Link>
                     {hasSubmenu && (
                       <div className="absolute top-full left-0 pt-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200">
@@ -215,7 +215,7 @@ export default function Header() {
       <div
         className={cn(
           'lg:hidden fixed inset-0 z-50 bg-cauris-black/50 backdrop-blur-sm transition-opacity duration-300',
-          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         aria-hidden="true"
         onClick={() => setMobileOpen(false)}
@@ -230,7 +230,7 @@ export default function Header() {
         className={cn(
           'lg:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-cauris',
           mobileOpen ? 'translate-x-0' : 'translate-x-full',
-          'flex flex-col',
+          'flex flex-col'
         )}
       >
         {/* Header du menu */}
@@ -247,10 +247,7 @@ export default function Header() {
         </div>
 
         {/* Liens de navigation */}
-        <nav
-          className="flex-1 overflow-y-auto px-4 py-4"
-          aria-label={t('openMenu')}
-        >
+        <nav className="flex-1 overflow-y-auto px-4 py-4" aria-label={t('openMenu')}>
           {NAV_ITEMS.map((item) => {
             const hasSubmenu = !!item.submenu;
             const isOpen = openSubmenu === item.tKey;
@@ -274,7 +271,7 @@ export default function Header() {
                       <ChevronDown
                         className={cn(
                           'w-4 h-4 transition-transform duration-200',
-                          isOpen && 'rotate-180',
+                          isOpen && 'rotate-180'
                         )}
                         aria-hidden="true"
                       />

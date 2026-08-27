@@ -45,7 +45,7 @@ describe('GET /api/articles/:slug (intégration)', () => {
 
   it('retourne 200 et le contenu pour un article publié', async () => {
     const res = await GET(new Request('http://localhost:3000/api/articles/x'), {
-      params: { slug: TEST_SLUG_PUBLISHED },
+      params: Promise.resolve({ slug: TEST_SLUG_PUBLISHED }),
     });
     const json = await res.json();
     expect(res.status).toBe(200);
@@ -54,14 +54,14 @@ describe('GET /api/articles/:slug (intégration)', () => {
 
   it('retourne 404 pour un brouillon, même en accès direct par slug', async () => {
     const res = await GET(new Request('http://localhost:3000/api/articles/x'), {
-      params: { slug: TEST_SLUG_DRAFT },
+      params: Promise.resolve({ slug: TEST_SLUG_DRAFT }),
     });
     expect(res.status).toBe(404);
   });
 
   it('retourne 404 pour un slug inexistant', async () => {
     const res = await GET(new Request('http://localhost:3000/api/articles/x'), {
-      params: { slug: 'ce-slug-n-existe-pas' },
+      params: Promise.resolve({ slug: 'ce-slug-n-existe-pas' }),
     });
     expect(res.status).toBe(404);
   });

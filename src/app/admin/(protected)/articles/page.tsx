@@ -14,11 +14,12 @@ const TABS: { label: string; value: ArticleStatus | 'ALL' }[] = [
 export default async function AdminArticlesPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: Promise<{ status?: string }>;
 }) {
+  const { status } = await searchParams;
   const user = await requireAdminUser();
 
-  const activeTab = (searchParams.status as ArticleStatus | undefined) ?? 'ALL';
+  const activeTab = (status as ArticleStatus | undefined) ?? 'ALL';
   const articles = await prisma.article.findMany({
     where: activeTab === 'ALL' ? {} : { status: activeTab },
     orderBy: { createdAt: 'desc' },

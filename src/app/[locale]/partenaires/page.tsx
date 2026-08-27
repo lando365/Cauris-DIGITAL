@@ -1,6 +1,13 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { ArrowRight, ExternalLink, Building2, Banknote, GraduationCap, Briefcase } from 'lucide-react';
+import {
+  ArrowRight,
+  ExternalLink,
+  Building2,
+  Banknote,
+  GraduationCap,
+  Briefcase,
+} from 'lucide-react';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
 import { PARTNER_CATEGORIES, type PartnerLogo } from '@/lib/constants';

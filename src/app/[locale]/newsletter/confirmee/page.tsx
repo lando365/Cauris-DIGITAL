@@ -18,8 +18,8 @@ export default function NewsletterConfirmedPage() {
           Inscription confirmée !
         </h1>
         <p className="text-cauris-gray-text max-w-md mx-auto mb-8">
-          Merci de rejoindre la communauté CAURIS DIGITAL. Un email de bienvenue vient de vous
-          être envoyé — vous y trouverez aussi le lien pour vous désinscrire à tout moment.
+          Merci de rejoindre la communauté CAURIS DIGITAL. Un email de bienvenue vient de vous être
+          envoyé — vous y trouverez aussi le lien pour vous désinscrire à tout moment.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Button href="/">Retour à l&apos;accueil</Button>

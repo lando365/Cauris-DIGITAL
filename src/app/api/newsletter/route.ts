@@ -33,7 +33,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Le consentement est obligatoire.' }, { status: 400 }); // RM-N02
     }
     const cleanEmail = email.trim().toLowerCase();
-    const cleanFirstName = typeof firstName === 'string' ? firstName.trim().slice(0, 80) : undefined;
+    const cleanFirstName =
+      typeof firstName === 'string' ? firstName.trim().slice(0, 80) : undefined;
 
     // 2. Mode fallback dev — pas de clé
     const apiKey = process.env.RESEND_API_KEY;
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
 
     if (!apiKey || !audienceId) {
       console.warn(
-        '[newsletter] RESEND_API_KEY ou RESEND_AUDIENCE_ID non configurés. Mode log uniquement.',
+        '[newsletter] RESEND_API_KEY ou RESEND_AUDIENCE_ID non configurés. Mode log uniquement.'
       );
       console.log('[newsletter] Demande de confirmation (mode dev):', cleanEmail);
       return NextResponse.json({
@@ -106,7 +107,7 @@ export async function POST(request: Request) {
       if (isResendTestModeRestriction(emailError)) {
         console.warn(
           `[newsletter] Email de confirmation non envoyé à ${cleanEmail} ` +
-            `(mode test Resend — domaine non vérifié). Voir docs/SETUP_RESEND.md.`,
+            `(mode test Resend — domaine non vérifié). Voir docs/SETUP_RESEND.md.`
         );
         // On ne peut pas garantir que l'utilisateur recevra le lien : on le
         // signale clairement plutôt que de prétendre que tout s'est bien passé.
@@ -115,13 +116,13 @@ export async function POST(request: Request) {
             error:
               "Le service d'emails est en mode test et ne peut pas encore envoyer à cette adresse. Réessayez plus tard ou contactez-nous directement.",
           },
-          { status: 503 },
+          { status: 503 }
         );
       }
       console.error('[newsletter] Erreur envoi email de confirmation:', emailError);
       return NextResponse.json(
         { error: "Impossible d'envoyer l'email de confirmation. Réessayez plus tard." },
-        { status: 500 },
+        { status: 500 }
       );
     }
 

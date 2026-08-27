@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma';
 import { StartupForm } from '../../StartupForm';
 import { updateStartup } from '../../actions';
 
-export default async function EditStartupPage({ params }: { params: { id: string } }) {
-  const startup = await prisma.startup.findUnique({ where: { id: params.id } });
+export default async function EditStartupPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const startup = await prisma.startup.findUnique({ where: { id } });
   if (!startup) notFound();
 
-  const action = updateStartup.bind(null, params.id);
+  const action = updateStartup.bind(null, id);
 
   return (
     <div>

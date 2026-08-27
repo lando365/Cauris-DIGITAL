@@ -94,18 +94,18 @@ npm run start
 
 ## Scripts disponibles
 
-| Commande | Description |
-|---|---|
-| `npm run dev` | Serveur de développement |
-| `npm run build` / `npm run start` | Build + serveur de production |
-| `npm run lint` | ESLint |
-| `npm run type-check` | Vérification TypeScript sans build |
-| `npm run db:migrate` | Applique les migrations Prisma |
-| `npm run db:seed` | Crée le premier compte ADMIN |
-| `npm run test` | Tests unitaires et d'intégration (Vitest) |
-| `npm run test:watch` | Vitest en mode watch |
-| `npm run test:coverage` | Vitest avec rapport de couverture |
-| `npm run test:e2e` | Tests end-to-end (Playwright, contre un build de production) |
+| Commande                          | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `npm run dev`                     | Serveur de développement                                     |
+| `npm run build` / `npm run start` | Build + serveur de production                                |
+| `npm run lint`                    | ESLint                                                       |
+| `npm run type-check`              | Vérification TypeScript sans build                           |
+| `npm run db:migrate`              | Applique les migrations Prisma                               |
+| `npm run db:seed`                 | Crée le premier compte ADMIN                                 |
+| `npm run test`                    | Tests unitaires et d'intégration (Vitest)                    |
+| `npm run test:watch`              | Vitest en mode watch                                         |
+| `npm run test:coverage`           | Vitest avec rapport de couverture                            |
+| `npm run test:e2e`                | Tests end-to-end (Playwright, contre un build de production) |
 
 Les tests de charge (`k6/`) s'exécutent avec le binaire [k6](https://k6.io/) — voir `k6/README.md`.
 

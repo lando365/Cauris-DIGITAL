@@ -47,10 +47,7 @@ export const startupSchema = z.object({
     .transform((v) => (v === '' ? undefined : v))
     .optional(),
   status: z.enum(STATUSES),
-  year: z.coerce
-    .number()
-    .int()
-    .max(currentYear, "L'année ne peut pas être dans le futur."), // RM-S02
+  year: z.coerce.number().int().max(currentYear, "L'année ne peut pas être dans le futur."), // RM-S02
   foundedYear: z.coerce
     .number()
     .int()

@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     return errorResponse('BAD_REQUEST', 'Fichier manquant.', 400);
   }
   if (typeof entityType !== 'string' || !(entityType in RULES)) {
-    return errorResponse('BAD_REQUEST', 'Type d\'entité invalide.', 400);
+    return errorResponse('BAD_REQUEST', "Type d'entité invalide.", 400);
   }
 
   const rule = RULES[entityType as EntityKind];

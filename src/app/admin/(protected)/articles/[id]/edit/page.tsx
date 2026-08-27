@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma';
 import { ArticleForm } from '../../ArticleForm';
 import { updateArticle } from '../../actions';
 
-export default async function EditArticlePage({ params }: { params: { id: string } }) {
-  const article = await prisma.article.findUnique({ where: { id: params.id } });
+export default async function EditArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = await prisma.article.findUnique({ where: { id } });
   if (!article) notFound();
 
-  const action = updateArticle.bind(null, params.id);
+  const action = updateArticle.bind(null, id);
 
   return (
     <div>

@@ -5,13 +5,14 @@ import { updateUser } from '../../actions';
 import { EditUserForm } from './EditUserForm';
 import { ResetPasswordButton } from './ResetPasswordButton';
 
-export default async function EditUserPage({ params }: { params: { id: string } }) {
+export default async function EditUserPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const currentUser = await requireAdminUser('ADMIN'); // RM-U03
 
-  const user = await prisma.user.findUnique({ where: { id: params.id } });
+  const user = await prisma.user.findUnique({ where: { id } });
   if (!user) notFound();
 
-  const action = updateUser.bind(null, params.id);
+  const action = updateUser.bind(null, id);
   const isSelf = user.id === currentUser.id;
 
   return (

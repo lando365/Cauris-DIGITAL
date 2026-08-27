@@ -15,8 +15,16 @@ interface FileUploadFieldProps {
 // CDC V2 §5.5 — mêmes règles que la validation serveur (src/app/api/admin/upload),
 // dupliquées ici uniquement pour un retour immédiat côté client.
 const RULES: Record<UploadEntityType, { maxMb: number; accept: string; formats: string }> = {
-  startup: { maxMb: 2, accept: 'image/jpeg,image/png,image/webp,image/svg+xml', formats: 'JPG, PNG, WEBP, SVG' },
-  partner: { maxMb: 2, accept: 'image/jpeg,image/png,image/webp,image/svg+xml', formats: 'JPG, PNG, WEBP, SVG' },
+  startup: {
+    maxMb: 2,
+    accept: 'image/jpeg,image/png,image/webp,image/svg+xml',
+    formats: 'JPG, PNG, WEBP, SVG',
+  },
+  partner: {
+    maxMb: 2,
+    accept: 'image/jpeg,image/png,image/webp,image/svg+xml',
+    formats: 'JPG, PNG, WEBP, SVG',
+  },
   article: { maxMb: 5, accept: 'image/jpeg,image/png,image/webp', formats: 'JPG, PNG, WEBP' },
   event: { maxMb: 5, accept: 'image/jpeg,image/png,image/webp', formats: 'JPG, PNG, WEBP' },
 };

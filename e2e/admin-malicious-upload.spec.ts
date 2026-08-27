@@ -26,7 +26,9 @@ test.describe('Upload malveillant', () => {
     expect(json.error.code).toBe('UNSUPPORTED_FORMAT');
   });
 
-  test('rejette un fichier .jpg renommé en réalité PHP (extension/MIME incohérents)', async ({ page }) => {
+  test('rejette un fichier .jpg renommé en réalité PHP (extension/MIME incohérents)', async ({
+    page,
+  }) => {
     const res = await page.request.post('/api/admin/upload', {
       multipart: {
         entityType: 'startup',
@@ -76,7 +78,9 @@ test.describe('Upload malveillant', () => {
     expect(json.error.code).toBe('FILE_TOO_LARGE');
   });
 
-  test('rejette le SVG pour une image article (formats limités à JPG/PNG/WEBP)', async ({ page }) => {
+  test('rejette le SVG pour une image article (formats limités à JPG/PNG/WEBP)', async ({
+    page,
+  }) => {
     const res = await page.request.post('/api/admin/upload', {
       multipart: {
         entityType: 'article',

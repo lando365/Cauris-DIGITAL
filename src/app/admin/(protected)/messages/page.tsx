@@ -15,11 +15,12 @@ const TABS: { label: string; value: ContactMessageStatus | 'ALL' }[] = [
 export default async function AdminMessagesPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: Promise<{ status?: string }>;
 }) {
+  const { status } = await searchParams;
   const user = await requireAdminUser();
 
-  const activeTab = (searchParams.status as ContactMessageStatus | undefined) ?? 'ALL';
+  const activeTab = (status as ContactMessageStatus | undefined) ?? 'ALL';
   const messages = await prisma.contactMessage.findMany({
     where: activeTab === 'ALL' ? {} : { status: activeTab },
     orderBy: { createdAt: 'desc' },

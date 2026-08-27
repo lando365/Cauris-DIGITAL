@@ -2,11 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { ArrowRight, Search, X } from 'lucide-react';
-import {
-  ARTICLE_CATEGORIES,
-  type Article,
-  type ArticleCategory,
-} from '@/lib/constants';
+import { ARTICLE_CATEGORIES, type Article, type ArticleCategory } from '@/lib/constants';
 import ArticleCard from '@/components/ui/ArticleCard';
 
 const PAGE_SIZE = 6;
@@ -22,11 +18,13 @@ export default function NewsExplorer({ articles }: { articles: Article[] }) {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return articles.filter((a) => {
-      if (category !== 'Toutes' && a.category !== category) return false;
-      if (q && !`${a.title} ${a.excerpt}`.toLowerCase().includes(q)) return false;
-      return true;
-    }).sort((a, b) => b.date.localeCompare(a.date));
+    return articles
+      .filter((a) => {
+        if (category !== 'Toutes' && a.category !== category) return false;
+        if (q && !`${a.title} ${a.excerpt}`.toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => b.date.localeCompare(a.date));
   }, [articles, category, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));

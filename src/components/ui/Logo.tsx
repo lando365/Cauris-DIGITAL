@@ -30,7 +30,7 @@ export default function Logo({
       className={cn(
         'inline-flex items-center gap-2.5 font-heading font-extrabold transition-colors',
         variant === 'dark' ? 'text-cauris-black hover:text-cauris-orange' : 'text-white',
-        className,
+        className
       )}
     >
       <span

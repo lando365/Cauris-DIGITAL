@@ -31,8 +31,13 @@ export default function ResetPasswordPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-cauris-black px-4">
         <div className="w-full max-w-sm rounded-lg bg-white p-8 text-center shadow-xl">
-          <p className="mb-4 text-sm text-cauris-gray-text">Lien de réinitialisation manquant ou invalide.</p>
-          <Link href="/admin/forgot-password" className="text-sm font-semibold text-cauris-orange hover:underline">
+          <p className="mb-4 text-sm text-cauris-gray-text">
+            Lien de réinitialisation manquant ou invalide.
+          </p>
+          <Link
+            href="/admin/forgot-password"
+            className="text-sm font-semibold text-cauris-orange hover:underline"
+          >
             Demander un nouveau lien
           </Link>
         </div>
@@ -46,13 +51,14 @@ export default function ResetPasswordPage() {
         <h1 className="mb-1 text-center font-montserrat text-xl font-bold text-cauris-black">
           CAURIS DIGITAL
         </h1>
-        <p className="mb-6 text-center text-sm text-cauris-gray-secondary">
-          Nouveau mot de passe
-        </p>
+        <p className="mb-6 text-center text-sm text-cauris-gray-secondary">Nouveau mot de passe</p>
 
         <form action={formAction} className="space-y-4">
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+            <label
+              htmlFor="password"
+              className="mb-1 block text-sm font-medium text-cauris-gray-text"
+            >
               Nouveau mot de passe
             </label>
             <input
@@ -69,7 +75,10 @@ export default function ResetPasswordPage() {
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+            <label
+              htmlFor="confirmPassword"
+              className="mb-1 block text-sm font-medium text-cauris-gray-text"
+            >
               Confirmer le mot de passe
             </label>
             <input

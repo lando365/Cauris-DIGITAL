@@ -13,14 +13,18 @@ import {
   Twitter,
   Facebook,
 } from 'lucide-react';
-import { ARTICLE_CATEGORY_COLORS, SITE_CONFIG, type Article as DisplayArticle } from '@/lib/constants';
+import {
+  ARTICLE_CATEGORY_COLORS,
+  SITE_CONFIG,
+  type Article as DisplayArticle,
+} from '@/lib/constants';
 import Button from '@/components/ui/Button';
 import ArticleCard from '@/components/ui/ArticleCard';
 import { prisma } from '@/lib/prisma';
 import { mapArticle } from '@/lib/content-mappers';
 
 interface PageProps {
-  params: { locale: string; slug: string };
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 // CDC V2 §4.3.1 : détail public en cache ISR (revalidate 60s). Pas de
@@ -33,7 +37,12 @@ async function getPublishedArticleBySlug(slug: string) {
     where: { slug },
     include: { author: { select: { name: true } } },
   });
-  if (!record || record.status !== 'PUBLISHED' || !record.publishedAt || record.publishedAt > new Date()) {
+  if (
+    !record ||
+    record.status !== 'PUBLISHED' ||
+    !record.publishedAt ||
+    record.publishedAt > new Date()
+  ) {
     return null;
   }
   return mapArticle(record);
@@ -54,7 +63,8 @@ async function getRelatedArticles(current: DisplayArticle, limit = 3): Promise<D
  * Métadonnées SEO dynamiques par article (CDC §7.1).
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const article = await getPublishedArticleBySlug(params.slug);
+  const { slug } = await params;
+  const article = await getPublishedArticleBySlug(slug);
   if (!article) {
     return { title: 'Article introuvable' };
   }
@@ -87,7 +97,8 @@ function formatDate(iso: string): string {
 }
 
 export default async function ArticlePage({ params }: PageProps) {
-  const article = await getPublishedArticleBySlug(params.slug);
+  const { slug } = await params;
+  const article = await getPublishedArticleBySlug(slug);
   if (!article) notFound();
 
   const related = await getRelatedArticles(article, 3);

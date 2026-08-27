@@ -52,5 +52,5 @@ audiences.forEach((a, i) => {
   console.log(`     Créée le : ${new Date(a.created_at).toLocaleDateString('fr-FR')}\n`);
 });
 
-console.log('👉 Copie l\'ID ci-dessus dans .env.local :');
+console.log("👉 Copie l'ID ci-dessus dans .env.local :");
 console.log(`   RESEND_AUDIENCE_ID=${audiences[0].id}\n`);

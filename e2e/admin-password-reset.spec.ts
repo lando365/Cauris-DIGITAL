@@ -41,7 +41,7 @@ test.describe('Réinitialisation de mot de passe', () => {
     expect(await resKnown.json()).toEqual(await resUnknown.json());
   });
 
-  test("un lien valide permet de définir un nouveau mot de passe, connexion possible ensuite", async ({
+  test('un lien valide permet de définir un nouveau mot de passe, connexion possible ensuite', async ({
     page,
   }) => {
     const user = await prisma.user.findUniqueOrThrow({ where: { email: TEST_EMAIL } });

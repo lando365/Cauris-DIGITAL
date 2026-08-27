@@ -9,18 +9,20 @@ export const metadata: Metadata = {
 
 const MESSAGES: Record<string, string> = {
   expire:
-    'Ce lien a expiré (il n\'est valable que 48 heures). Réinscrivez-vous depuis le pied de page pour recevoir un nouveau lien.',
-  invalide: 'Ce lien n\'est pas valide. Vérifiez que vous avez copié l\'adresse complète depuis l\'email.',
-  manquant: 'Aucun lien de confirmation n\'a été fourni.',
+    "Ce lien a expiré (il n'est valable que 48 heures). Réinscrivez-vous depuis le pied de page pour recevoir un nouveau lien.",
+  invalide:
+    "Ce lien n'est pas valide. Vérifiez que vous avez copié l'adresse complète depuis l'email.",
+  manquant: "Aucun lien de confirmation n'a été fourni.",
   serveur: 'Une erreur technique est survenue. Réessayez dans quelques minutes.',
 };
 
 interface PageProps {
-  searchParams: { raison?: string };
+  searchParams: Promise<{ raison?: string }>;
 }
 
-export default function NewsletterErrorPage({ searchParams }: PageProps) {
-  const message = MESSAGES[searchParams.raison ?? ''] ?? MESSAGES.invalide;
+export default async function NewsletterErrorPage({ searchParams }: PageProps) {
+  const { raison } = await searchParams;
+  const message = MESSAGES[raison ?? ''] ?? MESSAGES.invalide;
 
   return (
     <section className="min-h-[80vh] flex items-center pt-32 pb-20">

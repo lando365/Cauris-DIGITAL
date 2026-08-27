@@ -20,7 +20,7 @@ import { PROGRAMS, BRAND_IMAGES } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'Programme Accélération — CAURIS DIGITAL | 12 semaines pour accélérer votre croissance',
   description:
-    'Programme d\'accélération intensif de 12 semaines, 100% en ligne. Pour les startups tech africaines prêtes à passer à l\'échelle. Accès mondial, mentors experts.',
+    "Programme d'accélération intensif de 12 semaines, 100% en ligne. Pour les startups tech africaines prêtes à passer à l'échelle. Accès mondial, mentors experts.",
 };
 
 const acceleration = PROGRAMS.find((p) => p.id === 'acceleration')!;
@@ -31,14 +31,14 @@ const PHASES = [
     period: 'Semaines 1-2',
     title: 'Diagnostic stratégique',
     description:
-      'Audit complet de votre startup : product-market fit, modèle économique, structure d\'équipe, stratégie de croissance actuelle. Identification des 3 leviers prioritaires à activer.',
+      "Audit complet de votre startup : product-market fit, modèle économique, structure d'équipe, stratégie de croissance actuelle. Identification des 3 leviers prioritaires à activer.",
   },
   {
     icon: TrendingUp,
     period: 'Semaines 3-5',
     title: 'Croissance et acquisition',
     description:
-      'Stratégie de croissance data-driven. Growth hacking adapté aux marchés africains. Optimisation de l\'acquisition client. Segmentation et ciblage. KPIs et tableaux de bord.',
+      "Stratégie de croissance data-driven. Growth hacking adapté aux marchés africains. Optimisation de l'acquisition client. Segmentation et ciblage. KPIs et tableaux de bord.",
   },
   {
     icon: Coins,
@@ -52,14 +52,14 @@ const PHASES = [
     period: 'Semaines 9-10',
     title: 'Financement et investisseurs',
     description:
-      'Préparation du pitch investisseurs. Construction du dossier de levée. Valorisation de la startup. Simulation d\'entretiens avec des investisseurs réels.',
+      "Préparation du pitch investisseurs. Construction du dossier de levée. Valorisation de la startup. Simulation d'entretiens avec des investisseurs réels.",
   },
   {
     icon: Rocket,
     period: 'Semaines 11-12',
     title: 'Demo Day et après',
     description:
-      'Répétition et finalisation du pitch. Demo Day ouvert aux investisseurs africains et internationaux. Plan d\'action post-programme. Intégration dans le réseau alumni CAURIS DIGITAL.',
+      "Répétition et finalisation du pitch. Demo Day ouvert aux investisseurs africains et internationaux. Plan d'action post-programme. Intégration dans le réseau alumni CAURIS DIGITAL.",
   },
 ];
 
@@ -72,13 +72,29 @@ const PROFILE_CRITERIA = [
 ];
 
 const COMPARISON = [
-  { criterion: 'Stade du projet', incubation: 'Idée / Pré-prototype', acceleration: 'MVP validé / Premiers clients' },
+  {
+    criterion: 'Stade du projet',
+    incubation: 'Idée / Pré-prototype',
+    acceleration: 'MVP validé / Premiers clients',
+  },
   { criterion: 'Durée', incubation: '6 mois', acceleration: '12 semaines' },
-  { criterion: 'Format', incubation: 'Hybride (présentiel + online)', acceleration: '100% en ligne' },
+  {
+    criterion: 'Format',
+    incubation: 'Hybride (présentiel + online)',
+    acceleration: '100% en ligne',
+  },
   { criterion: 'Intensité', incubation: 'Progressive', acceleration: 'Très intensive' },
-  { criterion: 'Objectif', incubation: 'Valider et construire', acceleration: 'Accélérer et scaler' },
+  {
+    criterion: 'Objectif',
+    incubation: 'Valider et construire',
+    acceleration: 'Accélérer et scaler',
+  },
   { criterion: 'Coût', incubation: 'Gratuit', acceleration: 'Gratuit / Contribution symbolique' },
-  { criterion: 'Demo Day', incubation: 'Oui (fin de programme)', acceleration: 'Oui (accès investisseurs internationaux)' },
+  {
+    criterion: 'Demo Day',
+    incubation: 'Oui (fin de programme)',
+    acceleration: 'Oui (accès investisseurs internationaux)',
+  },
 ];
 
 export default function AccelerationProgramPage() {
@@ -97,9 +113,8 @@ export default function AccelerationProgramPage() {
               </h1>
               <p className="text-lg text-cauris-gray-text leading-relaxed mb-8">
                 <strong className="text-cauris-black">12 semaines</strong> pour faire avancer votre
-                startup de 12 mois.{' '}
-                <strong className="text-cauris-black">100% en ligne.</strong> Accessible depuis
-                n&apos;importe où dans le monde.
+                startup de 12 mois. <strong className="text-cauris-black">100% en ligne.</strong>{' '}
+                Accessible depuis n&apos;importe où dans le monde.
               </p>
 
               <div className="mb-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-cauris-gray-text">
@@ -152,8 +167,8 @@ export default function AccelerationProgramPage() {
             <div className="mt-8 space-y-5 text-cauris-gray-text leading-relaxed">
               <p>
                 Le programme Accélération s&apos;adresse aux startups qui ont déjà un produit, des
-                premiers utilisateurs ou clients, et qui sont prêtes à accélérer leur croissance.
-                Ce n&apos;est pas un programme de démarrage —{' '}
+                premiers utilisateurs ou clients, et qui sont prêtes à accélérer leur croissance. Ce
+                n&apos;est pas un programme de démarrage —{' '}
                 <strong className="text-cauris-black">
                   c&apos;est un programme de passage à l&apos;échelle
                 </strong>
@@ -213,9 +228,7 @@ export default function AccelerationProgramPage() {
                       <td className="px-5 py-4 font-semibold text-cauris-black text-sm">
                         {row.criterion}
                       </td>
-                      <td className="px-5 py-4 text-cauris-gray-text text-sm">
-                        {row.incubation}
-                      </td>
+                      <td className="px-5 py-4 text-cauris-gray-text text-sm">{row.incubation}</td>
                       <td className="px-5 py-4 text-cauris-gray-text text-sm border-l-2 border-cauris-orange/30 bg-cauris-orange/5">
                         {row.acceleration}
                       </td>
@@ -270,10 +283,7 @@ export default function AccelerationProgramPage() {
       {/* Ce que vous obtenez */}
       <section className="section bg-cauris-cream/40">
         <div className="container-cauris">
-          <SectionTitle
-            eyebrow="Ce que vous obtenez"
-            title="Les bénéfices concrets du programme"
-          />
+          <SectionTitle eyebrow="Ce que vous obtenez" title="Les bénéfices concrets du programme" />
 
           <div className="mt-14 grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {acceleration.benefits.map((benefit, i) => (

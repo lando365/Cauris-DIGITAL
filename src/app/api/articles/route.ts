@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import type { ArticleCategory, Prisma } from '@prisma/client';
 
-const CATEGORIES: ArticleCategory[] = ['ANNONCES', 'PORTRAITS', 'RESSOURCES', 'EVENEMENTS', 'OPINIONS'];
+const CATEGORIES: ArticleCategory[] = [
+  'ANNONCES',
+  'PORTRAITS',
+  'RESSOURCES',
+  'EVENEMENTS',
+  'OPINIONS',
+];
 
 // GET /api/articles — CDC V2 §6.2. Liste publique, paginée, filtrable par catégorie.
 // Seuls les articles PUBLISHED dont publishedAt est passé sont retournés

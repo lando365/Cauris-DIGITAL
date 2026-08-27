@@ -46,7 +46,7 @@ const MAX_PITCH_DECK_MB = 5;
  */
 const COUNTRIES = [
   'Cameroun',
-  'Côte d\'Ivoire',
+  "Côte d'Ivoire",
   'Sénégal',
   'République Démocratique du Congo',
   'République du Congo',
@@ -137,7 +137,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
         body: formData,
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Erreur lors de l\'envoi.');
+      if (!res.ok) throw new Error(data.error ?? "Erreur lors de l'envoi.");
       setStatus('success');
       formEl.reset();
       setSubject(defaultSubject);
@@ -285,7 +285,10 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
             Votre projet
           </p>
           <div>
-            <label htmlFor="startupName" className="block text-sm font-medium text-cauris-black mb-2">
+            <label
+              htmlFor="startupName"
+              className="block text-sm font-medium text-cauris-black mb-2"
+            >
               Nom de la startup <span className="text-cauris-error">*</span>
             </label>
             <input
@@ -381,9 +384,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
                 setPitchDeckName(file?.name ?? '');
               }}
             />
-            {pitchDeckError && (
-              <p className="mt-1 text-xs text-cauris-error">{pitchDeckError}</p>
-            )}
+            {pitchDeckError && <p className="mt-1 text-xs text-cauris-error">{pitchDeckError}</p>}
           </div>
         </div>
       )}
@@ -462,7 +463,10 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
       </div>
 
       {status === 'error' && (
-        <div role="alert" className="flex items-start gap-2 p-4 rounded-btn bg-cauris-error/10 border border-cauris-error/30 text-cauris-error text-sm">
+        <div
+          role="alert"
+          className="flex items-start gap-2 p-4 rounded-btn bg-cauris-error/10 border border-cauris-error/30 text-cauris-error text-sm"
+        >
           <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
           <p>{errorMessage}</p>
         </div>
@@ -490,7 +494,10 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
         {/* Mention reCAPTCHA exigée par Google quand le badge est masqué */}
         {recaptchaEnabled && (
           <p className="text-[11px] text-cauris-gray-secondary leading-relaxed inline-flex items-start gap-1.5">
-            <ShieldCheck className="w-3 h-3 mt-0.5 shrink-0 text-cauris-gray-secondary" aria-hidden="true" />
+            <ShieldCheck
+              className="w-3 h-3 mt-0.5 shrink-0 text-cauris-gray-secondary"
+              aria-hidden="true"
+            />
             <span>
               Ce site est protégé par reCAPTCHA et respecte les{' '}
               <a

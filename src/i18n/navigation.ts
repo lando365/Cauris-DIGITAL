@@ -6,5 +6,4 @@ import { routing } from './routing';
  * À utiliser à la place des équivalents `next/link` / `next/navigation`
  * partout où l'URL doit être préfixée par la langue courante.
  */
-export const { Link, redirect, usePathname, useRouter, getPathname } =
-  createNavigation(routing);
+export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing);

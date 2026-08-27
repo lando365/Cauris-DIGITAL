@@ -7,14 +7,15 @@ import { SITE_CONFIG } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'Contactez CAURIS DIGITAL — Yaoundé, Cameroun | Incubateur numérique africain',
   description:
-    'Contactez l\'équipe de CAURIS DIGITAL pour une candidature, un partenariat ou toute question. Basés à Yaoundé, nous répondons dans les plus brefs délais.',
+    "Contactez l'équipe de CAURIS DIGITAL pour une candidature, un partenariat ou toute question. Basés à Yaoundé, nous répondons dans les plus brefs délais.",
 };
 
 interface PageProps {
-  searchParams: { objet?: string };
+  searchParams: Promise<{ objet?: string }>;
 }
 
-export default function ContactPage({ searchParams }: PageProps) {
+export default async function ContactPage({ searchParams }: PageProps) {
+  const { objet } = await searchParams;
   return (
     <>
       {/* Hero */}
@@ -41,13 +42,9 @@ export default function ContactPage({ searchParams }: PageProps) {
           <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Formulaire — 2/3 */}
             <div className="lg:col-span-2">
-              <SectionTitle
-                eyebrow="Écrivez-nous"
-                title="Formulaire de contact"
-                align="left"
-              />
+              <SectionTitle eyebrow="Écrivez-nous" title="Formulaire de contact" align="left" />
               <div className="mt-8">
-                <ContactForm defaultSubject={searchParams.objet ?? ''} />
+                <ContactForm defaultSubject={objet ?? ''} />
               </div>
             </div>
 

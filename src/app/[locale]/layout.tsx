@@ -14,11 +14,11 @@ import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://caurisdigital.org'),
   title: {
-    default: 'CAURIS DIGITAL — Incubateur numérique d\'excellence en Afrique francophone',
+    default: "CAURIS DIGITAL — Incubateur numérique d'excellence en Afrique francophone",
     template: '%s | CAURIS DIGITAL',
   },
   description:
-    'CAURIS DIGITAL stimule l\'entrepreneuriat tech et forme les entrepreneurs numériques de demain en Afrique francophone. Programmes d\'incubation et d\'accélération pour startups.',
+    "CAURIS DIGITAL stimule l'entrepreneuriat tech et forme les entrepreneurs numériques de demain en Afrique francophone. Programmes d'incubation et d'accélération pour startups.",
   keywords: [
     'incubateur',
     'startup',
@@ -36,15 +36,15 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: 'https://caurisdigital.org',
     siteName: 'CAURIS DIGITAL',
-    title: 'CAURIS DIGITAL — Incubateur numérique d\'excellence',
+    title: "CAURIS DIGITAL — Incubateur numérique d'excellence",
     description:
-      'Où l\'innovation numérique africaine prend son essor. Programmes d\'incubation et d\'accélération.',
+      "Où l'innovation numérique africaine prend son essor. Programmes d'incubation et d'accélération.",
     // L'image OG est générée dynamiquement par src/app/opengraph-image.tsx
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CAURIS DIGITAL',
-    description: 'Incubateur numérique d\'excellence en Afrique francophone.',
+    description: "Incubateur numérique d'excellence en Afrique francophone.",
     // L'image Twitter est générée dynamiquement par src/app/twitter-image.tsx
   },
   robots: {
@@ -67,11 +67,11 @@ export function generateStaticParams() {
 
 interface Props {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = params;
+  const { locale } = await params;
 
   // Segment [locale] catch-all : toute valeur invalide (ex: fichier inconnu) → 404
   if (!routing.locales.includes(locale as Locale)) {

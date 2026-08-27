@@ -9,7 +9,7 @@ import { FAQ_ITEMS } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'FAQ — Questions fréquentes sur CAURIS DIGITAL et nos programmes',
   description:
-    'Trouvez les réponses à toutes vos questions sur les programmes d\'incubation et d\'accélération de CAURIS DIGITAL, les candidatures, le mentorat en ligne et les partenariats.',
+    "Trouvez les réponses à toutes vos questions sur les programmes d'incubation et d'accélération de CAURIS DIGITAL, les candidatures, le mentorat en ligne et les partenariats.",
 };
 
 export default function FAQPage() {

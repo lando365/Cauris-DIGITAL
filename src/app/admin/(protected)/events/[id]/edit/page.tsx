@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma';
 import { EventForm } from '../../EventForm';
 import { updateEvent } from '../../actions';
 
-export default async function EditEventPage({ params }: { params: { id: string } }) {
-  const event = await prisma.event.findUnique({ where: { id: params.id } });
+export default async function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const event = await prisma.event.findUnique({ where: { id } });
   if (!event) notFound();
 
-  const action = updateEvent.bind(null, params.id);
+  const action = updateEvent.bind(null, id);
 
   return (
     <div>

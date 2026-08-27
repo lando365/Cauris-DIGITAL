@@ -3,7 +3,8 @@
 import { useState, useMemo } from 'react';
 import { Calendar, MapPin, Clock, ArrowRight, Tag } from 'lucide-react';
 
-export type EventType = 'Demo Day' | 'Atelier' | 'Conférence' | 'Hackathon' | 'Webinaire' | 'Networking';
+export type EventType =
+  'Demo Day' | 'Atelier' | 'Conférence' | 'Hackathon' | 'Webinaire' | 'Networking';
 
 export interface Event {
   id: string;
@@ -121,7 +122,9 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3 mb-4">
-                    <span className={`inline-flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full ${typeColor}`}>
+                    <span
+                      className={`inline-flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full ${typeColor}`}
+                    >
                       <Tag className="w-3 h-3" aria-hidden="true" />
                       {event.type}
                     </span>
@@ -153,9 +156,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                       <MapPin className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
                       {event.place}
                     </p>
-                    {event.price && (
-                      <p className="text-xs italic">{event.price}</p>
-                    )}
+                    {event.price && <p className="text-xs italic">{event.price}</p>}
                   </div>
 
                   {!isPast && (

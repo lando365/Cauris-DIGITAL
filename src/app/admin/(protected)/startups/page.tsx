@@ -10,19 +10,20 @@ const STATUSES: StartupStatus[] = ['EN_INCUBATION', 'DIPLOMEE', 'ALUMNI'];
 export default async function AdminStartupsPage({
   searchParams,
 }: {
-  searchParams: { q?: string; sector?: string; status?: string };
+  searchParams: Promise<{ q?: string; sector?: string; status?: string }>;
 }) {
+  const { q, sector, status } = await searchParams;
   const user = await requireAdminUser();
 
   const where: Prisma.StartupWhereInput = {};
-  if (searchParams.q) {
-    where.name = { contains: searchParams.q, mode: 'insensitive' };
+  if (q) {
+    where.name = { contains: q, mode: 'insensitive' };
   }
-  if (searchParams.sector && SECTORS.includes(searchParams.sector as Sector)) {
-    where.sector = searchParams.sector as Sector;
+  if (sector && SECTORS.includes(sector as Sector)) {
+    where.sector = sector as Sector;
   }
-  if (searchParams.status && STATUSES.includes(searchParams.status as StartupStatus)) {
-    where.status = searchParams.status as StartupStatus;
+  if (status && STATUSES.includes(status as StartupStatus)) {
+    where.status = status as StartupStatus;
   }
 
   const startups = await prisma.startup.findMany({ where, orderBy: { createdAt: 'desc' } });
@@ -43,13 +44,13 @@ export default async function AdminStartupsPage({
         <input
           type="text"
           name="q"
-          defaultValue={searchParams.q}
+          defaultValue={q}
           placeholder="Rechercher un nom…"
           className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
         />
         <select
           name="sector"
-          defaultValue={searchParams.sector ?? ''}
+          defaultValue={sector ?? ''}
           className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
         >
           <option value="">Tous secteurs</option>
@@ -61,7 +62,7 @@ export default async function AdminStartupsPage({
         </select>
         <select
           name="status"
-          defaultValue={searchParams.status ?? ''}
+          defaultValue={status ?? ''}
           className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
         >
           <option value="">Tous statuts</option>

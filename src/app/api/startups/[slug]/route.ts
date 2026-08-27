@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 // GET /api/startups/:slug — CDC V2 §6.2
-export async function GET(_req: Request, { params }: { params: { slug: string } }) {
-  const startup = await prisma.startup.findUnique({ where: { slug: params.slug } });
+export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const startup = await prisma.startup.findUnique({ where: { slug } });
 
   if (!startup) {
     return NextResponse.json(

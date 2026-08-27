@@ -51,7 +51,7 @@ export default function LanguageSwitcher({ variant = 'inline', className }: Prop
         className={cn(
           'inline-flex items-center gap-1 text-xs font-semibold',
           isPending && 'opacity-60 pointer-events-none',
-          className,
+          className
         )}
         role="group"
         aria-label={t('label')}
@@ -60,21 +60,26 @@ export default function LanguageSwitcher({ variant = 'inline', className }: Prop
           const isActive = locale === currentLocale;
           return (
             <span key={locale} className="contents">
-              {i > 0 && <span className="text-cauris-gray-secondary/40 mx-1" aria-hidden="true">|</span>}
+              {i > 0 && (
+                <span className="text-cauris-gray-secondary/40 mx-1" aria-hidden="true">
+                  |
+                </span>
+              )}
               <button
                 type="button"
                 onClick={() => switchTo(locale)}
                 disabled={isActive || isPending}
                 aria-current={isActive ? 'true' : undefined}
                 aria-label={
-                  isActive ? t('currentLanguage', { lang: LOCALE_LABELS[locale].native })
-                  : t('switchTo', { lang: LOCALE_LABELS[locale].native })
+                  isActive
+                    ? t('currentLanguage', { lang: LOCALE_LABELS[locale].native })
+                    : t('switchTo', { lang: LOCALE_LABELS[locale].native })
                 }
                 className={cn(
                   'px-1.5 py-1 rounded transition-colors uppercase tracking-wider',
                   isActive
                     ? 'text-cauris-orange cursor-default'
-                    : 'text-cauris-gray-secondary hover:text-cauris-orange cursor-pointer',
+                    : 'text-cauris-gray-secondary hover:text-cauris-orange cursor-pointer'
                 )}
               >
                 {LOCALE_LABELS[locale].short}
@@ -108,11 +113,7 @@ export default function LanguageSwitcher({ variant = 'inline', className }: Prop
       {open && (
         <>
           {/* Backdrop pour fermer au clic extérieur */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setOpen(false)}
-            aria-hidden="true"
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden="true" />
           <ul
             role="listbox"
             aria-label={t('label')}
@@ -133,7 +134,7 @@ export default function LanguageSwitcher({ variant = 'inline', className }: Prop
                       'w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left text-sm transition-colors',
                       isActive
                         ? 'text-cauris-orange font-semibold bg-cauris-cream cursor-default'
-                        : 'text-cauris-gray-text hover:bg-cauris-cream/50',
+                        : 'text-cauris-gray-text hover:bg-cauris-cream/50'
                     )}
                   >
                     <span className="flex items-center gap-2">

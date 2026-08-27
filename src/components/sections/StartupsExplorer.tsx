@@ -52,7 +52,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
   }, [query, sectorFilter, countryFilter, statusFilter]);
 
   const hasActiveFilters =
-    query.trim() !== '' || sectorFilter !== 'all' || countryFilter !== 'all' || statusFilter !== 'all';
+    query.trim() !== '' ||
+    sectorFilter !== 'all' ||
+    countryFilter !== 'all' ||
+    statusFilter !== 'all';
 
   const resetFilters = () => {
     setQuery('');
@@ -69,11 +72,17 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
           <div className="grid lg:grid-cols-12 gap-4">
             {/* Recherche */}
             <div className="lg:col-span-5">
-              <label htmlFor="startup-search" className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2">
+              <label
+                htmlFor="startup-search"
+                className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
+              >
                 Rechercher
               </label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cauris-gray-secondary" aria-hidden="true" />
+                <Search
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cauris-gray-secondary"
+                  aria-hidden="true"
+                />
                 <input
                   id="startup-search"
                   type="text"
@@ -97,7 +106,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
 
             {/* Secteur */}
             <div className="lg:col-span-3">
-              <label htmlFor="filter-sector" className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2">
+              <label
+                htmlFor="filter-sector"
+                className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
+              >
                 Secteur
               </label>
               <select
@@ -117,7 +129,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
 
             {/* Pays */}
             <div className="lg:col-span-2">
-              <label htmlFor="filter-country" className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2">
+              <label
+                htmlFor="filter-country"
+                className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
+              >
                 Pays
               </label>
               <select
@@ -137,7 +152,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
 
             {/* Statut */}
             <div className="lg:col-span-2">
-              <label htmlFor="filter-status" className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2">
+              <label
+                htmlFor="filter-status"
+                className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
+              >
                 Statut
               </label>
               <select
@@ -236,7 +254,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-cauris-orange">
                       Découvrir
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                      <ArrowRight
+                        className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"
+                        aria-hidden="true"
+                      />
                     </span>
                   </div>
                 </Link>

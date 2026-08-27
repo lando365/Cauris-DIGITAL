@@ -31,10 +31,10 @@ Ce guide explique comment activer la protection reCAPTCHA v3 sur le formulaire d
 
 Google te montre maintenant **2 clés** :
 
-| Clé | Visibilité | À placer dans |
-|---|---|---|
-| **Clé du site** (commence souvent par `6L...`) | Publique (visible côté client) | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` |
-| **Clé secrète** (commence aussi par `6L...`) | Secrète (côté serveur uniquement) | `RECAPTCHA_SECRET_KEY` |
+| Clé                                            | Visibilité                        | À placer dans                    |
+| ---------------------------------------------- | --------------------------------- | -------------------------------- |
+| **Clé du site** (commence souvent par `6L...`) | Publique (visible côté client)    | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` |
+| **Clé secrète** (commence aussi par `6L...`)   | Secrète (côté serveur uniquement) | `RECAPTCHA_SECRET_KEY`           |
 
 > 📋 Tu peux retrouver ces clés à tout moment sur https://www.google.com/recaptcha/admin → ton site → ⚙️ **Paramètres**.
 
@@ -85,17 +85,18 @@ Quand tu déploieras sur Vercel :
 
 ## 🆘 Dépannage
 
-| Problème | Solution |
-|---|---|
-| L'API renvoie "Vérification anti-spam échouée" | Vérifier que les clés sont bonnes et que `localhost` est dans les domaines autorisés sur le dashboard Google |
-| Score trop bas → soumission refusée | C'est normal en mode test. Tester depuis un autre navigateur, ou interagir naturellement avec la page avant de soumettre |
-| Badge reCAPTCHA visible en bas-droite | C'est masqué via CSS (`.grecaptcha-badge`). Si tu veux le réafficher : retirer le bloc CSS dans `globals.css` |
-| `RECAPTCHA_SECRET_KEY` non détectée | Redémarrer `npm run dev` après ajout. Les variables `.env.local` ne sont lues qu'au démarrage. |
-| Erreur "invalid-input-secret" | La `RECAPTCHA_SECRET_KEY` n'est pas correcte → re-copier depuis le dashboard Google |
+| Problème                                       | Solution                                                                                                                 |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| L'API renvoie "Vérification anti-spam échouée" | Vérifier que les clés sont bonnes et que `localhost` est dans les domaines autorisés sur le dashboard Google             |
+| Score trop bas → soumission refusée            | C'est normal en mode test. Tester depuis un autre navigateur, ou interagir naturellement avec la page avant de soumettre |
+| Badge reCAPTCHA visible en bas-droite          | C'est masqué via CSS (`.grecaptcha-badge`). Si tu veux le réafficher : retirer le bloc CSS dans `globals.css`            |
+| `RECAPTCHA_SECRET_KEY` non détectée            | Redémarrer `npm run dev` après ajout. Les variables `.env.local` ne sont lues qu'au démarrage.                           |
+| Erreur "invalid-input-secret"                  | La `RECAPTCHA_SECRET_KEY` n'est pas correcte → re-copier depuis le dashboard Google                                      |
 
 ## ✅ Mode dev sans clés
 
 Si tu n'as **pas encore** configuré reCAPTCHA, le formulaire fonctionne quand même :
+
 - Le composant `RecaptchaScript` ne charge rien (retourne `null`)
 - Le hook `useRecaptcha` retourne `isEnabled = false`
 - L'API route saute la vérification
@@ -106,6 +107,7 @@ C'est pratique pour développer rapidement sans dépendre de Google.
 ## 📊 Surveiller les scores
 
 Sur https://www.google.com/recaptcha/admin → ton site, tu vois des **stats** :
+
 - Volume de requêtes
 - Distribution des scores (utile pour ajuster le seuil 0.5 si beaucoup de faux positifs)
 - Erreurs récentes

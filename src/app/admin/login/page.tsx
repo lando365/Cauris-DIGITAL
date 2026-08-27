@@ -29,9 +29,7 @@ export default function AdminLoginPage() {
         <h1 className="mb-1 text-center font-montserrat text-xl font-bold text-cauris-black">
           CAURIS DIGITAL
         </h1>
-        <p className="mb-6 text-center text-sm text-cauris-gray-secondary">
-          Espace administrateur
-        </p>
+        <p className="mb-6 text-center text-sm text-cauris-gray-secondary">Espace administrateur</p>
 
         {resetSuccess && (
           <p className="mb-4 rounded-md bg-green-50 px-3 py-2 text-center text-sm text-green-700">
@@ -55,7 +53,10 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+            <label
+              htmlFor="password"
+              className="mb-1 block text-sm font-medium text-cauris-gray-text"
+            >
               Mot de passe
             </label>
             <input
@@ -77,7 +78,10 @@ export default function AdminLoginPage() {
           <SubmitButton />
 
           <p className="text-center text-sm">
-            <Link href="/admin/forgot-password" className="text-cauris-gray-secondary hover:underline">
+            <Link
+              href="/admin/forgot-password"
+              className="text-cauris-gray-secondary hover:underline"
+            >
               Mot de passe oublié ?
             </Link>
           </p>

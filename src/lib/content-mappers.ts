@@ -14,7 +14,10 @@ import type {
   Article as DisplayArticle,
   ArticleSection,
 } from './constants';
-import type { Event as DisplayEvent, EventType as DisplayEventType } from '@/components/sections/EventsExplorer';
+import type {
+  Event as DisplayEvent,
+  EventType as DisplayEventType,
+} from '@/components/sections/EventsExplorer';
 
 // Convertit un code pays ISO 3166-1 alpha-2 (ex: "CM") en emoji drapeau.
 // Les données V1 codaient le drapeau en dur ; côté base, seul countryCode existe.
@@ -120,7 +123,8 @@ export function mapEvent(e: PrismaEvent): DisplayEvent {
     title: e.title,
     type: EVENT_TYPE_LABELS[e.type],
     date: e.startDate.toISOString().slice(0, 10),
-    time: e.startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' GMT+1',
+    time:
+      e.startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' GMT+1',
     place: e.isOnline ? 'En ligne' : e.location,
     online: e.isOnline,
     description: e.description,

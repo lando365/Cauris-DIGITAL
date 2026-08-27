@@ -7,17 +7,16 @@ import { UnsubscribeButton } from './UnsubscribeButton';
 export default async function AdminSubscribersPage({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: Promise<{ q?: string }>;
 }) {
+  const { q } = await searchParams;
   const user = await requireAdminUser();
 
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const where = searchParams.q
-    ? { email: { contains: searchParams.q, mode: 'insensitive' as const } }
-    : {};
+  const where = q ? { email: { contains: q, mode: 'insensitive' as const } } : {};
 
   const [subscribers, totalActive, newThisMonth, growth] = await Promise.all([
     prisma.newsletterSubscriber.findMany({ where, orderBy: { createdAt: 'desc' } }),
@@ -61,7 +60,7 @@ export default async function AdminSubscribersPage({
         <input
           type="text"
           name="q"
-          defaultValue={searchParams.q}
+          defaultValue={q}
           placeholder="Rechercher par email…"
           className="w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
