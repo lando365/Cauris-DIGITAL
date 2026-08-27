@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { ImageCropperModal } from './ImageCropperModal';
 
 export type UploadEntityType = 'startup' | 'partner' | 'article' | 'event';
 
@@ -10,6 +11,9 @@ interface FileUploadFieldProps {
   name: string; // champ du formulaire qui porte l'URL finale (logoUrl, coverImageUrl, imageUrl)
   entityType: UploadEntityType;
   defaultValue?: string | null;
+  // Ratio largeur/hauteur imposé avant l'envoi (ex: 16/9) — CDC V2 §8.2.3
+  // ("Upload de l'image de couverture avec recadrage"). Non défini = pas de recadrage.
+  cropAspect?: number;
 }
 
 // CDC V2 §5.5 — mêmes règles que la validation serveur (src/app/api/admin/upload),
@@ -29,24 +33,20 @@ const RULES: Record<UploadEntityType, { maxMb: number; accept: string; formats: 
   event: { maxMb: 5, accept: 'image/jpeg,image/png,image/webp', formats: 'JPG, PNG, WEBP' },
 };
 
-export function FileUploadField({ label, name, entityType, defaultValue }: FileUploadFieldProps) {
+export function FileUploadField({
+  label,
+  name,
+  entityType,
+  defaultValue,
+  cropAspect,
+}: FileUploadFieldProps) {
   const [url, setUrl] = useState(defaultValue ?? '');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
   const rule = RULES[entityType];
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setError(null);
-
-    if (file.size > rule.maxMb * 1024 * 1024) {
-      setError(`Fichier trop volumineux (max ${rule.maxMb} Mo).`);
-      e.target.value = '';
-      return;
-    }
-
+  async function uploadFile(file: File) {
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
@@ -64,8 +64,28 @@ export function FileUploadField({ label, name, entityType, defaultValue }: FileU
       setError("Erreur réseau pendant l'envoi du fichier.");
     } finally {
       setUploading(false);
-      e.target.value = '';
     }
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setError(null);
+
+    if (file.size > rule.maxMb * 1024 * 1024) {
+      setError(`Fichier trop volumineux (max ${rule.maxMb} Mo).`);
+      return;
+    }
+
+    // Le SVG n'a pas de dimensions raster à recadrer — envoi direct.
+    if (cropAspect && file.type !== 'image/svg+xml') {
+      setPendingFile(file);
+      return;
+    }
+
+    void uploadFile(file);
   }
 
   return (
@@ -108,6 +128,18 @@ export function FileUploadField({ label, name, entityType, defaultValue }: FileU
         <p role="alert" className="mt-1 text-xs text-red-600">
           {error}
         </p>
+      )}
+
+      {pendingFile && cropAspect && (
+        <ImageCropperModal
+          file={pendingFile}
+          aspect={cropAspect}
+          onCancel={() => setPendingFile(null)}
+          onConfirm={(cropped) => {
+            setPendingFile(null);
+            void uploadFile(cropped);
+          }}
+        />
       )}
     </div>
   );

@@ -171,6 +171,7 @@ export function ArticleForm({
         name="coverImageUrl"
         entityType="article"
         defaultValue={article?.coverImageUrl}
+        cropAspect={16 / 9}
       />
 
       {state?.error && (
