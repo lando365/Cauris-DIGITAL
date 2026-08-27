@@ -9,11 +9,22 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 export default function NewsletterForm() {
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
+  const [website, setWebsite] = useState(''); // honeypot anti-spam
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Honeypot rempli par un bot -> on fait croire que tout va bien sans rien envoyer
+    if (website) {
+      setStatus('success');
+      setMessage('Merci ! Vérifiez votre email pour confirmer votre inscription.');
+      setEmail('');
+      setConsent(false);
+      return;
+    }
+
     setStatus('loading');
     setMessage('');
 
@@ -21,7 +32,7 @@ export default function NewsletterForm() {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, consent }),
+        body: JSON.stringify({ email, consent, website }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Erreur');
@@ -37,6 +48,18 @@ export default function NewsletterForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-2">
+      {/* Honeypot caché anti-spam */}
+      <input
+        type="text"
+        name="website"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        className="absolute left-[-9999px]"
+        aria-hidden="true"
+      />
+
       <label htmlFor="newsletter-email" className="sr-only">
         Adresse email
       </label>

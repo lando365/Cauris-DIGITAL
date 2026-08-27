@@ -23,9 +23,14 @@ import { createToken } from '@/lib/newsletter-token';
  */
 export async function POST(request: Request) {
   try {
-    const { email, firstName, consent } = await request.json();
+    const { email, firstName, consent, website } = await request.json();
 
-    // 1. Validation
+    // 1. Honeypot anti-spam — si rempli, on fait croire que tout va bien sans rien faire
+    if (website) {
+      return NextResponse.json({ success: true, message: 'Confirmation enregistrée.' });
+    }
+
+    // 2. Validation
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Adresse email invalide.' }, { status: 400 });
     }
@@ -36,7 +41,7 @@ export async function POST(request: Request) {
     const cleanFirstName =
       typeof firstName === 'string' ? firstName.trim().slice(0, 80) : undefined;
 
-    // 2. Mode fallback dev — pas de clé
+    // 3. Mode fallback dev — pas de clé
     const apiKey = process.env.RESEND_API_KEY;
     const audienceId = process.env.RESEND_AUDIENCE_ID;
 
@@ -55,7 +60,7 @@ export async function POST(request: Request) {
     const resend = new Resend(apiKey);
     const from = process.env.CONTACT_EMAIL_FROM ?? 'CAURIS DIGITAL <onboarding@resend.dev>';
 
-    // 3. Lien de confirmation signé (double opt-in — pas d'ajout à l'audience ici)
+    // 4. Lien de confirmation signé (double opt-in — pas d'ajout à l'audience ici)
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url;
     const confirmToken = createToken(cleanEmail, 'confirm');
     const confirmUrl = new URL('/api/newsletter/confirm', siteUrl);
