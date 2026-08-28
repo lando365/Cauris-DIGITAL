@@ -1,0 +1,662 @@
+openapi: 3.0.3
+
+info:
+  title: CAURIS DIGITAL — API
+  version: '2.0.0'
+  description: |
+    Documentation OpenAPI des **routes API HTTP réelles** de CAURIS DIGITAL (CDC V2 §6).
+
+    **Périmètre.** Le CRUD complet de l'espace d'administration (startups, articles,
+    événements, partenaires, utilisateurs, messages, inscrits) est implémenté via des
+    Server Actions Next.js — des mutations serveur typées de bout en bout, invoquées
+    directement depuis les formulaires React, sans appel HTTP JSON classique. Ce
+    mécanisme n'a pas de représentation OpenAPI significative (pas de méthode HTTP,
+    pas d'URL stable, payload sérialisé par le framework). Voir le CDC V2 §6.3.8
+    « Correspondance avec l'implémentation réelle » pour la liste des Server Actions
+    et leur fichier source.
+
+    Ce document couvre donc uniquement les endpoints qui sont de vraies routes HTTP :
+    lecture publique du contenu, formulaires publics (contact, newsletter),
+    authentification, et exports CSV admin.
+
+    **Pourquoi ce périmètre reste pertinent.** Une API REST complète redevient
+    nécessaire si un consommateur externe apparaît (application mobile V3, §9.5,
+    intégration tierce). Ces routes existantes constituent alors une base déjà
+    testée (§12.4) à étendre plutôt qu'à reconcevoir.
+  contact:
+    name: CAURIS DIGITAL
+    url: https://caurisdigital.org
+
+servers:
+  - url: https://caurisdigital.org
+    description: Production
+  - url: http://localhost:3000
+    description: Développement local
+
+security: []
+
+tags:
+  - name: Contenu public
+    description: Lecture seule, sans authentification — consommé par le site public et potentiellement par un futur client externe.
+  - name: Formulaires publics
+    description: Soumissions anonymes protégées (honeypot, reCAPTCHA v3, validation stricte).
+  - name: Newsletter
+    description: Double opt-in RGPD (CDC V2 §6.5) — inscription, confirmation, désinscription en un clic.
+  - name: Authentification
+    description: Réinitialisation de mot de passe en libre-service (CDC V2 §7.2).
+  - name: Admin
+    description: Réservé aux comptes authentifiés (session NextAuth) — upload de fichiers et exports CSV. Le CRUD lui-même passe par des Server Actions, hors périmètre de ce document.
+
+paths:
+  /api/startups:
+    get:
+      operationId: listStartups
+      tags: [Contenu public]
+      summary: Liste des startups
+      description: |
+        Toutes les startups créées sont publiques — cette entité n'a pas de champ de
+        publication/brouillon (contrairement à Article et Event).
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - name: sector
+          in: query
+          schema: { $ref: '#/components/schemas/Sector' }
+        - name: country
+          in: query
+          description: Code pays ISO 3166-1 alpha-2 (ex. `CM`).
+          schema: { type: string }
+        - name: status
+          in: query
+          schema: { $ref: '#/components/schemas/StartupStatus' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Startup' }
+                  meta: { $ref: '#/components/schemas/PaginationMeta' }
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/startups/{slug}:
+    get:
+      operationId: getStartupBySlug
+      tags: [Contenu public]
+      summary: Détail d'une startup
+      description: Réponse mise en cache ISR (revalidation 60s).
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Startup' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/articles:
+    get:
+      operationId: listArticles
+      tags: [Contenu public]
+      summary: Liste des articles publiés
+      description: |
+        Seuls les articles au statut `PUBLISHED` dont `publishedAt` est déjà passé
+        sont retournés — les brouillons et les publications programmées dans le
+        futur restent invisibles publiquement.
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - name: category
+          in: query
+          schema: { $ref: '#/components/schemas/ArticleCategory' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Article' }
+                  meta: { $ref: '#/components/schemas/PaginationMeta' }
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/articles/{slug}:
+    get:
+      operationId: getArticleBySlug
+      tags: [Contenu public]
+      summary: Détail d'un article
+      description: |
+        Un brouillon ou une publication programmée dans le futur n'est pas visible,
+        même par accès direct au slug — réponse 404 identique à un slug inexistant.
+        Réponse mise en cache ISR (revalidation 60s).
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Article' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/events:
+    get:
+      operationId: listEvents
+      tags: [Contenu public]
+      summary: Liste des événements publiés
+      description: |
+        Uniquement les événements avec `isPublished=true`. Le champ `isPast` est
+        calculé à la volée à partir de `startDate` (RM-E02), pas stocké en base.
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Event' }
+                  meta: { $ref: '#/components/schemas/PaginationMeta' }
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/partners:
+    get:
+      operationId: listPartners
+      tags: [Contenu public]
+      summary: Liste des partenaires
+      description: |
+        Comme Startup, cette entité n'a pas de champ de publication : tous les
+        partenaires créés sont publics. Non paginé (liste courte par nature).
+      parameters:
+        - name: category
+          in: query
+          schema: { $ref: '#/components/schemas/PartnerCategory' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Partner' }
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/contact:
+    post:
+      operationId: submitContactForm
+      tags: [Formulaires publics]
+      summary: Envoyer un message de contact (ou une candidature startup / demande de partenariat)
+      description: |
+        Un même endpoint sert 3 formulaires distincts selon `subject` : contact
+        générique, candidature startup (exige `startupName`/`sector`/`stage`), et
+        partenariat corporate (exige `company`/`phone`). Anti-spam : honeypot
+        (`website`, doit rester vide) + reCAPTCHA v3 (score minimum 0.5) + persistance
+        de l'IP hachée SHA-256 (jamais en clair, CDC §7.7). Le message est à la fois
+        persisté en base et envoyé par email à l'équipe.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [firstName, lastName, email, subject, message, consent]
+              properties:
+                firstName: { type: string }
+                lastName: { type: string }
+                email: { type: string, format: email }
+                country: { type: string }
+                subject:
+                  type: string
+                  enum:
+                    [
+                      candidature,
+                      candidature-incubation,
+                      candidature-acceleration,
+                      partenariat-corporate,
+                      mentorat,
+                      presse,
+                      evenement,
+                      autre,
+                    ]
+                message: { type: string, minLength: 20, maxLength: 10000 }
+                consent: { type: boolean }
+                website:
+                  type: string
+                  description: Honeypot anti-spam — doit rester vide. Si rempli, réponse 200 factice sans effet.
+                startupName: { type: string, description: 'Requis si subject = candidature*' }
+                sector: { type: string, description: 'Requis si subject = candidature*' }
+                stage: { type: string, description: 'Requis si subject = candidature*' }
+                company: { type: string, description: 'Requis si subject = partenariat-corporate' }
+                phone: { type: string, description: 'Requis si subject = partenariat-corporate' }
+                recaptchaToken: { type: string }
+                pitchDeck:
+                  type: string
+                  format: binary
+                  description: PDF uniquement, 5 Mo max.
+      responses:
+        '200':
+          description: Message reçu (et éventuellement persisté/envoyé — voir `dev`).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+                  dev:
+                    type: boolean
+                    description: Présent et `true` uniquement en mode fallback (pas de RESEND_API_KEY configurée).
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '403':
+          description: Score reCAPTCHA insuffisant (soumission probablement automatisée).
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/newsletter:
+    post:
+      operationId: subscribeNewsletter
+      tags: [Newsletter]
+      summary: 'Étape 1/2 — Demander une inscription à la newsletter (double opt-in)'
+      description: |
+        N'ajoute PAS encore le contact à l'audience — envoie un email de confirmation
+        contenant un lien signé (valable 48h). L'inscription réelle n'a lieu qu'au
+        clic sur ce lien, voir `GET /api/newsletter/confirm`. Anti-spam : honeypot
+        `website` (doit rester vide).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, consent]
+              properties:
+                email: { type: string, format: email }
+                firstName: { type: string, maxLength: 80 }
+                consent:
+                  type: boolean
+                  description: Obligatoire (RM-N02) — pas de pré-cochage RGPD.
+                website:
+                  type: string
+                  description: Honeypot anti-spam — doit rester vide.
+      responses:
+        '200':
+          description: Email de confirmation envoyé (ou honeypot déclenché — réponse identique).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '503':
+          description: Service d'emails en mode test (domaine non vérifié côté Resend) — l'utilisateur ne recevra pas le lien.
+
+  /api/newsletter/confirm:
+    get:
+      operationId: confirmNewsletterSubscription
+      tags: [Newsletter]
+      summary: 'Étape 2/2 — Confirmer l''inscription (lien cliqué depuis l''email)'
+      description: |
+        Seule étape où le contact est réellement ajouté à l'audience Resend et où
+        l'email de bienvenue part. Une réinscription réactive le compte existant
+        (RM-N03) plutôt que de dupliquer la ligne en base. Le jeton est auto-porteur
+        (HMAC-SHA256, pas de lookup en base pour la validité) et expire après 48h.
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema: { type: string }
+        - name: firstName
+          in: query
+          schema: { type: string, maxLength: 80 }
+      responses:
+        '307':
+          description: |
+            Toujours une redirection : vers `/newsletter/confirmee` en cas de succès,
+            ou vers `/newsletter/erreur?raison={manquant|invalide|expire|serveur}` sinon.
+          headers:
+            Location: { schema: { type: string } }
+
+  /api/newsletter/unsubscribe:
+    get:
+      operationId: unsubscribeNewsletter
+      tags: [Newsletter]
+      summary: Désinscription en un clic
+      description: |
+        Lien inclus dans chaque email de bienvenue/newsletter. Jeton auto-porteur
+        dédié (usage `unsubscribe`, distinct du jeton de confirmation), valable
+        environ 13 mois.
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        '307':
+          description: |
+            Redirection vers `/newsletter/desinscrit` en cas de succès, ou vers
+            `/newsletter/erreur?raison={manquant|invalide|serveur}` sinon.
+          headers:
+            Location: { schema: { type: string } }
+
+  /api/auth/reset-password:
+    post:
+      operationId: requestPasswordReset
+      tags: [Authentification]
+      summary: Demander la réinitialisation du mot de passe admin
+      description: |
+        CDC V2 §7.2. La réponse est **volontairement identique** que l'email
+        corresponde à un compte existant, actif, ou non (anti-énumération de
+        comptes, OWASP §9.3) — seul un email de réinitialisation part en
+        arrière-plan si le compte existe. Le jeton généré est auto-invalidant :
+        il encode une empreinte du `passwordHash` courant, donc tout changement de
+        mot de passe (y compris via ce même flux) invalide silencieusement les
+        jetons précédemment émis.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '200':
+          description: Réponse générique, succès ou non selon l'existence du compte.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /api/admin/upload:
+    post:
+      operationId: uploadAdminFile
+      tags: [Admin]
+      summary: Téléverser une image (logo ou couverture) vers Vercel Blob
+      description: |
+        CDC V2 §5.5. Validation défense-en-profondeur : taille max selon le type
+        d'entité, MIME type dans une liste blanche, et cohérence extension déclarée
+        ↔ MIME type réel (contre un fichier renommé). Réservé aux comptes
+        authentifiés (ADMIN ou EDITOR).
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file, entityType]
+              properties:
+                file: { type: string, format: binary }
+                entityType:
+                  type: string
+                  enum: [startup, partner, article, event]
+                  description: |
+                    Détermine la règle appliquée : startup/partner → 2 Mo max,
+                    JPG/PNG/WEBP/SVG ; article/event → 5 Mo max, JPG/PNG/WEBP.
+      responses:
+        '200':
+          description: Fichier téléversé.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url: { type: string, format: uri }
+        '400':
+          description: Fichier manquant, type d'entité invalide, taille dépassée ou format non supporté.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/messages/export:
+    get:
+      operationId: exportContactMessages
+      tags: [Admin]
+      summary: Exporter les messages de contact au format CSV
+      description: Réservé au rôle ADMIN (pas EDITOR).
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Fichier CSV (colonnes Prénom, Nom, Email, Pays, Sujet, Message, Statut, Date de réception).
+          content:
+            text/csv:
+              schema: { type: string }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/subscribers/export:
+    get:
+      operationId: exportNewsletterSubscribers
+      tags: [Admin]
+      summary: Exporter les inscrits newsletter au format CSV
+      description: |
+        Réservé au rôle ADMIN. Format pensé pour un ré-import direct dans un outil
+        d'envoi externe (Mailchimp/Brevo, CDC §3.3.5).
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Fichier CSV (colonnes Email, Prénom, Statut, Source, Date d'inscription, Date de désinscription).
+          content:
+            text/csv:
+              schema: { type: string }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: authjs.session-token
+      description: |
+        Cookie de session NextAuth v5 (JWT). Le JWT ne porte qu'un `sessionToken`
+        opaque ; la validité réelle (session non révoquée, compte actif, rôle) est
+        vérifiée côté serveur en base à chaque requête (voir `src/lib/require-admin.ts`),
+        pas uniquement via la signature du JWT.
+
+  responses:
+    NotFound:
+      description: Ressource introuvable.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    Forbidden:
+      description: Non authentifié, ou rôle insuffisant.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    ValidationError:
+      description: Corps de requête invalide (champ manquant, format incorrect, etc.).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    ServerError:
+      description: Erreur serveur inattendue.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+  schemas:
+    ErrorEnvelope:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+
+    PaginationMeta:
+      type: object
+      properties:
+        page: { type: integer }
+        limit: { type: integer }
+        total: { type: integer }
+
+    Sector:
+      type: string
+      enum: [AGRITECH, FINTECH, EDTECH, HEALTHTECH, SMART_CITIES]
+
+    StartupStatus:
+      type: string
+      enum: [EN_INCUBATION, DIPLOMEE, ALUMNI]
+
+    ArticleCategory:
+      type: string
+      enum: [ANNONCES, PORTRAITS, RESSOURCES, EVENEMENTS, OPINIONS]
+
+    EventType:
+      type: string
+      enum: [DEMO_DAY, ATELIER, WEBINAIRE, HACKATHON, NETWORKING, CONFERENCE]
+
+    PartnerCategory:
+      type: string
+      enum: [INSTITUTIONNEL, FINANCIER, ACADEMIQUE, CORPORATIF]
+
+    Startup:
+      type: object
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        name: { type: string }
+        tagline: { type: string }
+        description: { type: string }
+        longDescription: { type: string, nullable: true }
+        sector: { $ref: '#/components/schemas/Sector' }
+        countryName: { type: string }
+        countryCode: { type: string, maxLength: 2 }
+        city: { type: string, nullable: true }
+        status: { $ref: '#/components/schemas/StartupStatus' }
+        year: { type: integer }
+        foundedYear: { type: integer, nullable: true }
+        logoUrl: { type: string, nullable: true }
+        websiteUrl: { type: string, nullable: true }
+        linkedinUrl: { type: string, nullable: true }
+        technologies: { type: array, items: { type: string } }
+        founders: { type: array, items: { type: string } }
+        metrics: { type: object, nullable: true }
+        achievements: { type: array, items: { type: string } }
+        isFeatured: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    Article:
+      type: object
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        title: { type: string }
+        excerpt: { type: string }
+        content: { type: string }
+        category: { $ref: '#/components/schemas/ArticleCategory' }
+        coverImageUrl: { type: string, nullable: true }
+        readingTime: { type: integer, description: 'Minutes, calculé à 250 mots/min.' }
+        status: { type: string, enum: [PUBLISHED], description: 'Toujours PUBLISHED sur cet endpoint public.' }
+        publishedAt: { type: string, format: date-time }
+        authorId: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    Event:
+      type: object
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        title: { type: string }
+        description: { type: string }
+        type: { $ref: '#/components/schemas/EventType' }
+        startDate: { type: string, format: date-time }
+        endDate: { type: string, format: date-time, nullable: true }
+        location: { type: string }
+        isOnline: { type: boolean }
+        isFree: { type: boolean }
+        price: { type: string, nullable: true }
+        registerUrl: { type: string, nullable: true }
+        imageUrl: { type: string, nullable: true }
+        isPublished: { type: boolean }
+        isPast:
+          type: boolean
+          description: Calculé à la volée à partir de startDate (RM-E02), pas stocké.
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    Partner:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        logoUrl: { type: string, nullable: true }
+        websiteUrl: { type: string, nullable: true }
+        category: { $ref: '#/components/schemas/PartnerCategory' }
+        displayOrder: { type: integer }
+        isFeatured: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
