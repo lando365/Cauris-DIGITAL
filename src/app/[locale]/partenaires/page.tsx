@@ -8,6 +8,7 @@ import {
   GraduationCap,
   Briefcase,
 } from 'lucide-react';
+import { Link } from '@/i18n/navigation';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
 import { PARTNER_CATEGORIES, type PartnerLogo } from '@/lib/constants';
@@ -166,13 +167,13 @@ export default async function PartnersPage() {
               Que vous soyez une institution, une entreprise, une université ou un fonds
               d&apos;investissement, nous serions ravis d&apos;explorer une collaboration avec vous.
             </p>
-            <a
+            <Link
               href="/contact?objet=partenariat-corporate"
               className="inline-flex items-center gap-2 rounded-btn bg-white px-8 py-4 text-base font-semibold uppercase tracking-wide text-cauris-orange transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl"
             >
               Devenir partenaire
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>

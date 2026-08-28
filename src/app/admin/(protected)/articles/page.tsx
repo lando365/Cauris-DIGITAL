@@ -90,7 +90,7 @@ export default async function AdminArticlesPage({
             {articles.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-cauris-gray-secondary">
-                  Aucun article pour l'instant.
+                  Aucun article pour l&apos;instant.
                 </td>
               </tr>
             )}

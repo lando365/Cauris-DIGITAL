@@ -59,7 +59,7 @@ export default async function AdminDashboardPage() {
             Derniers messages
           </h2>
           {recentMessages.length === 0 ? (
-            <p className="text-sm text-cauris-gray-secondary">Aucun message pour l'instant.</p>
+            <p className="text-sm text-cauris-gray-secondary">Aucun message pour l&apos;instant.</p>
           ) : (
             <ul className="space-y-2">
               {recentMessages.map((m) => (
@@ -88,7 +88,7 @@ export default async function AdminDashboardPage() {
           </h2>
           {recentArticles.length === 0 ? (
             <p className="text-sm text-cauris-gray-secondary">
-              Aucun article publié pour l'instant.
+              Aucun article publié pour l&apos;instant.
             </p>
           ) : (
             <ul className="space-y-2">

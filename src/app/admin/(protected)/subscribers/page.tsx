@@ -32,6 +32,7 @@ export default async function AdminSubscribersPage({
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-montserrat text-xl font-bold text-cauris-black">Newsletter</h1>
         {user.role === 'ADMIN' && (
+          // eslint-disable-next-line @next/next/no-html-link-for-pages -- déclenche un téléchargement de fichier, pas une navigation
           <a
             href="/api/admin/subscribers/export"
             className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-cauris-black hover:bg-gray-50"
@@ -74,7 +75,7 @@ export default async function AdminSubscribersPage({
               <th className="px-4 py-2">Prénom</th>
               <th className="px-4 py-2">Statut</th>
               <th className="px-4 py-2">Source</th>
-              <th className="px-4 py-2">Date d'inscription</th>
+              <th className="px-4 py-2">Date d&apos;inscription</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -96,7 +97,7 @@ export default async function AdminSubscribersPage({
             {subscribers.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-cauris-gray-secondary">
-                  Aucun inscrit pour l'instant.
+                  Aucun inscrit pour l&apos;instant.
                 </td>
               </tr>
             )}

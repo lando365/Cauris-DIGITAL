@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Inter, Montserrat } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import './globals.css';
@@ -11,7 +12,15 @@ import './globals.css';
  * car le middleware a déjà résolu la locale pour toute la requête — on
  * l'utilise pour que <html lang> reflète toujours la vraie langue affichée,
  * pas seulement la langue par défaut (WCAG 3.1.1).
+ *
+ * `metadataBase` est redéfini ici (en plus de [locale]/layout.tsx) car
+ * opengraph-image.tsx/twitter-image.tsx vivent au même niveau que ce fichier,
+ * pas sous [locale] — sans ça, Next résout leurs URLs vers localhost en prod.
  */
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://caurisdigital.org'),
+};
 
 const inter = Inter({
   subsets: ['latin'],

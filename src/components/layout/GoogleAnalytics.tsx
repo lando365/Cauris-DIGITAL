@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useHasMounted } from '@/lib/hooks/useHasMounted';
 
 /**
  * Google Analytics 4 — RGPD-compliant.
@@ -36,13 +37,13 @@ export default function GoogleAnalytics() {
 
   // État local : consentement utilisateur. Lu depuis localStorage au montage.
   const [hasConsent, setHasConsent] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
 
   // Au montage côté client : lire le consentement actuel
   useEffect(() => {
-    setMounted(true);
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- lecture ponctuelle d'un système externe (localStorage) au montage, pas d'état dérivé
       setHasConsent(stored === 'accepted');
     } catch {
       // localStorage inaccessible (mode privé strict) → on n'active pas GA

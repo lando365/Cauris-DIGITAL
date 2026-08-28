@@ -156,7 +156,7 @@ export function EventForm({
           htmlFor="registerUrl"
           className="mb-1 block text-sm font-medium text-cauris-gray-text"
         >
-          Lien d'inscription (https://…)
+          Lien d&apos;inscription (https://…)
         </label>
         <input
           id="registerUrl"

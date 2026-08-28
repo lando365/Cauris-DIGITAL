@@ -91,7 +91,7 @@ export function PartnerForm({
             htmlFor="displayOrder"
             className="mb-1 block text-sm font-medium text-cauris-gray-text"
           >
-            Ordre d'affichage
+            Ordre d&apos;affichage
           </label>
           <input
             id="displayOrder"
@@ -105,7 +105,7 @@ export function PartnerForm({
 
       <label className="flex items-center gap-2 text-sm text-cauris-gray-text">
         <input type="checkbox" name="isFeatured" defaultChecked={partner?.isFeatured} />
-        Afficher sur la page d'accueil
+        Afficher sur la page d&apos;accueil
       </label>
 
       {state?.error && (

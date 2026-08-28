@@ -6,7 +6,7 @@ Application full-stack : site public multilingue (FR/EN) et dashboard d'administ
 
 ## Stack technique
 
-- **Framework** : [Next.js 14](https://nextjs.org/) (App Router, Server Components, Server Actions)
+- **Framework** : [Next.js 16](https://nextjs.org/) (App Router, Server Components, Server Actions)
 - **Langage** : TypeScript (`strict: true`)
 - **Base de données** : PostgreSQL via [Supabase](https://supabase.com/), ORM [Prisma](https://www.prisma.io/)
 - **Authentification** : [NextAuth.js v5](https://authjs.dev/) (Credentials Provider, sessions révocables en base)

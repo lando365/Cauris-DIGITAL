@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { Cookie, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useHasMounted } from '@/lib/hooks/useHasMounted';
 
 const STORAGE_KEY = 'cauris-cookie-consent';
 
@@ -17,13 +18,13 @@ type Consent = 'accepted' | 'refused' | null;
 export default function CookieBanner() {
   const t = useTranslations('CookieBanner');
   const [consent, setConsent] = useState<Consent>(null);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
 
   useEffect(() => {
-    setMounted(true);
     try {
       const stored = localStorage.getItem(STORAGE_KEY) as Consent;
       if (stored === 'accepted' || stored === 'refused') {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- lecture ponctuelle d'un système externe (localStorage) au montage, pas d'état dérivé
         setConsent(stored);
       }
     } catch {

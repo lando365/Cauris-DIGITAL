@@ -161,8 +161,8 @@ export function ArticleForm({
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
         <p className="mt-1 text-xs text-cauris-gray-secondary">
-          Une date future programme la publication (l'article n'apparaît publiquement qu'à partir de
-          cette date).
+          Une date future programme la publication (l&apos;article n&apos;apparaît publiquement qu&apos;à
+          partir de cette date).
         </p>
       </div>
 

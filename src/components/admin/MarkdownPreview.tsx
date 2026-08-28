@@ -11,7 +11,9 @@ export function MarkdownPreview({ content }: { content: string }) {
       {content.trim() ? (
         <ReactMarkdown>{content}</ReactMarkdown>
       ) : (
-        <p className="text-cauris-gray-secondary">L'aperçu apparaît ici au fur et à mesure de la saisie.</p>
+        <p className="text-cauris-gray-secondary">
+          L&apos;aperçu apparaît ici au fur et à mesure de la saisie.
+        </p>
       )}
     </div>
   );

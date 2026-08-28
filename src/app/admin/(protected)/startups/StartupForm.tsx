@@ -254,7 +254,7 @@ export function StartupForm({
 
       <label className="flex items-center gap-2 text-sm text-cauris-gray-text">
         <input type="checkbox" name="isFeatured" defaultChecked={startup?.isFeatured} />
-        Mettre en avant sur la page d'accueil
+        Mettre en avant sur la page d&apos;accueil
       </label>
 
       {state?.error && (

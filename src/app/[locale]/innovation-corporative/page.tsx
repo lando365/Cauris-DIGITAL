@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { Link } from '@/i18n/navigation';
 import {
   ArrowRight,
   Search,
@@ -294,13 +295,13 @@ export default function InnovationCorporativePage() {
               Contactez-nous pour organiser une réunion de découverte. Nous vous proposerons la
               formule de partenariat la plus adaptée à vos enjeux stratégiques.
             </p>
-            <a
+            <Link
               href="/contact?objet=partenariat-corporate"
               className="inline-flex items-center gap-2 rounded-btn bg-white px-8 py-4 text-base font-semibold uppercase tracking-wide text-cauris-orange transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl"
             >
               Discuter d&apos;un partenariat
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -114,7 +114,7 @@ export default async function AdminStartupsPage({
             {startups.length === 0 && (
               <tr>
                 <td colSpan={5} className="px-4 py-8 text-center text-cauris-gray-secondary">
-                  Aucune startup pour l'instant.
+                  Aucune startup pour l&apos;instant.
                 </td>
               </tr>
             )}

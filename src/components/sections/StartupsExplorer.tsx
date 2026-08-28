@@ -49,7 +49,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
       }
       return true;
     });
-  }, [query, sectorFilter, countryFilter, statusFilter]);
+  }, [startups, query, sectorFilter, countryFilter, statusFilter]);
 
   const hasActiveFilters =
     query.trim() !== '' ||

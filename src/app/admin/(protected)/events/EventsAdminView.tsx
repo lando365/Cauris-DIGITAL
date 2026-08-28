@@ -105,7 +105,7 @@ export function EventsAdminView({ events, canDelete }: { events: AdminEvent[]; c
               {events.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-8 text-center text-cauris-gray-secondary">
-                    Aucun événement pour l'instant.
+                    Aucun événement pour l&apos;instant.
                   </td>
                 </tr>
               )}

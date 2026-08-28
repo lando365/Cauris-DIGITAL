@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
           <div className="space-y-4 text-center">
             <p className="text-sm text-cauris-gray-text">
               Si un compte existe pour cet email, un lien de réinitialisation valable 1 heure vient
-              d'être envoyé.
+              d&apos;être envoyé.
             </p>
             <Link
               href="/admin/login"

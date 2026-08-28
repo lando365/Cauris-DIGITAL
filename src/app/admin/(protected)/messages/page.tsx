@@ -31,6 +31,7 @@ export default async function AdminMessagesPage({
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-montserrat text-xl font-bold text-cauris-black">Messages</h1>
         {user.role === 'ADMIN' && (
+          // eslint-disable-next-line @next/next/no-html-link-for-pages -- déclenche un téléchargement de fichier, pas une navigation
           <a
             href="/api/admin/messages/export"
             className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-cauris-black hover:bg-gray-50"
@@ -82,7 +83,7 @@ export default async function AdminMessagesPage({
         ))}
         {messages.length === 0 && (
           <p className="py-8 text-center text-sm text-cauris-gray-secondary">
-            Aucun message pour l'instant.
+            Aucun message pour l&apos;instant.
           </p>
         )}
       </div>

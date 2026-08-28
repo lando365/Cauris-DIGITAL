@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { Link } from '@/i18n/navigation';
 
 /**
  * CTA final plein largeur (CDC §2.1).
@@ -21,19 +22,19 @@ export default function FinalCTA() {
             Dakar, Abidjan, Paris ou Montréal — notre programme en ligne s&apos;adapte à vous.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
+            <Link
               href="/contact?objet=candidature"
               className="inline-flex items-center gap-2 rounded-btn bg-white px-8 py-4 text-base font-semibold uppercase tracking-wide text-cauris-orange transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl"
             >
               Déposer ma candidature
               <ArrowRight className="w-5 h-5" />
-            </a>
-            <a
+            </Link>
+            <Link
               href="/programme-incubation"
               className="inline-flex items-center gap-2 text-white underline-offset-4 hover:underline font-medium"
             >
               En savoir plus sur nos programmes
-            </a>
+            </Link>
           </div>
         </div>
       </div>
