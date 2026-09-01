@@ -17,8 +17,9 @@ interface ChatMessage {
 }
 
 /**
- * Assistant FAQ flottant : répond aux questions simples par recherche de
- * mots-clés dans FAQ_ITEMS (src/lib/constants.ts), sans appel réseau ni LLM.
+ * Cauris Chat : widget flottant qui répond aux questions simples par
+ * recherche de mots-clés dans FAQ_ITEMS (src/lib/constants.ts), sans appel
+ * réseau ni LLM.
  */
 export default function FAQChatWidget() {
   const t = useTranslations('FAQChat');

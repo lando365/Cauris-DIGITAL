@@ -76,11 +76,11 @@
     "closeButton": "Fermer le bandeau cookies"
   },
   "FAQChat": {
-    "openButton": "Ouvrir l'assistant FAQ",
-    "closeButton": "Fermer l'assistant FAQ",
-    "title": "Assistant FAQ",
-    "subtitle": "Posez une question, je réponds à partir de notre FAQ",
-    "greeting": "Bonjour ! Posez-moi une question sur CAURIS DIGITAL (candidature, programmes, mentorat, partenariats...).",
+    "openButton": "Ouvrir Cauris Chat",
+    "closeButton": "Fermer Cauris Chat",
+    "title": "Cauris Chat",
+    "subtitle": "Je réponds à vos questions sur CAURIS DIGITAL",
+    "greeting": "Bienvenue sur CAURIS DIGITAL ! Posez-moi une question (candidature, programmes, mentorat, partenariats...).",
     "inputPlaceholder": "Votre question...",
     "sendButton": "Envoyer",
     "fallbackMessage": "Je n'ai pas trouvé de réponse précise à cette question dans notre FAQ. Consultez notre",
