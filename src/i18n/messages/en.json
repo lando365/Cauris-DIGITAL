@@ -87,7 +87,9 @@
     "fallbackFaqLink": "full FAQ page",
     "fallbackOr": "or",
     "fallbackContactLink": "contact us directly",
-    "sourceLabel": "From our FAQ:"
+    "sourceLabel": "From our FAQ:",
+    "thanksReply": "You're welcome! Feel free to ask if you have other questions. See you soon!",
+    "greetingReply": "Hi! Ask me your question about CAURIS DIGITAL."
   },
   "LanguageSwitcher": {
     "label": "Language",

@@ -119,3 +119,22 @@ export function findBestFaqMatch(userInput: string): FaqMatch | null {
 
   return best && best.score >= MIN_SCORE ? best : null;
 }
+
+export type SmallTalkIntent = 'thanks' | 'greeting';
+
+const THANKS_WORDS = ['merci', 'remercie', 'thanks', 'thank'];
+const GREETING_WORDS = ['bonjour', 'bonsoir', 'salut', 'coucou', 'hello', 'hi', 'hey'];
+
+/**
+ * Détecte les messages de politesse (remerciement, salutation) pour répondre
+ * autrement qu'avec le message de repli générique "aucune réponse trouvée".
+ */
+export function detectSmallTalk(userInput: string): SmallTalkIntent | null {
+  const normalized = normalize(userInput);
+  const containsWord = (words: string[]) =>
+    words.some((word) => new RegExp(`\\b${word}\\b`).test(normalized));
+
+  if (containsWord(THANKS_WORDS)) return 'thanks';
+  if (containsWord(GREETING_WORDS)) return 'greeting';
+  return null;
+}

@@ -6,13 +6,14 @@ import { Link } from '@/i18n/navigation';
 import { MessageCircleQuestion, X, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useHasMounted } from '@/lib/hooks/useHasMounted';
-import { findBestFaqMatch } from '@/lib/faq-chat-matcher';
+import { detectSmallTalk, findBestFaqMatch } from '@/lib/faq-chat-matcher';
 
 interface ChatMessage {
   id: number;
   role: 'user' | 'bot';
   text: string;
   matchedQuestion?: string;
+  showFallbackLinks?: boolean;
 }
 
 /**
@@ -42,9 +43,29 @@ export default function FAQChatWidget() {
     if (!question) return;
 
     const match = findBestFaqMatch(question);
-    const botMessage: ChatMessage = match
-      ? { id: nextId.current + 1, role: 'bot', text: match.answer, matchedQuestion: match.question }
-      : { id: nextId.current + 1, role: 'bot', text: t('fallbackMessage') };
+    let botMessage: ChatMessage;
+    if (match) {
+      botMessage = {
+        id: nextId.current + 1,
+        role: 'bot',
+        text: match.answer,
+        matchedQuestion: match.question,
+      };
+    } else {
+      const smallTalk = detectSmallTalk(question);
+      if (smallTalk === 'thanks') {
+        botMessage = { id: nextId.current + 1, role: 'bot', text: t('thanksReply') };
+      } else if (smallTalk === 'greeting') {
+        botMessage = { id: nextId.current + 1, role: 'bot', text: t('greetingReply') };
+      } else {
+        botMessage = {
+          id: nextId.current + 1,
+          role: 'bot',
+          text: t('fallbackMessage'),
+          showFallbackLinks: true,
+        };
+      }
+    }
 
     setMessages((prev) => [
       ...prev,
@@ -105,7 +126,7 @@ export default function FAQChatWidget() {
                   </p>
                 )}
                 <p>{message.text}</p>
-                {message.role === 'bot' && !message.matchedQuestion && (
+                {message.role === 'bot' && message.showFallbackLinks && (
                   <p className="mt-1">
                     <Link href="/faq" className="text-cauris-orange hover:underline font-medium">
                       {t('fallbackFaqLink')}

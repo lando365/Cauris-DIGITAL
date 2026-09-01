@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { findBestFaqMatch } from '@/lib/faq-chat-matcher';
+import { detectSmallTalk, findBestFaqMatch } from '@/lib/faq-chat-matcher';
 
 describe('findBestFaqMatch', () => {
   it('matches a question by keyword overlap, ignoring accents and case', () => {
@@ -28,5 +28,30 @@ describe('findBestFaqMatch', () => {
     const lower = findBestFaqMatch('mentorat en ligne comment ça marche');
     const upper = findBestFaqMatch('MENTORAT EN LIGNE COMMENT ÇA MARCHE');
     expect(lower?.question).toBe(upper?.question);
+  });
+});
+
+describe('detectSmallTalk', () => {
+  it('detects a thank-you message in French and English', () => {
+    expect(detectSmallTalk('merci pour ton aide')).toBe('thanks');
+    expect(detectSmallTalk('Merci beaucoup !')).toBe('thanks');
+    expect(detectSmallTalk('thanks a lot')).toBe('thanks');
+    expect(detectSmallTalk('thank you')).toBe('thanks');
+  });
+
+  it('detects a greeting in French and English', () => {
+    expect(detectSmallTalk('bonjour')).toBe('greeting');
+    expect(detectSmallTalk('salut !')).toBe('greeting');
+    expect(detectSmallTalk('hi')).toBe('greeting');
+    expect(detectSmallTalk('hello there')).toBe('greeting');
+  });
+
+  it('does not match a word that only contains a small-talk substring', () => {
+    // "merciless" contains "merci" as a substring but is a different word
+    expect(detectSmallTalk('merciless')).toBeNull();
+  });
+
+  it('returns null for FAQ-style questions', () => {
+    expect(detectSmallTalk('comment fonctionne le mentorat en ligne')).toBeNull();
   });
 });
