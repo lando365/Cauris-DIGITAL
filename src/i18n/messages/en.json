@@ -75,6 +75,20 @@
     "learnMore": "Learn more about our cookies",
     "closeButton": "Close cookie banner"
   },
+  "FAQChat": {
+    "openButton": "Open FAQ assistant",
+    "closeButton": "Close FAQ assistant",
+    "title": "FAQ Assistant",
+    "subtitle": "Ask a question, I'll answer from our FAQ",
+    "greeting": "Hi! Ask me a question about CAURIS DIGITAL (application, programs, mentorship, partnerships...).",
+    "inputPlaceholder": "Your question...",
+    "sendButton": "Send",
+    "fallbackMessage": "I couldn't find a precise answer to that in our FAQ. Check our",
+    "fallbackFaqLink": "full FAQ page",
+    "fallbackOr": "or",
+    "fallbackContactLink": "contact us directly",
+    "sourceLabel": "From our FAQ:"
+  },
   "LanguageSwitcher": {
     "label": "Language",
     "french": "French",

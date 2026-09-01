@@ -8,6 +8,7 @@ import type { Locale } from '@/i18n/config';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/layout/CookieBanner';
+import FAQChatWidget from '@/components/layout/FAQChatWidget';
 import RecaptchaScript from '@/components/layout/RecaptchaScript';
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 
@@ -100,6 +101,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       </main>
       <Footer />
       <CookieBanner />
+      <FAQChatWidget />
       <RecaptchaScript />
       {/* Suspense requis car GoogleAnalytics utilise useSearchParams (Next.js 14) */}
       <Suspense fallback={null}>
