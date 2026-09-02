@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
-import { MessageCircleQuestion, X, Send } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useHasMounted } from '@/lib/hooks/useHasMounted';
 import { detectSmallTalk, findBestFaqMatch } from '@/lib/faq-chat-matcher';
@@ -176,7 +177,19 @@ export default function FAQChatWidget() {
           'flex items-center justify-center transition-colors'
         )}
       >
-        {open ? <X className="w-6 h-6" /> : <MessageCircleQuestion className="w-6 h-6" />}
+        {open ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <span className="relative w-9 h-9 rounded-full overflow-hidden ring-2 ring-white/70">
+            <Image
+              src="/brand/cauris-logo.jpg"
+              alt=""
+              fill
+              sizes="36px"
+              className="object-cover object-top"
+            />
+          </span>
+        )}
       </button>
     </>
   );
