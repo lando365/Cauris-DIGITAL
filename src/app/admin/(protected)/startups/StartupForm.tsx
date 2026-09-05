@@ -121,6 +121,46 @@ export function StartupForm({
         </div>
       </fieldset>
 
+      <fieldset className="space-y-4 rounded-md border border-dashed border-gray-300 p-4">
+        <legend className="mb-2 px-1 font-montserrat text-sm font-bold text-cauris-black">
+          🇬🇧 Version anglaise (optionnelle)
+        </legend>
+        <p className="text-xs text-cauris-gray-secondary">
+          Laissez vide pour afficher la version française par défaut aux visiteurs anglophones.
+        </p>
+        <Field label="Tagline (EN)" name="taglineEn" defaultValue={startup?.taglineEn ?? ''} />
+        <div>
+          <label
+            htmlFor="descriptionEn"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Description courte (EN)
+          </label>
+          <textarea
+            id="descriptionEn"
+            name="descriptionEn"
+            rows={3}
+            defaultValue={startup?.descriptionEn ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-cauris-orange focus:outline-none focus:ring-1 focus:ring-cauris-orange"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="longDescriptionEn"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Description longue (EN)
+          </label>
+          <textarea
+            id="longDescriptionEn"
+            name="longDescriptionEn"
+            rows={5}
+            defaultValue={startup?.longDescriptionEn ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-cauris-orange focus:outline-none focus:ring-1 focus:ring-cauris-orange"
+          />
+        </div>
+      </fieldset>
+
       <fieldset className="grid grid-cols-2 gap-4">
         <legend className="col-span-2 mb-2 font-montserrat text-sm font-bold text-cauris-black">
           Classification
@@ -247,6 +287,21 @@ export function StartupForm({
             name="achievements"
             rows={3}
             defaultValue={startup?.achievements.join('\n') ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="achievementsEn"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Étapes marquantes (EN) — une valeur par ligne, laisser vide pour repli sur le français
+          </label>
+          <textarea
+            id="achievementsEn"
+            name="achievementsEn"
+            rows={3}
+            defaultValue={startup?.achievementsEn.join('\n') ?? ''}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           />
         </div>

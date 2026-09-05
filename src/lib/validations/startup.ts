@@ -28,8 +28,23 @@ export const startupSchema = z.object({
     .min(2, 'Le nom doit contenir entre 2 et 100 caractères.') // RM-S07
     .max(100, 'Le nom doit contenir entre 2 et 100 caractères.'),
   tagline: z.string().trim().min(1, "La phrase d'accroche est requise."),
+  taglineEn: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
   description: z.string().trim().min(1, 'La description est requise.'),
+  descriptionEn: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
   longDescription: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
+  longDescriptionEn: z
     .string()
     .trim()
     .transform((v) => (v === '' ? undefined : v))
@@ -68,6 +83,7 @@ export const startupSchema = z.object({
   technologies: z.array(z.string()).default([]),
   founders: z.array(z.string()).default([]),
   achievements: z.array(z.string()).default([]),
+  achievementsEn: z.array(z.string()).default([]),
   isFeatured: z.coerce.boolean().default(false),
 });
 

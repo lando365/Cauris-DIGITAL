@@ -12,7 +12,9 @@ function extractInput(formData: FormData) {
   return {
     slug: formData.get('slug'),
     title: formData.get('title'),
+    titleEn: formData.get('titleEn'),
     description: formData.get('description'),
+    descriptionEn: formData.get('descriptionEn'),
     type: formData.get('type'),
     startDate: formData.get('startDate'),
     endDate: formData.get('endDate'),

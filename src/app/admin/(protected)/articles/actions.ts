@@ -13,8 +13,11 @@ function extractInput(formData: FormData) {
   return {
     slug: formData.get('slug'),
     title: formData.get('title'),
+    titleEn: formData.get('titleEn'),
     excerpt: formData.get('excerpt'),
+    excerptEn: formData.get('excerptEn'),
     content: formData.get('content'),
+    contentEn: formData.get('contentEn'),
     category: formData.get('category'),
     coverImageUrl: formData.get('coverImageUrl'),
     status: formData.get('status'),

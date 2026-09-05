@@ -88,6 +88,41 @@ export function EventForm({
         />
       </div>
 
+      <div className="rounded-md border border-dashed border-gray-300 p-4 space-y-4">
+        <p className="font-montserrat text-sm font-bold text-cauris-black">
+          🇬🇧 Version anglaise (optionnelle)
+        </p>
+        <p className="text-xs text-cauris-gray-secondary">
+          Laissez vide pour afficher la version française par défaut aux visiteurs anglophones.
+        </p>
+        <div>
+          <label htmlFor="titleEn" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+            Titre (EN)
+          </label>
+          <input
+            id="titleEn"
+            name="titleEn"
+            defaultValue={event?.titleEn ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="descriptionEn"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Description (EN)
+          </label>
+          <textarea
+            id="descriptionEn"
+            name="descriptionEn"
+            rows={4}
+            defaultValue={event?.descriptionEn ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="type" className="mb-1 block text-sm font-medium text-cauris-gray-text">

@@ -124,31 +124,38 @@ model Session {
 // ---------------------------------------------------------------------------
 
 model Startup {
-  id              String        @id @default(cuid())
-  slug            String        @unique
-  name            String
-  tagline         String
-  description     String        @db.Text
-  longDescription String?       @db.Text
-  sector          Sector
-  countryName     String
-  countryCode     String        @db.VarChar(2)
-  city            String?
-  status          StartupStatus
-  year            Int
-  foundedYear     Int?
-  logoUrl         String?
-  websiteUrl      String?
-  linkedinUrl     String?
-  technologies    String[]      @default([])
-  founders        String[]      @default([])
-  metrics         Json?
-  achievements    String[]      @default([])
-  isFeatured      Boolean       @default(false)
-  createdBy       String?
-  creator         User?         @relation(fields: [createdBy], references: [id], onDelete: SetNull)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id                String        @id @default(cuid())
+  slug              String        @unique
+  name              String
+  tagline           String
+  // Champs *En : traduction anglaise optionnelle, saisie depuis l'admin.
+  // Repli sur le champ français si vide (voir content-mappers.ts).
+  taglineEn         String?
+  description       String        @db.Text
+  descriptionEn     String?       @db.Text
+  longDescription   String?       @db.Text
+  longDescriptionEn String?       @db.Text
+  sector            Sector
+  countryName       String
+  countryCode       String        @db.VarChar(2)
+  city              String?
+  status            StartupStatus
+  year              Int
+  foundedYear       Int?
+  logoUrl           String?
+  websiteUrl        String?
+  linkedinUrl       String?
+  technologies      String[]      @default([])
+  founders          String[]      @default([])
+  metrics           Json?
+  metricsEn         Json?
+  achievements      String[]      @default([])
+  achievementsEn    String[]      @default([])
+  isFeatured        Boolean       @default(false)
+  createdBy         String?
+  creator           User?         @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 
   @@index([status, sector])
   @@map("startups")
@@ -162,8 +169,11 @@ model Article {
   id            String          @id @default(cuid())
   slug          String          @unique
   title         String
+  titleEn       String?
   excerpt       String
+  excerptEn     String?
   content       String          @db.Text
+  contentEn     String?         @db.Text
   category      ArticleCategory
   coverImageUrl String?
   readingTime   Int
@@ -184,24 +194,26 @@ model Article {
 // ---------------------------------------------------------------------------
 
 model Event {
-  id          String    @id @default(cuid())
-  slug        String    @unique
-  title       String
-  description String    @db.Text
-  type        EventType
-  startDate   DateTime
-  endDate     DateTime?
-  location    String
-  isOnline    Boolean   @default(false)
-  isFree      Boolean   @default(true)
-  price       String?
-  registerUrl String?
-  imageUrl    String?
-  isPublished Boolean   @default(false)
-  createdBy   String?
-  creator     User?     @relation(fields: [createdBy], references: [id], onDelete: SetNull)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  titleEn       String?
+  description   String    @db.Text
+  descriptionEn String?   @db.Text
+  type          EventType
+  startDate     DateTime
+  endDate       DateTime?
+  location      String
+  isOnline      Boolean   @default(false)
+  isFree        Boolean   @default(true)
+  price         String?
+  registerUrl   String?
+  imageUrl      String?
+  isPublished   Boolean   @default(false)
+  createdBy     String?
+  creator       User?     @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@index([startDate(sort: Desc)])
   @@map("events")

@@ -11,6 +11,9 @@ import type {
   ArticleSection,
 } from './constants';
 import type { Event as DisplayEvent } from '@/components/sections/EventsExplorer';
+import { computeReadingTime } from './reading-time';
+
+export type Locale = 'fr' | 'en';
 
 // Convertit un code pays ISO 3166-1 alpha-2 (ex: "CM") en emoji drapeau.
 // Les données V1 codaient le drapeau en dur ; côté base, seul countryCode existe.
@@ -20,6 +23,26 @@ export function countryCodeToFlag(code: string): string {
     .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
 }
 
+// Sélectionne le champ *En quand la locale est "en" et qu'une traduction a
+// été saisie, avec repli sur le champ français sinon (contenu non traduit
+// par l'éditeur, ou locale française).
+function pick(fr: string, en: string | null | undefined, locale: Locale): string {
+  return locale === 'en' && en ? en : fr;
+}
+
+function pickOptional(
+  fr: string | null | undefined,
+  en: string | null | undefined,
+  locale: Locale
+): string | undefined {
+  if (locale === 'en' && en) return en;
+  return fr ?? undefined;
+}
+
+function pickArray(fr: string[], en: string[], locale: Locale): string[] {
+  return locale === 'en' && en.length ? en : fr;
+}
+
 /**
  * Convertit une Startup Prisma vers le format attendu par les composants
  * d'affichage existants (StartupsExplorer, FeaturedStartups, page détail).
@@ -27,9 +50,14 @@ export function countryCodeToFlag(code: string): string {
  *
  * sector/status portent la valeur brute de l'enum Prisma (stable, indépendante
  * de la langue) — la traduction se fait à l'affichage via le namespace
- * next-intl "Enums", jamais ici.
+ * next-intl "Enums", jamais ici. Les champs de contenu (tagline, description...)
+ * utilisent en revanche les colonnes *En saisies dans l'admin, avec repli sur
+ * le français quand la traduction anglaise n'existe pas encore.
  */
-export function mapStartup(s: PrismaStartup): DisplayStartup {
+export function mapStartup(s: PrismaStartup, locale: Locale = 'fr'): DisplayStartup {
+  const achievements = pickArray(s.achievements, s.achievementsEn, locale);
+  const metricsSource =
+    locale === 'en' && s.metricsEn ? s.metricsEn : s.metrics;
   return {
     slug: s.slug,
     name: s.name,
@@ -40,15 +68,15 @@ export function mapStartup(s: PrismaStartup): DisplayStartup {
     status: s.status,
     year: s.year,
     foundedYear: s.foundedYear ?? undefined,
-    tagline: s.tagline,
-    description: s.description,
-    longDescription: s.longDescription ?? undefined,
+    tagline: pick(s.tagline, s.taglineEn, locale),
+    description: pick(s.description, s.descriptionEn, locale),
+    longDescription: pickOptional(s.longDescription, s.longDescriptionEn, locale),
     technologies: s.technologies.length ? s.technologies : undefined,
     founders: s.founders.length ? s.founders : undefined,
-    metrics: (s.metrics as Array<{ label: string; value: string }> | null) ?? undefined,
+    metrics: (metricsSource as Array<{ label: string; value: string }> | null) ?? undefined,
     website: s.websiteUrl ?? undefined,
     linkedin: s.linkedinUrl ?? undefined,
-    achievements: s.achievements.length ? s.achievements : undefined,
+    achievements: achievements.length ? achievements : undefined,
   };
 }
 
@@ -69,24 +97,27 @@ function contentToSections(content: string): ArticleSection[] {
 
 type ArticleWithAuthor = PrismaArticle & { author: { name: string } };
 
-export function mapArticle(a: ArticleWithAuthor): DisplayArticle {
+export function mapArticle(a: ArticleWithAuthor, locale: Locale = 'fr'): DisplayArticle {
+  const content = pick(a.content, a.contentEn, locale);
   return {
     slug: a.slug,
-    title: a.title,
-    excerpt: a.excerpt,
+    title: pick(a.title, a.titleEn, locale),
+    excerpt: pick(a.excerpt, a.excerptEn, locale),
     category: a.category,
     date: (a.publishedAt ?? a.createdAt).toISOString().slice(0, 10),
     author: a.author.name,
-    readingTime: a.readingTime,
+    // Recalculé sur le contenu réellement affiché plutôt que sur le champ
+    // `readingTime` stocké (qui ne reflète que la version française).
+    readingTime: computeReadingTime(content),
     image: a.coverImageUrl ?? FALLBACK_ARTICLE_IMAGE,
-    content: contentToSections(a.content),
+    content: contentToSections(content),
   };
 }
 
-export function mapEvent(e: PrismaEvent): DisplayEvent {
+export function mapEvent(e: PrismaEvent, locale: Locale = 'fr'): DisplayEvent {
   return {
     id: e.slug,
-    title: e.title,
+    title: pick(e.title, e.titleEn, locale),
     type: e.type,
     date: e.startDate.toISOString().slice(0, 10),
     time:
@@ -95,7 +126,7 @@ export function mapEvent(e: PrismaEvent): DisplayEvent {
     // l'affichage par le composant à partir du booléen `online`.
     place: e.location,
     online: e.isOnline,
-    description: e.description,
+    description: pick(e.description, e.descriptionEn, locale),
     registerUrl: e.registerUrl ?? '#',
     free: e.isFree,
     price: e.price ?? undefined,

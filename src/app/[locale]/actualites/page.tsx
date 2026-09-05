@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale } from 'next-intl/server';
 import NewsExplorer from '@/components/sections/NewsExplorer';
 import { prisma } from '@/lib/prisma';
 import { mapArticle } from '@/lib/content-mappers';
@@ -14,12 +14,13 @@ export const revalidate = 60;
 
 export default async function NewsPage() {
   const t = await getTranslations('NewsPage');
+  const locale = (await getLocale()) as 'fr' | 'en';
   const records = await prisma.article.findMany({
     where: { status: 'PUBLISHED', publishedAt: { lte: new Date() } },
     include: { author: { select: { name: true } } },
     orderBy: { publishedAt: 'desc' },
   });
-  const articles = records.map(mapArticle);
+  const articles = records.map((a) => mapArticle(a, locale));
   return (
     <>
       {/* Hero */}

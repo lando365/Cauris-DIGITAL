@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -15,6 +15,7 @@ import { mapStartup } from '@/lib/content-mappers';
 export default async function FeaturedStartups() {
   const t = await getTranslations('FeaturedStartups');
   const tEnum = await getTranslations('Enums');
+  const locale = (await getLocale()) as 'fr' | 'en';
   const featuredRecords = await prisma.startup.findMany({
     where: { isFeatured: true },
     orderBy: { createdAt: 'desc' },
@@ -31,7 +32,7 @@ export default async function FeaturedStartups() {
     records = [...records, ...fillers];
   }
 
-  const featured = records.map(mapStartup);
+  const featured = records.map((s) => mapStartup(s, locale));
 
   return (
     <section className="section bg-white">

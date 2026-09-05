@@ -13,8 +13,11 @@ function extractInput(formData: FormData) {
     slug: formData.get('slug'),
     name: formData.get('name'),
     tagline: formData.get('tagline'),
+    taglineEn: formData.get('taglineEn'),
     description: formData.get('description'),
+    descriptionEn: formData.get('descriptionEn'),
     longDescription: formData.get('longDescription'),
+    longDescriptionEn: formData.get('longDescriptionEn'),
     sector: formData.get('sector'),
     countryName: formData.get('countryName'),
     countryCode: formData.get('countryCode'),
@@ -28,6 +31,7 @@ function extractInput(formData: FormData) {
     technologies: parseListField(formData.get('technologies')),
     founders: parseListField(formData.get('founders')),
     achievements: parseListField(formData.get('achievements')),
+    achievementsEn: parseListField(formData.get('achievementsEn')),
     isFeatured: formData.get('isFeatured') === 'on',
   };
 }

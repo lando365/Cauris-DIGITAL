@@ -41,6 +41,7 @@ export function ArticleForm({
 }) {
   const [state, formAction] = useFormState(action, undefined);
   const [content, setContent] = useState(article?.content ?? '');
+  const [contentEn, setContentEn] = useState(article?.contentEn ?? '');
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
@@ -104,6 +105,61 @@ export function ArticleForm({
         <p className="mt-1 text-xs text-cauris-gray-secondary">
           Le temps de lecture est calculé automatiquement (250 mots/min).
         </p>
+      </div>
+
+      <div className="rounded-md border border-dashed border-gray-300 p-4 space-y-4">
+        <p className="font-montserrat text-sm font-bold text-cauris-black">
+          🇬🇧 Version anglaise (optionnelle)
+        </p>
+        <p className="text-xs text-cauris-gray-secondary">
+          Laissez vide pour afficher la version française par défaut aux visiteurs anglophones.
+        </p>
+        <div>
+          <label htmlFor="titleEn" className="mb-1 block text-sm font-medium text-cauris-gray-text">
+            Titre (EN)
+          </label>
+          <input
+            id="titleEn"
+            name="titleEn"
+            defaultValue={article?.titleEn ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="excerptEn"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Extrait (EN)
+          </label>
+          <textarea
+            id="excerptEn"
+            name="excerptEn"
+            rows={2}
+            maxLength={160}
+            defaultValue={article?.excerptEn ?? ''}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="contentEn"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Contenu (EN, Markdown)
+          </label>
+          <div className="grid gap-3 md:grid-cols-2">
+            <textarea
+              id="contentEn"
+              name="contentEn"
+              rows={16}
+              value={contentEn}
+              onChange={(e) => setContentEn(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 font-mono text-sm"
+            />
+            <MarkdownPreview content={contentEn} />
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

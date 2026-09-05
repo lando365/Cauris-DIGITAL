@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
-import { getTranslations, getLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import {
   ArrowLeft,
   ArrowRight,
@@ -33,7 +33,7 @@ interface PageProps {
 // accessible immédiatement.
 export const revalidate = 60;
 
-async function getPublishedArticleBySlug(slug: string) {
+async function getPublishedArticleBySlug(slug: string, locale: 'fr' | 'en') {
   const record = await prisma.article.findUnique({
     where: { slug },
     include: { author: { select: { name: true } } },
@@ -46,17 +46,21 @@ async function getPublishedArticleBySlug(slug: string) {
   ) {
     return null;
   }
-  return mapArticle(record);
+  return mapArticle(record, locale);
 }
 
-async function getRelatedArticles(current: DisplayArticle, limit = 3): Promise<DisplayArticle[]> {
+async function getRelatedArticles(
+  current: DisplayArticle,
+  locale: 'fr' | 'en',
+  limit = 3
+): Promise<DisplayArticle[]> {
   const records = await prisma.article.findMany({
     where: { status: 'PUBLISHED', publishedAt: { lte: new Date() }, slug: { not: current.slug } },
     include: { author: { select: { name: true } } },
     orderBy: { publishedAt: 'desc' },
     take: 30,
   });
-  const mapped = records.map(mapArticle);
+  const mapped = records.map((a) => mapArticle(a, locale));
   return mapped.filter((a) => a.category === current.category).slice(0, limit);
 }
 
@@ -64,8 +68,8 @@ async function getRelatedArticles(current: DisplayArticle, limit = 3): Promise<D
  * Métadonnées SEO dynamiques par article (CDC §7.1).
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const article = await getPublishedArticleBySlug(slug);
+  const { slug, locale } = await params;
+  const article = await getPublishedArticleBySlug(slug, locale as 'fr' | 'en');
   if (!article) {
     const t = await getTranslations('ArticleDetail');
     return { title: t('notFoundTitle') };
@@ -99,14 +103,13 @@ function formatDate(iso: string, locale: string): string {
 }
 
 export default async function ArticlePage({ params }: PageProps) {
-  const { slug } = await params;
-  const article = await getPublishedArticleBySlug(slug);
+  const { slug, locale } = await params;
+  const article = await getPublishedArticleBySlug(slug, locale as 'fr' | 'en');
   if (!article) notFound();
 
   const t = await getTranslations('ArticleDetail');
   const tEnum = await getTranslations('Enums');
-  const locale = await getLocale();
-  const related = await getRelatedArticles(article, 3);
+  const related = await getRelatedArticles(article, locale as 'fr' | 'en', 3);
   const shareUrl = `${SITE_CONFIG.url}/actualites/${article.slug}`;
   const categoryColor = ARTICLE_CATEGORY_COLORS[article.category];
 

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale } from 'next-intl/server';
 import EventsExplorer from '@/components/sections/EventsExplorer';
 import NewsletterForm from '@/components/forms/NewsletterForm';
 import { Mail } from 'lucide-react';
@@ -16,11 +16,12 @@ export const revalidate = 60;
 
 export default async function EventsPage() {
   const t = await getTranslations('EventsPage');
+  const locale = (await getLocale()) as 'fr' | 'en';
   const records = await prisma.event.findMany({
     where: { isPublished: true },
     orderBy: { startDate: 'desc' },
   });
-  const events = records.map(mapEvent);
+  const events = records.map((e) => mapEvent(e, locale));
   return (
     <>
       {/* Hero */}

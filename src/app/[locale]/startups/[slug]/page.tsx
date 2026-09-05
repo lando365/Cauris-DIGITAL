@@ -30,13 +30,17 @@ interface PageProps {
 // accessible immédiatement (dynamicParams reste true par défaut).
 export const revalidate = 60;
 
-async function getRelatedStartups(current: DisplayStartup, limit = 3): Promise<DisplayStartup[]> {
+async function getRelatedStartups(
+  current: DisplayStartup,
+  locale: 'fr' | 'en',
+  limit = 3
+): Promise<DisplayStartup[]> {
   const others = await prisma.startup.findMany({
     where: { slug: { not: current.slug } },
     take: 30,
     orderBy: { createdAt: 'desc' },
   });
-  const mapped = others.map(mapStartup);
+  const mapped = others.map((s) => mapStartup(s, locale));
   const sameSector = mapped.filter((s) => s.sector === current.sector);
   const sameCountry = mapped.filter(
     (s) => s.countryName === current.countryName && s.sector !== current.sector
@@ -51,13 +55,13 @@ async function getRelatedStartups(current: DisplayStartup, limit = 3): Promise<D
  * Métadonnées SEO dynamiques par startup (CDC §7.1).
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const record = await prisma.startup.findUnique({ where: { slug } });
   if (!record) {
     const t = await getTranslations('StartupDetail');
     return { title: t('notFound') };
   }
-  const startup = mapStartup(record);
+  const startup = mapStartup(record, locale as 'fr' | 'en');
   return {
     title: `${startup.name} — ${startup.tagline}`,
     description: startup.description,
@@ -85,12 +89,12 @@ function getStatusStyle(status: DisplayStartup['status']): string {
 }
 
 export default async function StartupDetailPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const record = await prisma.startup.findUnique({ where: { slug } });
   if (!record) notFound();
-  const startup = mapStartup(record);
+  const startup = mapStartup(record, locale as 'fr' | 'en');
 
-  const related = await getRelatedStartups(startup, 3);
+  const related = await getRelatedStartups(startup, locale as 'fr' | 'en', 3);
   const t = await getTranslations('StartupDetail');
   const tEnum = await getTranslations('Enums');
 

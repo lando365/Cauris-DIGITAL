@@ -20,7 +20,17 @@ export const eventSchema = z
       .min(1, 'Le slug est requis.')
       .regex(slugRegex, 'Le slug ne doit contenir que des lettres minuscules, chiffres et tirets.'),
     title: z.string().trim().min(1, 'Le titre est requis.'),
+    titleEn: z
+      .string()
+      .trim()
+      .transform((v) => (v === '' ? undefined : v))
+      .optional(),
     description: z.string().trim().min(1, 'La description est requise.'),
+    descriptionEn: z
+      .string()
+      .trim()
+      .transform((v) => (v === '' ? undefined : v))
+      .optional(),
     type: z.enum(TYPES),
     startDate: z.string().trim().min(1, 'La date de début est requise.'),
     endDate: z

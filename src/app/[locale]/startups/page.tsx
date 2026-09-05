@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale } from 'next-intl/server';
 import StartupsExplorer from '@/components/sections/StartupsExplorer';
 import FinalCTA from '@/components/sections/FinalCTA';
 import { prisma } from '@/lib/prisma';
@@ -15,8 +15,9 @@ export const revalidate = 60;
 
 export default async function StartupsPage() {
   const t = await getTranslations('StartupsPage');
+  const locale = (await getLocale()) as 'fr' | 'en';
   const startups = await prisma.startup.findMany({ orderBy: { createdAt: 'desc' } });
-  const mapped = startups.map(mapStartup);
+  const mapped = startups.map((s) => mapStartup(s, locale));
   return (
     <>
       {/* Hero */}

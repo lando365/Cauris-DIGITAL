@@ -13,12 +13,28 @@ export const articleSchema = z.object({
     .min(1, 'Le slug est requis.')
     .regex(slugRegex, 'Le slug ne doit contenir que des lettres minuscules, chiffres et tirets.'),
   title: z.string().trim().min(1, 'Le titre est requis.'), // RM-A02
+  titleEn: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
   excerpt: z.string().trim().min(1, "L'extrait est requis."),
+  excerptEn: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
   content: z
     .string()
     .trim()
     .min(1, 'Le contenu est requis.') // RM-A02
     .max(100_000, 'Le contenu ne peut pas dépasser 100 000 caractères.'), // CDC V2 §7.5
+  contentEn: z
+    .string()
+    .trim()
+    .max(100_000, 'Le contenu ne peut pas dépasser 100 000 caractères.')
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
   category: z.enum(CATEGORIES),
   coverImageUrl: z
     .string()
