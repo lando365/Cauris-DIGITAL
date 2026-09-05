@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { Sprout, Banknote, GraduationCap, HeartPulse, Building2 } from 'lucide-react';
 import { SECTORS } from '@/lib/constants';
 import SectionTitle from '@/components/ui/SectionTitle';
@@ -14,19 +15,26 @@ const ICONS = {
 /**
  * Secteurs d'activité (Textes_Site_v1 — 5 secteurs).
  */
-export default function Sectors() {
+export default async function Sectors() {
+  const t = await getTranslations('Sectors');
+  const tData = await getTranslations('SectorsData');
   return (
     <section className="section bg-cauris-gray-bg">
       <div className="container-cauris">
         <SectionTitle
-          eyebrow="Nos secteurs d'activité"
-          title="Nous accompagnons les solutions à fort impact"
-          description="CAURIS DIGITAL s'intéresse aux projets technologiques qui répondent à des enjeux concrets du continent africain. Nous sélectionnons des startups à fort potentiel de croissance et d'impact social."
+          eyebrow={t('eyebrow')}
+          title={t('title')}
+          description={t('description')}
         />
 
         <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {SECTORS.map((sector, i) => {
             const Icon = ICONS[sector.icon as keyof typeof ICONS];
+            const data = tData.raw(sector.id) as {
+              title: string;
+              description: string;
+              tags: string[];
+            };
             return (
               <Reveal key={sector.id} delay={i * 100}>
                 <article className="card group p-7 lg:p-8 h-full bg-white border border-gray-100">
@@ -37,13 +45,13 @@ export default function Sectors() {
                     />
                   </div>
                   <h3 className="font-heading font-bold text-xl text-cauris-black mb-3">
-                    {sector.title}
+                    {data.title}
                   </h3>
                   <p className="text-sm text-cauris-gray-text leading-relaxed mb-5">
-                    {sector.description}
+                    {data.description}
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    {sector.tags.map((tag) => (
+                    {data.tags.map((tag) => (
                       <span
                         key={tag}
                         className="text-xs font-medium px-2.5 py-1 rounded-full bg-cauris-cream text-cauris-orange"

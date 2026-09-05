@@ -32,7 +32,8 @@
     "titleEnd": "prend son essor",
     "subtitle": "CAURIS DIGITAL stimule l'entrepreneuriat tech et forme les entrepreneurs numériques de demain. Basé à Yaoundé, actif partout dans le monde.",
     "applyCTA": "Déposer ma candidature",
-    "discoverPrograms": "Découvrir nos programmes"
+    "discoverPrograms": "Découvrir nos programmes",
+    "backgroundAlt": "Entrepreneurs africains au travail dans un espace de coworking moderne"
   },
   "Footer": {
     "slogan": "Propulser l'innovation numérique africaine — depuis Yaoundé, pour le monde.",
@@ -65,6 +66,15 @@
     },
     "copyright": "© {year} CAURIS DIGITAL — Tous droits réservés",
     "headOffice": "Siège social : {address}"
+  },
+  "NewsletterForm": {
+    "emailLabel": "Adresse email",
+    "emailPlaceholder": "votre@email.com",
+    "submitAriaLabel": "S'inscrire à la newsletter",
+    "consentStart": "J'accepte de recevoir la newsletter, conformément à la",
+    "consentLink": "politique de confidentialité",
+    "successMessage": "Merci ! Vérifiez votre email pour confirmer votre inscription.",
+    "genericError": "Une erreur est survenue."
   },
   "CookieBanner": {
     "title": "Cookies et confidentialité",
@@ -103,5 +113,891 @@
     "readMore": "Lire la suite",
     "viewAll": "Voir tout",
     "backToHome": "Retour à l'accueil"
+  },
+  "Enums": {
+    "sector": {
+      "AGRITECH": "Agritech",
+      "FINTECH": "Fintech",
+      "EDTECH": "Edtech",
+      "HEALTHTECH": "Healthtech",
+      "SMART_CITIES": "Smart Cities"
+    },
+    "status": {
+      "EN_INCUBATION": "En incubation",
+      "DIPLOMEE": "Diplômée",
+      "ALUMNI": "Alumni"
+    },
+    "category": {
+      "ANNONCES": "Annonces",
+      "PORTRAITS": "Portraits",
+      "RESSOURCES": "Ressources",
+      "EVENEMENTS": "Événements",
+      "OPINIONS": "Opinions",
+      "ALL": "Toutes"
+    },
+    "eventType": {
+      "DEMO_DAY": "Demo Day",
+      "ATELIER": "Atelier",
+      "WEBINAIRE": "Webinaire",
+      "HACKATHON": "Hackathon",
+      "NETWORKING": "Networking",
+      "CONFERENCE": "Conférence"
+    }
+  },
+  "AboutPage": {
+    "metaTitle": "À propos de CAURIS DIGITAL — Incubateur numérique, Yaoundé, Cameroun",
+    "metaDescription": "Découvrez CAURIS DIGITAL, son histoire, sa mission et l'équipe qui accompagne les entrepreneurs tech africains depuis Yaoundé, avec un mentorat mondial en ligne.",
+    "eyebrow": "À propos de CAURIS DIGITAL",
+    "h1": "Qui nous sommes",
+    "heroSubtitle": "Un incubateur africain construit par des Africains, pour des Africains — et ouvert au monde entier.",
+    "storyEyebrow": "Notre histoire",
+    "storyTitle": "L'incubateur né d'un constat simple",
+    "storyParagraph1": "CAURIS DIGITAL est né d'un constat simple : l'Afrique regorge de talents technologiques, d'idées brillantes et d'entrepreneurs courageux. Ce qui manque, c'est un écosystème structuré pour les faire grandir.",
+    "storyParagraph2": "Fondé à Yaoundé, au cœur du Cameroun, CAURIS DIGITAL a été créé pour combler ce vide. Notre nom est un symbole : le cauris, cette petite coquillage qui a servi de monnaie d'échange à travers toute l'Afrique pendant des siècles, représente la valeur, la connexion et l'échange — exactement ce que nous facilitons entre entrepreneurs, mentors, investisseurs et marchés.",
+    "storyParagraph3": "Depuis notre création, nous avons accompagné des dizaines d'entrepreneurs dans les secteurs de la Fintech, de l'Agritech, de l'Edtech et de la Healthtech. Notre modèle hybride — ancrage local à Yaoundé, mentorat accessible en ligne partout dans le monde — nous permet de toucher des fondateurs à Douala, Dakar, Abidjan, Kinshasa, Paris ou Montréal, sans compromis sur la qualité de l'accompagnement.",
+    "storyParagraph4": "Nous nous inspirons des meilleurs incubateurs mondiaux — Centech à Montréal, Y Combinator à San Francisco, Station F à Paris — pour construire quelque chose d'unique : un modèle d'incubation calibré pour les réalités africaines, avec des solutions conçues pour les marchés africains.",
+    "historyImageAlt": "Équipe d'entrepreneurs africains en session collaborative",
+    "missionLabel": "Notre mission",
+    "missionCalloutText": "Stimuler l'entrepreneuriat numérique en Afrique francophone en formant, incubant et connectant les entrepreneurs tech de demain — de la conceptualisation jusqu'à la commercialisation de leur produit.",
+    "missionTitle": "Faire éclore les talents tech d'Afrique francophone",
+    "visionLabel": "Notre vision",
+    "visionTitle": "Une Afrique productrice — pas consommatrice — de tech",
+    "visionText": "Faire de l'Afrique francophone un continent producteur de solutions technologiques mondiales — et non un simple consommateur de technologies importées.",
+    "valuesEyebrow": "Nos valeurs fondatrices",
+    "valuesTitle": "Six principes qui guident chaque décision",
+    "teamEyebrow": "Notre équipe",
+    "teamTitle": "L'équipe qui vous accompagne",
+    "teamDescription": "Des professionnels qui ont eux-mêmes entrepris, construit, raté et réussi — avant de se mettre au service des autres.",
+    "portraitAlt": "Portrait de {name}",
+    "linkedinAlt": "LinkedIn de {name}",
+    "team": {
+      "directorGeneral": {
+        "name": "[Prénom NOM]",
+        "role": "Directeur Général & Co-fondateur",
+        "bio": "Entrepreneur numérique avec [X] ans d'expérience dans l'accompagnement de startups africaines. Diplômé en [discipline] de [université]. Passionné par l'impact de la technologie sur les économies émergentes."
+      },
+      "programDirector": {
+        "name": "[Prénom NOM]",
+        "role": "Directrice des Programmes",
+        "bio": "Spécialiste de l'innovation et de l'accompagnement entrepreneurial. [X] ans d'expérience dans le secteur de l'incubation en Afrique centrale. Co-fondatrice de [projet]. Diplômée de [université]."
+      },
+      "mentorshipLead": {
+        "name": "[Prénom NOM]",
+        "role": "Responsable Mentorat & Communauté",
+        "bio": "Construit des ponts entre entrepreneurs et experts. Ancien fondateur de [startup]. Expert en développement communautaire et accompagnement de porteurs de projets tech."
+      },
+      "communicationLead": {
+        "name": "[Prénom NOM]",
+        "role": "Chargée de Communication & Partenariats",
+        "bio": "Experte en communication digitale et en relations institutionnelles. [X] ans d'expérience dans la promotion de l'écosystème tech africain. Passionnée par le storytelling et la visibilité des startups africaines."
+      }
+    },
+    "boardEyebrow": "Gouvernance",
+    "boardTitle": "Notre Conseil d'Administration",
+    "boardDescription": "Notre conseil d'administration est composé de personnalités reconnues du monde académique, institutionnel et entrepreneurial — garantes de la gouvernance et de l'orientation stratégique de CAURIS DIGITAL.",
+    "boardMemberName": "[Nom du membre]",
+    "boardMemberInstitution": "[Institution / Titre]"
+  },
+  "Sectors": {
+    "eyebrow": "Nos secteurs d'activité",
+    "title": "Nous accompagnons les solutions à fort impact",
+    "description": "CAURIS DIGITAL s'intéresse aux projets technologiques qui répondent à des enjeux concrets du continent africain. Nous sélectionnons des startups à fort potentiel de croissance et d'impact social."
+  },
+  "SectorsData": {
+    "agritech": {
+      "title": "Agritech & Climatech",
+      "description": "Les technologies au service de l'agriculture africaine, de la chaîne alimentaire et de la transition climatique. Parce que nourrir l'Afrique est le défi du siècle.",
+      "tags": ["IA agricole", "IoT rural", "Drones", "Satellite", "Gestion eau"]
+    },
+    "fintech": {
+      "title": "Fintech & Inclusion financière",
+      "description": "Les solutions qui donnent accès aux services financiers aux populations non bancarisées. Mobile money, épargne, crédit, assurance et paiement digital pour tous.",
+      "tags": ["Mobile Money", "Blockchain", "API bancaires", "Scoring alternatif", "Crypto"]
+    },
+    "edtech": {
+      "title": "Edtech & Formation numérique",
+      "description": "Les plateformes et outils qui révolutionnent l'accès à l'éducation en Afrique. De l'école primaire à la formation professionnelle, en passant par les métiers du numérique.",
+      "tags": ["LMS", "IA pédagogique", "Multimédia", "Mobile learning", "Gamification"]
+    },
+    "healthtech": {
+      "title": "Healthtech & Bien-être",
+      "description": "Les solutions de santé numérique adaptées aux réalités africaines. Télémédecine, gestion hospitalière, diagnostic assisté par IA, logistique pharmaceutique.",
+      "tags": ["IA médicale", "Télémédecine", "Mobile health", "Données patients", "E-pharmacie"]
+    },
+    "smart-cities": {
+      "title": "Smart Cities & Mobilité",
+      "description": "Les technologies qui rendent les villes africaines plus intelligentes, plus durables et plus vivables. Transport, gestion des déchets, énergie, sécurité urbaine.",
+      "tags": ["IoT urbain", "Big data", "Mobilité électrique", "Énergie solaire", "Smart grid"]
+    }
+  },
+  "KeyNumbers": {
+    "eyebrow": "Notre impact en chiffres",
+    "title": "Un écosystème qui livre des résultats"
+  },
+  "KeyNumbersData": {
+    "yearsSupport": "Années d'accompagnement",
+    "startupsSupported": "Startups accompagnées",
+    "capitalRaised": "Capitaux levés",
+    "jobsCreated": "Emplois créés",
+    "expertsMentors": "Experts & mentors",
+    "topIncubators": "Incubateurs africains"
+  },
+  "ProgramsOverview": {
+    "eyebrow": "Nos programmes",
+    "title": "Des programmes conçus pour propulser vos ambitions",
+    "description": "Que vous soyez en phase d'idée ou déjà en croissance, CAURIS DIGITAL a un programme fait pour vous."
+  },
+  "ProgramsData": {
+    "incubation": {
+      "name": "Incubation",
+      "badge": "Programme",
+      "duration": "6 mois",
+      "format": "Présentiel à Yaoundé + Mentorat en ligne disponible partout",
+      "tagline": "Transformer votre idée en produit viable.",
+      "description": "Un programme d'accompagnement intensif conçu pour transformer votre idée en produit viable, en vous donnant accès à notre réseau de mentors, nos outils et notre communauté.",
+      "cta": "En savoir plus",
+      "benefits": [
+        "Mentorat individuel hebdomadaire avec un expert de votre secteur",
+        "Accès à l'espace de travail collaboratif à Yaoundé",
+        "Sessions collectives : business model, pitch, juridique, marketing",
+        "Accès à la communauté des alumni et entrepreneurs en résidence",
+        "Connexion avec notre réseau de partenaires institutionnels et investisseurs",
+        "Préparation et participation au Demo Day de fin de programme",
+        "Certificat de participation reconnu par notre réseau partenaire",
+        "Accompagnement post-programme pendant 3 mois supplémentaires"
+      ]
+    },
+    "acceleration": {
+      "name": "Accélération",
+      "badge": "Programme",
+      "duration": "12 semaines",
+      "format": "100% en ligne — accessible depuis n'importe où dans le monde",
+      "tagline": "Faire avancer votre startup de 12 mois en 12 semaines.",
+      "description": "Un programme personnalisé pour les startups en phase de croissance. Objectif : franchir votre prochain palier de développement en 12 semaines chrono.",
+      "cta": "Explorer le programme",
+      "benefits": [
+        "Audit complet de votre startup et identification des leviers prioritaires",
+        "Stratégie de croissance data-driven adaptée aux marchés africains",
+        "Optimisation du pricing et nouvelles sources de revenus",
+        "Préparation du pitch investisseurs et dossier de levée",
+        "Demo Day ouvert aux investisseurs africains et internationaux",
+        "Intégration dans le réseau alumni CAURIS DIGITAL"
+      ]
+    }
+  },
+  "Testimonials": {
+    "eyebrow": "Témoignages",
+    "title": "Ils ont fait confiance à CAURIS DIGITAL",
+    "founderLabel": "Fondateur·rice",
+    "previous": "Témoignage précédent",
+    "next": "Témoignage suivant",
+    "goToTestimonial": "Aller au témoignage {n}"
+  },
+  "TestimonialsData": {
+    "amina": {
+      "location": "Promo 2024",
+      "quote": "CAURIS DIGITAL n'est pas juste un incubateur. C'est une famille. En six mois, j'ai transformé une idée floue en produit que des clients paient vraiment. Le mentorat en ligne m'a permis de continuer depuis Douala sans quitter mon travail."
+    },
+    "jeanPaul": {
+      "location": "Cameroun",
+      "quote": "Ce qui m'a le plus frappé, c'est la qualité des mentors. Des professionnels qui ont vraiment construit des entreprises. Pas juste des théoriciens. Grâce à leur réseau, j'ai obtenu mon premier client corporate en semaine 8 du programme."
+    },
+    "rodrigue": {
+      "location": "Congo-Brazzaville",
+      "quote": "Je suis basé à Brazzaville. Rejoindre CAURIS DIGITAL en ligne semblait risqué. En réalité, le programme était encore plus structuré que ce que j'espérais. Aujourd'hui mon app a 12 000 utilisateurs actifs."
+    }
+  },
+  "ValuesData": {
+    "excellence": {
+      "title": "Excellence",
+      "description": "Nous imposons des standards professionnels internationaux à tous nos programmes. Pas de demi-mesure : si vous êtes chez CAURIS DIGITAL, c'est pour construire quelque chose de grand."
+    },
+    "inclusion": {
+      "title": "Inclusion",
+      "description": "Nous croyons que le talent n'a pas de genre, d'origine sociale ou de région. Notre programme est ouvert à tous les profils — avec une attention particulière pour les femmes entrepreneures et les porteurs de projets de zones rurales."
+    },
+    "impact": {
+      "title": "Impact",
+      "description": "Chaque startup que nous accompagnons doit avoir un impact mesurable : sur ses utilisateurs, sur sa communauté, sur son marché. L'impact n'est pas une option — c'est un critère de sélection."
+    },
+    "collaboration": {
+      "title": "Collaboration",
+      "description": "Nous construisons ensemble. Entrepreneurs, mentors, partenaires et alumni forment une communauté active où le partage de ressources, d'expériences et de contacts est la norme."
+    },
+    "enracinement": {
+      "title": "Enracinement africain",
+      "description": "Nos solutions partent des besoins réels du continent. Nous ne copions pas les modèles étrangers — nous les adaptons, les challengeons et créons nos propres réponses aux enjeux africains."
+    },
+    "ouverture": {
+      "title": "Ouverture mondiale",
+      "description": "Ancrés à Yaoundé, connectés au monde. Nos entrepreneurs accèdent à des mentors internationaux, des partenaires européens et des marchés globaux — sans quitter leur continent."
+    }
+  },
+  "PartnersPage": {
+    "metaTitle": "Nos partenaires — CAURIS DIGITAL | Écosystème tech africain",
+    "metaDescription": "Découvrez les partenaires institutionnels, financiers, académiques et corporatifs qui soutiennent la mission de CAURIS DIGITAL en Afrique francophone.",
+    "eyebrow": "Notre écosystème",
+    "h1": "Nos partenaires",
+    "heroSubtitle": "CAURIS DIGITAL ne travaille pas seul. Notre force, c'est notre réseau. Institutions, universités, entreprises, fonds d'investissement et organisations internationales — ensemble, nous construisons l'écosystème tech africain de demain.",
+    "categoryLabel": "Catégorie {n}",
+    "visitSite": "Visiter le site de {name}",
+    "ctaTitle": "Vous souhaitez rejoindre notre réseau de partenaires ?",
+    "ctaText": "Que vous soyez une institution, une entreprise, une université ou un fonds d'investissement, nous serions ravis d'explorer une collaboration avec vous.",
+    "ctaButton": "Devenir partenaire"
+  },
+  "IncubationPage": {
+    "metaTitle": "Programme Incubation — CAURIS DIGITAL | 6 mois pour lancer votre startup tech",
+    "metaDescription": "Rejoignez le programme d'incubation de 6 mois de CAURIS DIGITAL. Mentorat, ressources, réseau et accompagnement pour lancer votre startup tech depuis l'Afrique.",
+    "heroEyebrow": "Programme phare CAURIS DIGITAL",
+    "h1": "Programme Incubation",
+    "heroDuration": "6 mois",
+    "heroSubtitle": "pour transformer votre idée en entreprise.",
+    "heroTagline": "Gratuit. Exigeant. Transformateur.",
+    "durationLabel": "Durée :",
+    "durationValue": "6 mois",
+    "inPersonLocation": "Présentiel à Yaoundé",
+    "onlineMentoring": "Mentorat en ligne disponible partout",
+    "applyNow": "Candidater maintenant",
+    "discoverProgram": "Découvrir le programme",
+    "heroImageAlt": "Entrepreneure africaine en session de travail durant le programme d'incubation",
+    "presentationEyebrow": "Présentation",
+    "presentationTitle": "Un programme gratuit, intensif et humain",
+    "presentationParagraph1": "Le programme Incubation de CAURIS DIGITAL est notre programme fondateur. Il s'adresse aux porteurs de projets technologiques qui ont une idée, une équipe (ou les prémices d'une équipe) et la conviction que leur solution peut changer quelque chose — en Afrique et au-delà.",
+    "presentationParagraph2": "Pendant 6 mois, vous bénéficiez d'un accompagnement structuré et personnalisé : ateliers collectifs, sessions de mentorat individuel, accès à notre réseau de partenaires, espace de travail collaboratif et une communauté d'entrepreneurs qui se soutient mutuellement.",
+    "presentationParagraph3Start": "Le programme est",
+    "free": "gratuit",
+    "presentationParagraph3Mid": "pour les startups sélectionnées. CAURIS DIGITAL",
+    "noEquity": "ne prend pas de participation au capital.",
+    "presentationParagraph3End": "Notre investissement, c'est le temps, l'expertise et le réseau que nous mettons à votre service.",
+    "benefitsEyebrow": "Ce que vous obtenez",
+    "benefitsTitle": "Tout ce qu'il faut pour passer de l'idée au marché",
+    "timelineEyebrow": "Déroulement du programme",
+    "timelineTitle": "Comment se déroule le programme ?",
+    "timelineDescription": "Six mois structurés en trois phases progressives — de la clarification du problème jusqu'au Demo Day.",
+    "phaseLabel": "Phase",
+    "phases": {
+      "foundations": {
+        "period": "Mois 1-2",
+        "title": "Fondations",
+        "description": "Clarification du problème et de la solution. Validation du marché (interviews clients, terrain). Construction du business model. Premiers prototypes ou MVP. Ateliers : Design Thinking, Lean Startup, Business Model Canvas."
+      },
+      "building": {
+        "period": "Mois 3-4",
+        "title": "Construction",
+        "description": "Développement du produit ou service. Premiers utilisateurs test. Itérations rapides basées sur les retours. Construction de l'équipe. Ateliers : product management, développement commercial, communication."
+      },
+      "launch": {
+        "period": "Mois 5-6",
+        "title": "Mise sur le marché",
+        "description": "Stratégie go-to-market. Premiers revenus ou contrats. Préparation du pitch investisseurs. Construction du dossier de levée de fonds. Demo Day : présentation publique devant investisseurs et partenaires."
+      }
+    },
+    "profileEyebrow": "Profil recherché",
+    "profileTitle": "Qui peut candidater ?",
+    "profileIntro": "Nous ne cherchons pas la perfection. Nous cherchons la conviction, la rigueur et le potentiel. Voici les critères que nous évaluons :",
+    "profileCriteria": [
+      "Vous avez une idée de startup technologique avec un potentiel de marché en Afrique ou à l'international",
+      "Vous avez (ou cherchez) une équipe complémentaire — technique, business ou les deux",
+      "Vous êtes disponible pour vous engager sérieusement pendant 6 mois",
+      "Vous êtes ouvert au feedback, même difficile, et prêt à pivoter si nécessaire",
+      "Votre projet s'inscrit dans un de nos secteurs prioritaires (Agritech, Fintech, Edtech, Healthtech, Smart Cities)",
+      "Vous êtes basé en Afrique francophone ou disposé à interagir en français"
+    ],
+    "remoteNote": "Les candidats hors de Yaoundé peuvent participer intégralement en ligne. Aucun déplacement physique n'est obligatoire. Le programme complet est accessible à distance via notre plateforme de mentorat en ligne.",
+    "goodToKnowLabel": "Bon à savoir",
+    "goodToKnowTitle": "Promotion 100% accessible à distance",
+    "goodToKnowText": "Que vous soyez à Dakar, Abidjan, Lomé, Kinshasa, Paris ou Montréal, vous pouvez rejoindre le programme depuis chez vous. Notre plateforme de mentorat asynchrone + sessions live garantit la même qualité d'accompagnement, où que vous soyez.",
+    "startupsPerCohort": "startups par promotion",
+    "threeMonths": "3 mois",
+    "postProgramSupport": "de suivi post-programme",
+    "testimonialsEyebrow": "Ils l'ont vécu",
+    "testimonialsTitle": "Ce qu'en disent nos anciens participants",
+    "testimonial1": {
+      "name": "[Prénom NOM]",
+      "startup": "[Nom startup]",
+      "location": "[Pays]",
+      "promo": "Promo [Année]",
+      "quote": "J'ai candidaté depuis Brazzaville, sans savoir si ça marcherait à distance. Le programme m'a montré que la qualité du mentorat ne dépend pas de la géographie. J'ai eu accès aux mêmes ressources que ceux qui étaient à Yaoundé."
+    },
+    "testimonial2": {
+      "name": "[Prénom NOM]",
+      "startup": "[Nom startup]",
+      "location": "[Pays]",
+      "promo": "Promo [Année]",
+      "quote": "Le moment le plus fort : le Demo Day. Présenter devant des investisseurs réels, avec un vrai produit et de vrais clients — après seulement 6 mois. Je n'aurais jamais cru y arriver si vite sans CAURIS DIGITAL."
+    },
+    "founderOf": "{name} — fondateur·rice de {startup}",
+    "applyEyebrow": "Comment candidater ?",
+    "applyTitle": "Le processus en 4 étapes",
+    "applyDescription": "De la soumission de votre dossier au lancement du programme — en moins d'un mois.",
+    "steps": {
+      "step1": {
+        "title": "Étape 1 — Candidature en ligne",
+        "description": "Remplissez le formulaire de candidature en ligne (15 minutes environ). Joignez un pitch deck ou une présentation de votre projet (facultatif mais fortement recommandé)."
+      },
+      "step2": {
+        "title": "Étape 2 — Entretien",
+        "description": "Notre équipe examine toutes les candidatures dans un délai de 2 semaines. Les dossiers retenus sont contactés pour un entretien de 30 minutes (en visioconférence ou en présentiel)."
+      },
+      "step3": {
+        "title": "Étape 3 — Annonce",
+        "description": "Annonce des résultats. Les startups sélectionnées reçoivent leur lettre d'admission et signent la convention de participation."
+      },
+      "step4": {
+        "title": "Étape 4 — Lancement",
+        "description": "Lancement du programme. Journée d'orientation collective (en ligne ou en présentiel) et début des sessions de mentorat."
+      }
+    },
+    "applyButton": "Déposer ma candidature",
+    "trophyBadge": "Trophée remis aux 12 startups sélectionnées",
+    "limitedCohort": "Promotion limitée"
+  },
+  "AccelerationPage": {
+    "metaTitle": "Programme Accélération — CAURIS DIGITAL | 12 semaines pour accélérer votre croissance",
+    "metaDescription": "Programme d'accélération intensif de 12 semaines, 100% en ligne. Pour les startups tech africaines prêtes à passer à l'échelle. Accès mondial, mentors experts.",
+    "heroEyebrow": "Pour startups en croissance",
+    "h1": "Programme Accélération",
+    "heroDuration": "12 semaines",
+    "heroSubtitle": "pour faire avancer votre startup de 12 mois.",
+    "heroOnline": "100% en ligne.",
+    "heroAccessible": "Accessible depuis n'importe où dans le monde.",
+    "durationLabel": "Durée :",
+    "durationValue": "12 semaines",
+    "onlineSessions": "Entièrement en ligne — sessions live + mentorat asynchrone",
+    "applyNext": "Candidater au prochain programme",
+    "discoverProgram": "Découvrir le programme",
+    "heroImageAlt": "Entrepreneur africain en session de travail durant le programme d'accélération",
+    "presentationEyebrow": "Présentation",
+    "presentationTitle": "Pour les startups prêtes à passer à l'échelle",
+    "presentationParagraph1Start": "Le programme Accélération s'adresse aux startups qui ont déjà un produit, des premiers utilisateurs ou clients, et qui sont prêtes à accélérer leur croissance. Ce n'est pas un programme de démarrage —",
+    "presentationParagraph1Strong": "c'est un programme de passage à l'échelle",
+    "presentationParagraph2": "En 12 semaines intenses, vous bénéficiez d'un mentorat de haut niveau, d'une mise en réseau internationale et d'outils concrets pour doubler votre croissance, renforcer votre modèle économique et préparer votre prochaine levée de fonds.",
+    "presentationParagraph3Start": "Le programme est intégralement disponible en ligne. Nos entrepreneurs accèdent aux sessions depuis Yaoundé, Dakar, Abidjan, Lomé, Paris, Bruxelles ou Montréal —",
+    "presentationParagraph3Strong": "sans contrainte géographique",
+    "comparisonEyebrow": "Incubation vs Accélération",
+    "comparisonTitle": "Quelle différence entre nos deux programmes ?",
+    "comparisonDescription": "Choisissez le programme qui correspond au stade de votre projet.",
+    "mobileScrollHint": "← Faites défiler horizontalement pour comparer →",
+    "tableCriterion": "Critère",
+    "tableIncubation": "Programme Incubation",
+    "tableAcceleration": "Programme Accélération",
+    "comparison": {
+      "stage": {
+        "criterion": "Stade du projet",
+        "incubation": "Idée / Pré-prototype",
+        "acceleration": "MVP validé / Premiers clients"
+      },
+      "duration": {
+        "criterion": "Durée",
+        "incubation": "6 mois",
+        "acceleration": "12 semaines"
+      },
+      "format": {
+        "criterion": "Format",
+        "incubation": "Hybride (présentiel + online)",
+        "acceleration": "100% en ligne"
+      },
+      "intensity": {
+        "criterion": "Intensité",
+        "incubation": "Progressive",
+        "acceleration": "Très intensive"
+      },
+      "goal": {
+        "criterion": "Objectif",
+        "incubation": "Valider et construire",
+        "acceleration": "Accélérer et scaler"
+      },
+      "cost": {
+        "criterion": "Coût",
+        "incubation": "Gratuit",
+        "acceleration": "Gratuit / Contribution symbolique"
+      },
+      "demoday": {
+        "criterion": "Demo Day",
+        "incubation": "Oui (fin de programme)",
+        "acceleration": "Oui (accès investisseurs internationaux)"
+      }
+    },
+    "timelineEyebrow": "Déroulement",
+    "timelineTitle": "Le programme semaine par semaine",
+    "timelineDescription": "Cinq phases pour transformer votre startup en moteur de croissance.",
+    "phases": {
+      "diagnostic": {
+        "period": "Semaines 1-2",
+        "title": "Diagnostic stratégique",
+        "description": "Audit complet de votre startup : product-market fit, modèle économique, structure d'équipe, stratégie de croissance actuelle. Identification des 3 leviers prioritaires à activer."
+      },
+      "growth": {
+        "period": "Semaines 3-5",
+        "title": "Croissance et acquisition",
+        "description": "Stratégie de croissance data-driven. Growth hacking adapté aux marchés africains. Optimisation de l'acquisition client. Segmentation et ciblage. KPIs et tableaux de bord."
+      },
+      "revenue": {
+        "period": "Semaines 6-8",
+        "title": "Modèle économique et revenus",
+        "description": "Optimisation du pricing. Nouvelles sources de revenus. Partenariats stratégiques. Expansion géographique. Négociation et closing commercial."
+      },
+      "funding": {
+        "period": "Semaines 9-10",
+        "title": "Financement et investisseurs",
+        "description": "Préparation du pitch investisseurs. Construction du dossier de levée. Valorisation de la startup. Simulation d'entretiens avec des investisseurs réels."
+      },
+      "demoday": {
+        "period": "Semaines 11-12",
+        "title": "Demo Day et après",
+        "description": "Répétition et finalisation du pitch. Demo Day ouvert aux investisseurs africains et internationaux. Plan d'action post-programme. Intégration dans le réseau alumni CAURIS DIGITAL."
+      }
+    },
+    "benefitsEyebrow": "Ce que vous obtenez",
+    "benefitsTitle": "Les bénéfices concrets du programme",
+    "profileEyebrow": "Profil recherché",
+    "profileTitle": "Êtes-vous prêt pour le programme Accélération ?",
+    "profileIntro": "Le programme Accélération est exigeant. Nous cherchons des fondateurs qui ont déjà fait leurs preuves et qui veulent franchir un palier décisif. Vérifiez si vous correspondez :",
+    "profileCriteria": [
+      "Votre startup a un produit ou service fonctionnel (pas juste une idée)",
+      "Vous avez des premiers utilisateurs, clients ou revenus (même modestes)",
+      "Vous pouvez consacrer au moins 15 heures par semaine au programme",
+      "Vous êtes prêt à remettre en question vos hypothèses et à pivoter si nécessaire",
+      "Vous cherchez à lever des fonds ou à accélérer significativement votre croissance dans les 12 mois"
+    ],
+    "readyLabel": "Prêt à candidater ?",
+    "readyTitle": "Notre prochaine cohorte vous attend",
+    "readyText": "Programme intensif de 12 semaines avec mentors internationaux, accès aux investisseurs et Demo Day mondial. Les meilleures startups de la cohorte sont introduites à notre réseau de fonds africains et européens.",
+    "applyButton": "Candidater au programme Accélération"
+  },
+  "StartupsPage": {
+    "metaTitle": "Startups CAURIS DIGITAL — Les entreprises tech africaines que nous propulsons",
+    "metaDescription": "Découvrez les startups technologiques africaines accompagnées par CAURIS DIGITAL : Agritech, Fintech, Edtech, Healthtech, Smart Cities. Des entrepreneurs qui changent l'Afrique.",
+    "eyebrow": "Notre portefeuille",
+    "h1": "Les startups que nous propulsons",
+    "heroSubtitle": "Des entrepreneurs de toute l'Afrique francophone qui construisent les solutions de demain — avec le soutien de CAURIS DIGITAL.",
+    "heroDescription": "Chaque startup de notre portefeuille a été sélectionnée pour la qualité de son équipe, la pertinence de sa solution et son potentiel d'impact. Qu'elles soient encore en incubation ou déjà sur le marché, ce sont elles qui prouvent que l'innovation africaine existe, qu'elle est forte et qu'elle mérite d'être soutenue."
+  },
+  "NewsPage": {
+    "metaTitle": "Actualités CAURIS DIGITAL — Tech, Innovation et Entrepreneuriat en Afrique",
+    "metaDescription": "Suivez l'actualité de CAURIS DIGITAL et de l'écosystème tech africain : portraits d'entrepreneurs, annonces de promotions, analyses et ressources pour startups.",
+    "eyebrow": "Notre blog",
+    "h1": "Actualités",
+    "heroSubtitle": "Nos annonces, portraits d'entrepreneurs, analyses et ressources pour construire votre startup."
+  },
+  "ArticleDetail": {
+    "notFoundTitle": "Article introuvable",
+    "backToNews": "Retour aux actualités",
+    "readingTime": "{minutes} min de lecture",
+    "share": "Partager",
+    "shareLinkedin": "Partager sur LinkedIn",
+    "shareTwitter": "Partager sur Twitter / X",
+    "shareFacebook": "Partager sur Facebook",
+    "shareEmail": "Partager par email",
+    "ctaTitle": "Vous aussi, vous avez un projet tech qui mérite d'être propulsé ?",
+    "ctaText": "Découvrez notre programme d'incubation et déposez votre candidature en quelques minutes.",
+    "ctaButton": "Candidater au programme",
+    "relatedEyebrow": "Pour aller plus loin",
+    "relatedTitle": "Articles liés",
+    "viewAllNews": "Voir toutes les actualités"
+  },
+  "EventsPage": {
+    "metaTitle": "Événements CAURIS DIGITAL — Conférences, Demo Days, Ateliers tech Afrique",
+    "metaDescription": "Retrouvez tous les événements de CAURIS DIGITAL : Demo Days, ateliers, conférences tech, hackathons et webinaires en ligne accessibles depuis partout.",
+    "eyebrow": "Agenda",
+    "h1": "Événements",
+    "heroSubtitle": "Demo Days, ateliers, conférences et webinaires. En présentiel à Yaoundé et en ligne partout dans le monde.",
+    "newsletterEyebrow": "Newsletter événements",
+    "newsletterTitle": "Ne manquez aucun événement CAURIS DIGITAL",
+    "newsletterText": "Inscrivez-vous à notre newsletter pour recevoir en priorité les annonces de nos Demo Days, ateliers et conférences — en ligne ou à Yaoundé."
+  },
+  "ContactPage": {
+    "metaTitle": "Contactez CAURIS DIGITAL — Yaoundé, Cameroun | Incubateur numérique africain",
+    "metaDescription": "Contactez l'équipe de CAURIS DIGITAL pour une candidature, un partenariat ou toute question. Basés à Yaoundé, nous répondons dans les plus brefs délais.",
+    "eyebrow": "Contact",
+    "h1": "Contactez-nous",
+    "heroSubtitle": "Une question sur nos programmes ? Un projet de partenariat ? Une idée à partager ? Notre équipe répond dans les plus brefs délais.",
+    "formEyebrow": "Écrivez-nous",
+    "formTitle": "Formulaire de contact",
+    "infoEyebrow": "Nos coordonnées",
+    "infoTitle": "Autres moyens de nous joindre",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone",
+    "addressLabel": "Siège social",
+    "hoursLabel": "Horaires",
+    "hoursDays": "Lun. — Ven.",
+    "hoursTime": "8h00 — 18h00 (UTC+1)",
+    "mapTitle": "Localisation CAURIS DIGITAL — Yaoundé, Cameroun",
+    "mapViewLarger": "Voir en grand →"
+  },
+  "ContactForm": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "country": "Pays",
+    "countryPlaceholder": "Sélectionnez un pays…",
+    "subject": "Objet",
+    "subjectPlaceholder": "Sélectionnez un objet…",
+    "subjects": {
+      "candidature": "Candidature à un programme",
+      "candidature-incubation": "Candidature programme Incubation",
+      "candidature-acceleration": "Candidature programme Accélération",
+      "partenariat-corporate": "Partenariat corporate",
+      "mentorat": "Demande de mentorat",
+      "presse": "Presse et médias",
+      "evenement": "Invitation à un événement",
+      "autre": "Autre"
+    },
+    "yourProject": "Votre projet",
+    "startupName": "Nom de la startup",
+    "sector": "Secteur",
+    "selectPlaceholder": "Sélectionnez…",
+    "startupSectors": ["Agritech", "Fintech", "Edtech", "Healthtech", "Smart Cities", "Autre"],
+    "projectStage": "Stade du projet",
+    "startupStages": [
+      "Idée / Concept",
+      "Prototype",
+      "MVP avec premiers utilisateurs",
+      "Déjà lancé — génère des revenus"
+    ],
+    "pitchDeckLabel": "Pitch deck (PDF)",
+    "pitchDeckPlaceholder": "Joindre un fichier PDF (facultatif, max 5 Mo)",
+    "removeFile": "Retirer le fichier",
+    "pitchDeckMustBePdf": "Le fichier doit être un PDF.",
+    "pitchDeckTooLarge": "Le fichier dépasse {max} Mo.",
+    "yourCompany": "Votre entreprise",
+    "company": "Société",
+    "phone": "Téléphone",
+    "pitchLabel": "Pitch de votre projet",
+    "messageLabel": "Message",
+    "pitchPlaceholder": "Problème résolu, solution, marché visé, traction actuelle…",
+    "messagePlaceholder": "Décrivez votre demande en quelques lignes…",
+    "minCharacters": "Minimum 20 caractères.",
+    "consentStart": "J'accepte que mes données soient utilisées pour traiter ma demande, conformément à la",
+    "consentLink": "politique de confidentialité",
+    "sendError": "Erreur lors de l'envoi.",
+    "genericError": "Une erreur est survenue.",
+    "successTitle": "Merci pour votre message !",
+    "successText": "Notre équipe vous répondra dans les plus brefs délais.",
+    "successMeanwhileStart": "En attendant, découvrez",
+    "successProgramsLink": "nos programmes",
+    "successMeanwhileEnd": "ou abonnez-vous à notre newsletter pour rester informé de nos actualités.",
+    "sendAnother": "Envoyer un autre message",
+    "sending": "Envoi en cours…",
+    "sendMessage": "Envoyer le message",
+    "recaptchaStart": "Ce site est protégé par reCAPTCHA et respecte les",
+    "recaptchaPrivacy": "Règles de confidentialité",
+    "recaptchaAnd": "et les",
+    "recaptchaTerms": "Conditions d'utilisation",
+    "recaptchaGoogle": "de Google.",
+    "countries": [
+      "Cameroun",
+      "Côte d'Ivoire",
+      "Sénégal",
+      "République Démocratique du Congo",
+      "République du Congo",
+      "Gabon",
+      "Tchad",
+      "Centrafrique",
+      "Bénin",
+      "Burkina Faso",
+      "Mali",
+      "Niger",
+      "Togo",
+      "Guinée",
+      "Madagascar",
+      "France",
+      "Belgique",
+      "Suisse",
+      "Canada",
+      "Maroc",
+      "Tunisie",
+      "Algérie",
+      "Autre"
+    ]
+  },
+  "NewsletterConfirmedPage": {
+    "metaTitle": "Inscription confirmée",
+    "title": "Inscription confirmée !",
+    "text": "Merci de rejoindre la communauté CAURIS DIGITAL. Un email de bienvenue vient de vous être envoyé — vous y trouverez aussi le lien pour vous désinscrire à tout moment.",
+    "backHome": "Retour à l'accueil",
+    "discoverStartups": "Découvrir les startups"
+  },
+  "NewsletterUnsubscribedPage": {
+    "metaTitle": "Désinscription confirmée",
+    "title": "Vous êtes désinscrit·e",
+    "text": "Vous ne recevrez plus la newsletter CAURIS DIGITAL. Vous pouvez vous réinscrire à tout moment depuis le pied de page du site.",
+    "backHome": "Retour à l'accueil"
+  },
+  "NewsletterErrorPage": {
+    "metaTitle": "Lien invalide",
+    "title": "Lien invalide ou expiré",
+    "backHome": "Retour à l'accueil",
+    "contactUs": "Nous contacter",
+    "reasons": {
+      "expire": "Ce lien a expiré (il n'est valable que 48 heures). Réinscrivez-vous depuis le pied de page pour recevoir un nouveau lien.",
+      "invalide": "Ce lien n'est pas valide. Vérifiez que vous avez copié l'adresse complète depuis l'email.",
+      "manquant": "Aucun lien de confirmation n'a été fourni.",
+      "serveur": "Une erreur technique est survenue. Réessayez dans quelques minutes."
+    }
+  },
+  "FAQPage": {
+    "metaTitle": "FAQ — Questions fréquentes sur CAURIS DIGITAL et nos programmes",
+    "metaDescription": "Trouvez les réponses à toutes vos questions sur les programmes d'incubation et d'accélération de CAURIS DIGITAL, les candidatures, le mentorat en ligne et les partenariats.",
+    "eyebrow": "Questions fréquentes",
+    "h1": "Questions fréquentes",
+    "heroSubtitle": "Vous avez une question ? La réponse est probablement ici. Sinon, contactez-nous directement.",
+    "navMobileAriaLabel": "Navigation FAQ par thème (mobile)",
+    "navDesktopAriaLabel": "Navigation FAQ par thème (desktop)",
+    "themesLabel": "Thèmes",
+    "ctaTitle": "Vous n'avez pas trouvé la réponse à votre question ?",
+    "ctaText": "Notre équipe est à votre disposition. Écrivez-nous et nous vous répondrons sous 48h ouvrées.",
+    "ctaButton": "Contactez-nous"
+  },
+  "CorporatePage": {
+    "metaTitle": "Innovation Corporative — CAURIS DIGITAL | Co-innover avec les startups africaines",
+    "metaDescription": "CAURIS DIGITAL accompagne les grandes entreprises dans leur stratégie d'open innovation en Afrique. Scouting, co-création et pilotes avec les meilleures startups tech africaines.",
+    "heroEyebrow": "Pour les grandes entreprises",
+    "heroTitleStart": "L'innovation corporative avec",
+    "heroSubtitle": "Connectez votre entreprise aux startups tech africaines les plus prometteuses. Accédez à l'innovation de demain — aujourd'hui.",
+    "heroButton": "Devenir partenaire corporate",
+    "whyUsEyebrow": "Pourquoi nous",
+    "whyUsTitle": "Pourquoi co-innover avec CAURIS DIGITAL ?",
+    "whyUsParagraph1": "L'Afrique est le continent à la croissance la plus rapide du monde. Ses marchés sont en pleine transformation numérique. Ses startups développent des solutions radicalement nouvelles — souvent plus adaptées aux contraintes locales que les produits importés.",
+    "whyUsParagraph2Start": "CAURIS DIGITAL est",
+    "whyUsParagraph2Strong": "votre porte d'entrée vers cet écosystème",
+    "whyUsParagraph2End": "En devenant partenaire corporate, votre entreprise accède à un flux constant de startups sélectionnées, à des opportunités de co-développement et à un positionnement fort dans l'économie numérique africaine.",
+    "whyUsParagraph3": "Nous travaillons avec des grandes entreprises, des banques, des opérateurs télécom, des ONG et des organisations internationales qui cherchent à innover en Afrique — sans partir de zéro.",
+    "servicesEyebrow": "Nos services",
+    "servicesTitle": "Nos services d'innovation corporative",
+    "servicesDescription": "Cinq dispositifs sur-mesure pour propulser votre stratégie d'open innovation en Afrique.",
+    "services": {
+      "scouting": {
+        "title": "Scouting technologique",
+        "description": "Nous identifions pour vous les startups africaines les plus pertinentes par rapport à vos enjeux stratégiques. Analyse du marché, mapping des acteurs, présélection et mise en relation directe."
+      },
+      "coCreation": {
+        "title": "Programmes de co-création",
+        "description": "Nous organisons des ateliers de co-innovation entre vos équipes et nos startups. Design sprints, hackathons ciblés, ateliers de résolution de problèmes avec des entrepreneurs agiles et créatifs."
+      },
+      "pilots": {
+        "title": "Pilotes et POC",
+        "description": "Nous facilitons des expérimentations concrètes entre votre entreprise et nos startups. Un pilote cadré, avec des objectifs clairs, un budget défini et un suivi rigoureux. Zéro bureaucratie inutile."
+      },
+      "reverseMentoring": {
+        "title": "Programme de mentorat inversé",
+        "description": "Vos cadres dirigeants deviennent mentors de nos startups — et en retour, ils sont exposés aux pratiques agiles, aux nouvelles technologies et aux modèles économiques disruptifs que développent nos entrepreneurs."
+      },
+      "openInnovationDay": {
+        "title": "Journée de l'Innovation Ouverte",
+        "description": "Un événement annuel organisé par CAURIS DIGITAL qui rassemble startups, corporates, investisseurs et institutions autour des enjeux tech africains. Pitchs, tables rondes, networking et annonces de partenariats."
+      }
+    },
+    "benefitsEyebrow": "Avantages partenaires",
+    "benefitsTitle": "Ce que vous gagnez en tant que partenaire",
+    "benefitsDescription": "Six bénéfices concrets pour donner à votre entreprise une longueur d'avance.",
+    "benefits": {
+      "visibility": {
+        "title": "Visibilité forte",
+        "description": "Sur le site, les événements et les communications de CAURIS DIGITAL."
+      },
+      "priorityAccess": {
+        "title": "Accès prioritaire aux startups",
+        "description": "Avant Demo Day, contactez les pépites de nos promotions en avant-première."
+      },
+      "observerSeat": {
+        "title": "Siège observateur",
+        "description": "Au Conseil d'Orientation Stratégique de CAURIS DIGITAL."
+      },
+      "exclusiveEvents": {
+        "title": "Événements exclusifs",
+        "description": "Rencontres startups, petits-déjeuners, tables rondes sectorielles dédiées partenaires."
+      },
+      "biannualReport": {
+        "title": "Rapport semestriel",
+        "description": "Sur l'évolution de l'écosystème tech africain rédigé par notre équipe."
+      },
+      "coBranding": {
+        "title": "Co-branding",
+        "description": "Opportunités de communication partagée sur nos réseaux et lors d'événements communs."
+      }
+    },
+    "audienceEyebrow": "Pour qui ?",
+    "audienceTitle": "Avec qui travaillons-nous ?",
+    "audienceIntro": "Notre programme corporate s'adresse aux organisations qui croient en l'innovation africaine et veulent en être actrices. Nous sélectionnons nos partenaires en fonction de leur engagement réel et de leur capacité à apporter de la valeur à nos startups.",
+    "targetAudience": [
+      "Grandes entreprises et groupes industriels",
+      "Banques et établissements financiers",
+      "Opérateurs télécom et fournisseurs de services numériques",
+      "ONG et organisations internationales",
+      "Institutions publiques cherchant à innover en Afrique"
+    ],
+    "meetingImageAlt": "Entrepreneurs africains en réunion stratégique avec un partenaire corporate",
+    "ctaTitle": "Prêt à innover avec nous ?",
+    "ctaText": "Contactez-nous pour organiser une réunion de découverte. Nous vous proposerons la formule de partenariat la plus adaptée à vos enjeux stratégiques.",
+    "ctaButton": "Discuter d'un partenariat"
+  },
+  "LegalNoticePage": {
+    "metaTitle": "Mentions légales — CAURIS DIGITAL",
+    "metaDescription": "Mentions légales du site CAURIS DIGITAL : éditeur, hébergeur, propriété intellectuelle.",
+    "eyebrow": "Informations légales",
+    "h1": "Mentions légales",
+    "draftNotice": "Document à faire valider par un juriste avant mise en ligne. Cette base de départ est conforme aux pratiques standards.",
+    "publisherTitle": "Éditeur du site",
+    "associationLaw": "Association loi [applicable locale]",
+    "headOffice": "Siège social :",
+    "email": "Email :",
+    "phone": "Téléphone :",
+    "publicationDirector": "Directeur de la publication : [Nom du responsable légal]",
+    "hostingTitle": "Hébergement",
+    "hostingTextStart": "Ce site est hébergé par",
+    "hostingName": "[Nom de l'hébergeur]",
+    "hostingAddress": "[Adresse de l'hébergeur]",
+    "hostingContact": "[Email ou téléphone de l'hébergeur]",
+    "ipTitle": "Propriété intellectuelle",
+    "ipText": "L'ensemble du contenu de ce site (textes, images, logos, vidéos, graphismes) est protégé par le droit d'auteur et appartient à CAURIS DIGITAL, sauf mention contraire. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.",
+    "contactPrompt": "Pour toute question concernant ces mentions légales :",
+    "contactUs": "Contactez-nous"
+  },
+  "PrivacyPolicyPage": {
+    "metaTitle": "Politique de confidentialité — CAURIS DIGITAL",
+    "metaDescription": "Politique de confidentialité de CAURIS DIGITAL : données collectées, finalités, durée de conservation, droits des utilisateurs et politique cookies.",
+    "eyebrow": "Vie privée",
+    "h1": "Politique de confidentialité",
+    "heroSubtitle": "Chez CAURIS DIGITAL, nous prenons votre vie privée au sérieux. Voici comment nous collectons, utilisons et protégeons vos données.",
+    "tocLabel": "Sommaire",
+    "tocAriaLabel": "Sommaire de la politique de confidentialité",
+    "exerciseRightsPrompt": "Pour exercer ces droits, écrivez-nous à :",
+    "contactPrompt": "Une question concernant vos données personnelles ?",
+    "contactUs": "Contactez-nous",
+    "sections": {
+      "donnees-collectees": {
+        "title": "1. Données collectées",
+        "content": "Nous collectons les données personnelles que vous nous transmettez volontairement via nos formulaires (nom, prénom, email, pays, message). Nous collectons également des données de navigation anonymisées via Google Analytics 4 (pages visitées, durée de session, source de trafic) à des fins d'amélioration du site."
+      },
+      "finalite": {
+        "title": "2. Finalité de la collecte",
+        "content": "Les données des formulaires sont utilisées exclusivement pour : répondre à vos demandes, traiter vos candidatures aux programmes, vous envoyer la newsletter si vous y avez souscrit. Nous ne vendons ni ne partageons vos données personnelles avec des tiers à des fins commerciales."
+      },
+      "duree": {
+        "title": "3. Durée de conservation",
+        "content": "Vos données personnelles sont conservées 3 ans à compter de votre dernier contact avec CAURIS DIGITAL, sauf obligation légale différente."
+      },
+      "droits": {
+        "title": "4. Vos droits",
+        "content": "Conformément aux lois applicables sur la protection des données, vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition sur vos données."
+      },
+      "cookies": {
+        "title": "5. Cookies",
+        "content": "Nous utilisons des cookies analytiques (Google Analytics) et des cookies fonctionnels pour améliorer votre navigation. Vous pouvez refuser les cookies non-essentiels via le bandeau de consentement affiché lors de votre première visite."
+      }
+    }
+  },
+  "PartnerCategoriesData": {
+    "institutionnels": {
+      "title": "Partenaires institutionnels",
+      "description": "Ces partenaires nous apportent leur soutien institutionnel, leur légitimité et leur réseau pour renforcer l'impact de nos programmes sur les politiques publiques numériques en Afrique."
+    },
+    "financiers": {
+      "title": "Partenaires financiers",
+      "description": "Nos partenaires financiers apportent aux startups de CAURIS DIGITAL un accès privilégié au financement — des premières bourses d'amorçage aux tours de table en série A."
+    },
+    "academiques": {
+      "title": "Partenaires académiques",
+      "description": "Nos partenaires académiques enrichissent nos programmes de leur expertise et offrent à nos entrepreneurs un accès aux recherches de pointe, aux laboratoires et aux talents universitaires."
+    },
+    "corporatifs": {
+      "title": "Partenaires corporatifs",
+      "description": "Nos partenaires corporatifs co-innovent avec nos startups, les accompagnent et leur ouvrent les portes de marchés et de réseaux qu'il leur serait impossible d'atteindre seuls."
+    }
+  },
+  "PartnerStrip": {
+    "ariaLabel": "Nos partenaires",
+    "trustedBy": "Ils nous font confiance"
+  },
+  "FinalCTA": {
+    "title": "Votre idée mérite d'être propulsée.",
+    "text": "Rejoignez le programme d'incubation CAURIS DIGITAL. Que vous soyez à Yaoundé, Dakar, Abidjan, Paris ou Montréal — notre programme en ligne s'adapte à vous.",
+    "applyButton": "Déposer ma candidature",
+    "learnMore": "En savoir plus sur nos programmes"
+  },
+  "IntroBlock": {
+    "eyebrow": "Notre raison d'être",
+    "title": "Épicentre d'innovations numériques au cœur de l'Afrique francophone",
+    "paragraph1": "CAURIS DIGITAL propulse les projets d'innovation technologique à fort potentiel, en mettant au service des entrepreneurs un écosystème complet de ressources, d'outils, de formations et de connexions — pour les accompagner de la conceptualisation jusqu'à la commercialisation de leur produit.",
+    "paragraph2": "Notre incubateur opère depuis Yaoundé, capitale économique et technologique du Cameroun, avec un ancrage profond dans les réalités africaines. Grâce à notre programme de mentorat entièrement accessible en ligne, nous accompagnons des porteurs de projets dans toute l'Afrique francophone, en Europe et au-delà. La géographie n'est plus un obstacle à l'excellence.",
+    "paragraph3": "Nous croyons que l'Afrique n'a pas besoin d'importer l'innovation. Elle la fabrique, ici, maintenant, avec ses propres codes, ses propres marchés et ses propres solutions.",
+    "discoverButton": "Découvrir CAURIS DIGITAL",
+    "altPitch": "Entrepreneure africaine présentant son pitch",
+    "altMentoring": "Session de mentorat avec une entrepreneure africaine",
+    "altCoworking": "Atelier collectif au sein de l'écosystème CAURIS DIGITAL",
+    "altWorkshop": "Entrepreneurs africains en session de travail collaboratif",
+    "badgeText": "startups accompagnées par an"
+  },
+  "StartupDetail": {
+    "notFound": "Startup introuvable",
+    "backToStartups": "Retour aux startups",
+    "cohort": "Promo {year}",
+    "foundedIn": "Fondée en {year}",
+    "theStartup": "La startup",
+    "techStack": "Stack technique",
+    "milestones": "Étapes marquantes",
+    "keyMetrics": "Chiffres-clés",
+    "founders": "Fondateurs",
+    "founder": "Fondateur",
+    "links": "Liens",
+    "website": "Site web",
+    "websiteComingSoon": "Site web à venir",
+    "linkedinComingSoon": "LinkedIn à venir",
+    "ctaTitle": "Votre startup pourrait être la prochaine.",
+    "ctaText": "Comme {name}, rejoignez le programme d'{program} de CAURIS DIGITAL pour transformer votre idée en succès.",
+    "incubation": "incubation",
+    "support": "accompagnement",
+    "applyButton": "Déposer ma candidature",
+    "discoverAlso": "Découvrir aussi",
+    "similarStartups": "Startups similaires",
+    "viewAllStartups": "Voir toutes nos startups"
+  },
+  "FeaturedStartups": {
+    "eyebrow": "Nos startups",
+    "title": "Les startups que nous propulsons",
+    "description": "Rencontrez les entrepreneurs qui changent l'Afrique depuis Yaoundé — et bien au-delà.",
+    "cohort": "Promo {year}",
+    "viewAll": "Voir toutes nos startups"
+  },
+  "NewsExplorer": {
+    "searchPlaceholder": "Rechercher un article…",
+    "clearSearch": "Effacer la recherche",
+    "emptyTitle": "Aucun article ne correspond à votre recherche",
+    "emptyText": "Essayez avec d'autres mots-clés ou changez de catégorie.",
+    "paginationLabel": "Pagination des articles",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "StartupsExplorer": {
+    "search": "Rechercher",
+    "searchPlaceholder": "Nom, secteur, mot-clé…",
+    "clearSearch": "Effacer la recherche",
+    "sector": "Secteur",
+    "allSectors": "Tous les secteurs",
+    "country": "Pays",
+    "allCountries": "Tous",
+    "status": "Statut",
+    "allStatuses": "Toutes",
+    "startupsPlural": "startups",
+    "startupSingular": "startup",
+    "matching": "correspondante(s)",
+    "resetFilters": "Réinitialiser les filtres",
+    "emptyTitle": "Aucune startup ne correspond à votre recherche",
+    "emptyText": "Essayez avec d'autres critères ou réinitialisez les filtres.",
+    "discover": "Découvrir",
+    "cohort": "Promo {year}"
+  },
+  "EventsExplorer": {
+    "tabsAriaLabel": "Filtrer les événements",
+    "upcoming": "À venir",
+    "past": "Passés",
+    "emptyUpcomingTitle": "Aucun événement à venir",
+    "emptyPastTitle": "Aucun événement passé",
+    "emptyUpcomingText": "Revenez bientôt — de nouveaux événements sont publiés régulièrement.",
+    "emptyPastText": "Les premiers événements seront bientôt archivés ici.",
+    "paidBadge": "Payant",
+    "online": "En ligne",
+    "register": "S'inscrire"
   }
 }

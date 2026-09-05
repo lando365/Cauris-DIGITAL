@@ -1,18 +1,15 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Search, X, ArrowRight } from 'lucide-react';
 import type { Startup } from '@/lib/constants';
+import type { StartupStatus } from '@prisma/client';
 
-type Status = 'all' | 'En incubation' | 'Diplômée' | 'Alumni';
+type Status = 'all' | StartupStatus;
 
-const STATUS_OPTIONS: Array<{ value: Status; label: string }> = [
-  { value: 'all', label: 'Toutes' },
-  { value: 'En incubation', label: 'En incubation' },
-  { value: 'Diplômée', label: 'Diplômées' },
-  { value: 'Alumni', label: 'Alumni' },
-];
+const STATUS_VALUES: StartupStatus[] = ['EN_INCUBATION', 'DIPLOMEE', 'ALUMNI'];
 
 /**
  * Explorateur de startups avec filtres dynamiques côté client (CDC §6.2).
@@ -20,6 +17,8 @@ const STATUS_OPTIONS: Array<{ value: Status; label: string }> = [
  * rechargement de page pour le filtrage, qui reste réactif côté client.
  */
 export default function StartupsExplorer({ startups }: { startups: Startup[] }) {
+  const t = useTranslations('StartupsExplorer');
+  const tEnum = useTranslations('Enums');
   const [query, setQuery] = useState('');
   const [sectorFilter, setSectorFilter] = useState<string>('all');
   const [countryFilter, setCountryFilter] = useState<string>('all');
@@ -44,12 +43,13 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
       if (countryFilter !== 'all' && s.countryName !== countryFilter) return false;
       if (statusFilter !== 'all' && s.status !== statusFilter) return false;
       if (q) {
-        const haystack = `${s.name} ${s.tagline} ${s.description} ${s.sector}`.toLowerCase();
+        const haystack =
+          `${s.name} ${s.tagline} ${s.description} ${tEnum(`sector.${s.sector}`)}`.toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       return true;
     });
-  }, [startups, query, sectorFilter, countryFilter, statusFilter]);
+  }, [startups, query, sectorFilter, countryFilter, statusFilter, tEnum]);
 
   const hasActiveFilters =
     query.trim() !== '' ||
@@ -76,7 +76,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 htmlFor="startup-search"
                 className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
               >
-                Rechercher
+                {t('search')}
               </label>
               <div className="relative">
                 <Search
@@ -88,7 +88,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Nom, secteur, mot-clé…"
+                  placeholder={t('searchPlaceholder')}
                   className="w-full pl-10 pr-9 py-2.5 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors text-sm"
                 />
                 {query && (
@@ -96,7 +96,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                     type="button"
                     onClick={() => setQuery('')}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-cauris-gray-secondary hover:text-cauris-orange"
-                    aria-label="Effacer la recherche"
+                    aria-label={t('clearSearch')}
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -110,7 +110,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 htmlFor="filter-sector"
                 className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
               >
-                Secteur
+                {t('sector')}
               </label>
               <select
                 id="filter-sector"
@@ -118,10 +118,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 onChange={(e) => setSectorFilter(e.target.value)}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors text-sm bg-white"
               >
-                <option value="all">Tous les secteurs</option>
+                <option value="all">{t('allSectors')}</option>
                 {sectors.map((s) => (
                   <option key={s} value={s}>
-                    {s}
+                    {tEnum(`sector.${s}`)}
                   </option>
                 ))}
               </select>
@@ -133,7 +133,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 htmlFor="filter-country"
                 className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
               >
-                Pays
+                {t('country')}
               </label>
               <select
                 id="filter-country"
@@ -141,7 +141,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 onChange={(e) => setCountryFilter(e.target.value)}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors text-sm bg-white"
               >
-                <option value="all">Tous</option>
+                <option value="all">{t('allCountries')}</option>
                 {countries.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -156,7 +156,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 htmlFor="filter-status"
                 className="block text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-2"
               >
-                Statut
+                {t('status')}
               </label>
               <select
                 id="filter-status"
@@ -164,9 +164,10 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 onChange={(e) => setStatusFilter(e.target.value as Status)}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors text-sm bg-white"
               >
-                {STATUS_OPTIONS.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
+                <option value="all">{t('allStatuses')}</option>
+                {STATUS_VALUES.map((s) => (
+                  <option key={s} value={s}>
+                    {tEnum(`status.${s}`)}
                   </option>
                 ))}
               </select>
@@ -177,8 +178,8 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
           <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between flex-wrap gap-3">
             <p className="text-sm text-cauris-gray-secondary">
               <strong className="text-cauris-black">{filtered.length}</strong>{' '}
-              {filtered.length > 1 ? 'startups' : 'startup'}
-              {hasActiveFilters && ' correspondante(s)'}
+              {filtered.length > 1 ? t('startupsPlural') : t('startupSingular')}
+              {hasActiveFilters && ` ${t('matching')}`}
             </p>
             {hasActiveFilters && (
               <button
@@ -186,7 +187,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                 onClick={resetFilters}
                 className="text-sm font-medium text-cauris-orange hover:underline"
               >
-                Réinitialiser les filtres
+                {t('resetFilters')}
               </button>
             )}
           </div>
@@ -199,26 +200,24 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
               <Search className="w-7 h-7" aria-hidden="true" />
             </div>
             <h3 className="font-heading font-bold text-xl text-cauris-black mb-2">
-              Aucune startup ne correspond à votre recherche
+              {t('emptyTitle')}
             </h3>
-            <p className="text-cauris-gray-text mb-6">
-              Essayez avec d&apos;autres critères ou réinitialisez les filtres.
-            </p>
+            <p className="text-cauris-gray-text mb-6">{t('emptyText')}</p>
             <button
               type="button"
               onClick={resetFilters}
               className="text-cauris-orange font-semibold hover:underline"
             >
-              Réinitialiser les filtres
+              {t('resetFilters')}
             </button>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {filtered.map((s) => {
               const statusColor =
-                s.status === 'Diplômée'
+                s.status === 'DIPLOMEE'
                   ? 'bg-cauris-success/10 text-cauris-success-text'
-                  : s.status === 'Alumni'
+                  : s.status === 'ALUMNI'
                     ? 'bg-cauris-black/5 text-cauris-black'
                     : 'bg-cauris-orange/10 text-cauris-orange';
               // Pas de aria-label : le nom accessible se compose déjà à
@@ -236,7 +235,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                     <span
                       className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full ${statusColor}`}
                     >
-                      {s.status}
+                      {tEnum(`status.${s.status}`)}
                     </span>
                   </div>
 
@@ -244,7 +243,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                     {s.name} <span className="text-base">{s.country}</span>
                   </h3>
                   <p className="text-xs text-cauris-gray-secondary uppercase tracking-wider mb-3">
-                    {s.sector} · {s.countryName} · Promo {s.year}
+                    {tEnum(`sector.${s.sector}`)} · {s.countryName} · {t('cohort', { year: s.year })}
                   </p>
                   <p className="text-cauris-orange font-medium text-sm mb-3">{s.tagline}</p>
                   <p className="text-sm text-cauris-gray-text leading-relaxed flex-1 mb-5 line-clamp-3">
@@ -253,7 +252,7 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-cauris-orange">
-                      Découvrir
+                      {t('discover')}
                       <ArrowRight
                         className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"
                         aria-hidden="true"

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -12,6 +13,8 @@ import { mapStartup } from '@/lib/content-mappers';
  * récentes si moins de 6 sont marquées, pour ne jamais afficher une grille vide.
  */
 export default async function FeaturedStartups() {
+  const t = await getTranslations('FeaturedStartups');
+  const tEnum = await getTranslations('Enums');
   const featuredRecords = await prisma.startup.findMany({
     where: { isFeatured: true },
     orderBy: { createdAt: 'desc' },
@@ -34,17 +37,17 @@ export default async function FeaturedStartups() {
     <section className="section bg-white">
       <div className="container-cauris">
         <SectionTitle
-          eyebrow="Nos startups"
-          title="Les startups que nous propulsons"
-          description="Rencontrez les entrepreneurs qui changent l'Afrique depuis Yaoundé — et bien au-delà."
+          eyebrow={t('eyebrow')}
+          title={t('title')}
+          description={t('description')}
         />
 
         <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
           {featured.map((s, i) => {
             const statusColor =
-              s.status === 'Diplômée'
+              s.status === 'DIPLOMEE'
                 ? 'bg-cauris-success/10 text-cauris-success-text'
-                : s.status === 'Alumni'
+                : s.status === 'ALUMNI'
                   ? 'bg-cauris-black/5 text-cauris-black'
                   : 'bg-cauris-orange/10 text-cauris-orange';
             return (
@@ -62,14 +65,14 @@ export default async function FeaturedStartups() {
                     <span
                       className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full ${statusColor}`}
                     >
-                      {s.status}
+                      {tEnum(`status.${s.status}`)}
                     </span>
                   </div>
                   <h3 className="font-heading font-bold text-lg text-cauris-black mb-1 group-hover:text-cauris-orange transition-colors">
                     {s.name} <span className="text-base">{s.country}</span>
                   </h3>
                   <p className="text-xs text-cauris-gray-secondary uppercase tracking-wider mb-3">
-                    {s.sector} · Promo {s.year}
+                    {tEnum(`sector.${s.sector}`)} · {t('cohort', { year: s.year })}
                   </p>
                   {s.tagline && (
                     <p className="text-sm text-cauris-gray-text leading-snug">{s.tagline}</p>
@@ -82,7 +85,7 @@ export default async function FeaturedStartups() {
 
         <div className="mt-12 text-center">
           <Button href="/startups" variant="secondary">
-            Voir toutes nos startups
+            {t('viewAll')}
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TESTIMONIALS } from '@/lib/constants';
 import SectionTitle from '@/components/ui/SectionTitle';
@@ -9,6 +10,8 @@ import SectionTitle from '@/components/ui/SectionTitle';
  * Carousel de témoignages (CDC §2.1).
  */
 export default function Testimonials() {
+  const t = useTranslations('Testimonials');
+  const tData = useTranslations('TestimonialsData');
   const [index, setIndex] = useState(0);
   const total = TESTIMONIALS.length;
 
@@ -16,11 +19,12 @@ export default function Testimonials() {
   const next = () => setIndex((i) => (i + 1) % total);
 
   const current = TESTIMONIALS[index];
+  const currentData = tData.raw(current.id) as { location: string; quote: string };
 
   return (
     <section className="section bg-cauris-cream/40">
       <div className="container-cauris">
-        <SectionTitle eyebrow="Témoignages" title="Ils ont fait confiance à CAURIS DIGITAL" />
+        <SectionTitle eyebrow={t('eyebrow')} title={t('title')} />
 
         <div className="mt-14 max-w-3xl mx-auto">
           <div className="card bg-white p-8 lg:p-12 border border-gray-100 relative">
@@ -29,7 +33,7 @@ export default function Testimonials() {
               aria-hidden="true"
             />
             <p className="font-heading text-xl lg:text-2xl text-cauris-black leading-relaxed mb-8">
-              « {current.quote} »
+              « {currentData.quote} »
             </p>
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-4">
@@ -39,8 +43,8 @@ export default function Testimonials() {
                 <div>
                   <p className="font-semibold text-cauris-black">{current.name}</p>
                   <p className="text-sm text-cauris-gray-secondary">
-                    Fondateur·rice — {current.startup}
-                    {current.location && <span className="ml-1">· {current.location}</span>}
+                    {t('founderLabel')} — {current.startup}
+                    {currentData.location && <span className="ml-1">· {currentData.location}</span>}
                   </p>
                 </div>
               </div>
@@ -49,7 +53,7 @@ export default function Testimonials() {
                   type="button"
                   onClick={prev}
                   className="w-10 h-10 rounded-full border border-gray-200 hover:border-cauris-orange hover:bg-cauris-orange hover:text-white transition-all flex items-center justify-center"
-                  aria-label="Témoignage précédent"
+                  aria-label={t('previous')}
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -57,7 +61,7 @@ export default function Testimonials() {
                   type="button"
                   onClick={next}
                   className="w-10 h-10 rounded-full border border-gray-200 hover:border-cauris-orange hover:bg-cauris-orange hover:text-white transition-all flex items-center justify-center"
-                  aria-label="Témoignage suivant"
+                  aria-label={t('next')}
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -73,7 +77,7 @@ export default function Testimonials() {
                 type="button"
                 onClick={() => setIndex(i)}
                 className="p-2.5 flex items-center justify-center"
-                aria-label={`Aller au témoignage ${i + 1}`}
+                aria-label={t('goToTestimonial', { n: i + 1 })}
               >
                 <span
                   className={`inline-block h-2 rounded-full transition-all ${

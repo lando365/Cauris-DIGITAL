@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
 import {
   ArrowRight,
   ExternalLink,
@@ -9,18 +10,16 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
 import { PARTNER_CATEGORIES, type PartnerLogo } from '@/lib/constants';
 import { prisma } from '@/lib/prisma';
 import { mapPartner } from '@/lib/content-mappers';
 import type { PartnerCategory } from '@prisma/client';
 
-export const metadata: Metadata = {
-  title: 'Nos partenaires — CAURIS DIGITAL | Écosystème tech africain',
-  description:
-    'Découvrez les partenaires institutionnels, financiers, académiques et corporatifs qui soutiennent la mission de CAURIS DIGITAL en Afrique francophone.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('PartnersPage');
+  return { title: t('metaTitle'), description: t('metaDescription') };
+}
 
 // CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
 export const revalidate = 60;
@@ -40,6 +39,8 @@ const CATEGORY_ID_TO_PRISMA: Record<string, PartnerCategory> = {
 };
 
 export default async function PartnersPage() {
+  const t = await getTranslations('PartnersPage');
+  const tCategories = await getTranslations('PartnerCategoriesData');
   const records = await prisma.partner.findMany({ orderBy: { displayOrder: 'asc' } });
   const mapped = records.map((p) => ({ ...mapPartner(p), category: p.category }));
   const PARTNERS_BY_CATEGORY: Record<string, PartnerLogo[]> = {};
@@ -54,17 +55,12 @@ export default async function PartnersPage() {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Notre écosystème
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Nos partenaires
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              CAURIS DIGITAL ne travaille pas seul. Notre force, c&apos;est notre réseau.
-              Institutions, universités, entreprises, fonds d&apos;investissement et organisations
-              internationales — ensemble, nous construisons l&apos;écosystème tech africain de
-              demain.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
           </div>
         </div>
       </section>
@@ -74,6 +70,7 @@ export default async function PartnersPage() {
         const Icon = CATEGORY_ICONS[category.id as keyof typeof CATEGORY_ICONS];
         const partners = PARTNERS_BY_CATEGORY[category.id] || [];
         const isAlt = catIdx % 2 === 1;
+        const data = tCategories.raw(category.id) as { title: string; description: string };
         return (
           <section
             key={category.id}
@@ -87,12 +84,12 @@ export default async function PartnersPage() {
                     <Icon className="w-7 h-7" aria-hidden="true" />
                   </div>
                   <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-cauris-orange mb-2">
-                    Catégorie {catIdx + 1}
+                    {t('categoryLabel', { n: catIdx + 1 })}
                   </p>
                   <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black mb-4">
-                    {category.title}
+                    {data.title}
                   </h2>
-                  <p className="text-cauris-gray-text leading-relaxed">{category.description}</p>
+                  <p className="text-cauris-gray-text leading-relaxed">{data.description}</p>
                 </Reveal>
 
                 <Reveal delay={150} className="lg:col-span-2">
@@ -122,7 +119,7 @@ export default async function PartnersPage() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="block w-full"
-                              aria-label={`Visiter le site de ${partner.name}`}
+                              aria-label={t('visitSite', { name: partner.name })}
                             >
                               {inner}
                               <span className="inline-flex items-center gap-1 mt-3 text-[11px] text-cauris-gray-secondary group-hover:text-cauris-orange transition-colors">
@@ -161,17 +158,14 @@ export default async function PartnersPage() {
         <div className="container-cauris relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6">
-              Vous souhaitez rejoindre notre réseau de partenaires ?
+              {t('ctaTitle')}
             </h2>
-            <p className="text-lg lg:text-xl text-white/90 mb-10 leading-relaxed">
-              Que vous soyez une institution, une entreprise, une université ou un fonds
-              d&apos;investissement, nous serions ravis d&apos;explorer une collaboration avec vous.
-            </p>
+            <p className="text-lg lg:text-xl text-white/90 mb-10 leading-relaxed">{t('ctaText')}</p>
             <Link
               href="/contact?objet=partenariat-corporate"
               className="inline-flex items-center gap-2 rounded-btn bg-white px-8 py-4 text-base font-semibold uppercase tracking-wide text-cauris-orange transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl"
             >
-              Devenir partenaire
+              {t('ctaButton')}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

@@ -1,18 +1,19 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import NewsExplorer from '@/components/sections/NewsExplorer';
 import { prisma } from '@/lib/prisma';
 import { mapArticle } from '@/lib/content-mappers';
 
-export const metadata: Metadata = {
-  title: 'Actualités CAURIS DIGITAL — Tech, Innovation et Entrepreneuriat en Afrique',
-  description:
-    "Suivez l'actualité de CAURIS DIGITAL et de l'écosystème tech africain : portraits d'entrepreneurs, annonces de promotions, analyses et ressources pour startups.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('NewsPage');
+  return { title: t('metaTitle'), description: t('metaDescription') };
+}
 
 // CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
 export const revalidate = 60;
 
 export default async function NewsPage() {
+  const t = await getTranslations('NewsPage');
   const records = await prisma.article.findMany({
     where: { status: 'PUBLISHED', publishedAt: { lte: new Date() } },
     include: { author: { select: { name: true } } },
@@ -26,15 +27,12 @@ export default async function NewsPage() {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Notre blog
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Actualités
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Nos annonces, portraits d&apos;entrepreneurs, analyses et ressources pour construire
-              votre startup.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
           </div>
         </div>
       </section>

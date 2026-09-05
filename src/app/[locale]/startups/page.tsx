@@ -1,19 +1,20 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import StartupsExplorer from '@/components/sections/StartupsExplorer';
 import FinalCTA from '@/components/sections/FinalCTA';
 import { prisma } from '@/lib/prisma';
 import { mapStartup } from '@/lib/content-mappers';
 
-export const metadata: Metadata = {
-  title: 'Startups CAURIS DIGITAL — Les entreprises tech africaines que nous propulsons',
-  description:
-    "Découvrez les startups technologiques africaines accompagnées par CAURIS DIGITAL : Agritech, Fintech, Edtech, Healthtech, Smart Cities. Des entrepreneurs qui changent l'Afrique.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('StartupsPage');
+  return { title: t('metaTitle'), description: t('metaDescription') };
+}
 
 // CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
 export const revalidate = 60;
 
 export default async function StartupsPage() {
+  const t = await getTranslations('StartupsPage');
   const startups = await prisma.startup.findMany({ orderBy: { createdAt: 'desc' } });
   const mapped = startups.map(mapStartup);
   return (
@@ -23,21 +24,14 @@ export default async function StartupsPage() {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Notre portefeuille
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Les startups que nous propulsons
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Des entrepreneurs de toute l&apos;Afrique francophone qui construisent les solutions
-              de demain — avec le soutien de CAURIS DIGITAL.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
             <p className="mt-4 text-base text-cauris-gray-secondary leading-relaxed">
-              Chaque startup de notre portefeuille a été sélectionnée pour la qualité de son équipe,
-              la pertinence de sa solution et son potentiel d&apos;impact. Qu&apos;elles soient
-              encore en incubation ou déjà sur le marché, ce sont elles qui prouvent que
-              l&apos;innovation africaine existe, qu&apos;elle est forte et qu&apos;elle mérite
-              d&apos;être soutenue.
+              {t('heroDescription')}
             </p>
           </div>
         </div>

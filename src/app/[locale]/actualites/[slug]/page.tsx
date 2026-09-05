@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
 import {
   ArrowLeft,
   ArrowRight,
@@ -66,7 +67,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const article = await getPublishedArticleBySlug(slug);
   if (!article) {
-    return { title: 'Article introuvable' };
+    const t = await getTranslations('ArticleDetail');
+    return { title: t('notFoundTitle') };
   }
   return {
     title: article.title,
@@ -88,8 +90,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso + 'T00:00:00').toLocaleDateString('fr-FR', {
+function formatDate(iso: string, locale: string): string {
+  return new Date(iso + 'T00:00:00').toLocaleDateString(locale, {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
@@ -101,6 +103,9 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = await getPublishedArticleBySlug(slug);
   if (!article) notFound();
 
+  const t = await getTranslations('ArticleDetail');
+  const tEnum = await getTranslations('Enums');
+  const locale = await getLocale();
   const related = await getRelatedArticles(article, 3);
   const shareUrl = `${SITE_CONFIG.url}/actualites/${article.slug}`;
   const categoryColor = ARTICLE_CATEGORY_COLORS[article.category];
@@ -140,14 +145,14 @@ export default async function ArticlePage({ params }: PageProps) {
                 className="inline-flex items-center gap-2 text-sm text-cauris-gray-secondary hover:text-cauris-orange mb-6 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-                Retour aux actualités
+                {t('backToNews')}
               </Link>
 
               {/* Catégorie */}
               <span
                 className={`inline-flex text-[11px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full mb-5 ${categoryColor}`}
               >
-                {article.category}
+                {tEnum(`category.${article.category}`)}
               </span>
 
               {/* Titre */}
@@ -159,12 +164,12 @@ export default async function ArticlePage({ params }: PageProps) {
               <div className="flex items-center gap-4 text-sm text-cauris-gray-secondary flex-wrap">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                  {formatDate(article.date)}
+                  {formatDate(article.date, locale)}
                 </span>
                 <span aria-hidden>·</span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                  {article.readingTime} min de lecture
+                  {t('readingTime', { minutes: article.readingTime })}
                 </span>
                 <span aria-hidden>·</span>
                 <span className="flex items-center gap-1.5">
@@ -206,14 +211,14 @@ export default async function ArticlePage({ params }: PageProps) {
             <aside className="lg:col-span-1 order-2 lg:order-1">
               <div className="lg:sticky lg:top-28 flex lg:flex-col gap-3">
                 <p className="hidden lg:block text-[10px] uppercase tracking-wider font-semibold text-cauris-gray-secondary mb-1">
-                  Partager
+                  {t('share')}
                 </p>
                 <a
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-cauris-cream hover:bg-cauris-orange hover:text-white text-cauris-gray-text flex items-center justify-center transition-colors"
-                  aria-label="Partager sur LinkedIn"
+                  aria-label={t('shareLinkedin')}
                 >
                   <Linkedin className="w-4 h-4" />
                 </a>
@@ -222,7 +227,7 @@ export default async function ArticlePage({ params }: PageProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-cauris-cream hover:bg-cauris-orange hover:text-white text-cauris-gray-text flex items-center justify-center transition-colors"
-                  aria-label="Partager sur Twitter / X"
+                  aria-label={t('shareTwitter')}
                 >
                   <Twitter className="w-4 h-4" />
                 </a>
@@ -231,14 +236,14 @@ export default async function ArticlePage({ params }: PageProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-cauris-cream hover:bg-cauris-orange hover:text-white text-cauris-gray-text flex items-center justify-center transition-colors"
-                  aria-label="Partager sur Facebook"
+                  aria-label={t('shareFacebook')}
                 >
                   <Facebook className="w-4 h-4" />
                 </a>
                 <a
                   href={`mailto:?subject=${encodeURIComponent(article.title)}&body=${encodeURIComponent(shareUrl)}`}
                   className="w-10 h-10 rounded-full bg-cauris-cream hover:bg-cauris-orange hover:text-white text-cauris-gray-text flex items-center justify-center transition-colors"
-                  aria-label="Partager par email"
+                  aria-label={t('shareEmail')}
                 >
                   <Share2 className="w-4 h-4" />
                 </a>
@@ -319,17 +324,14 @@ export default async function ArticlePage({ params }: PageProps) {
               <div className="max-w-3xl mx-auto mt-16">
                 <div className="bg-cauris-orange text-white rounded-card p-8 lg:p-10 text-center">
                   <p className="font-heading font-bold text-xl lg:text-2xl mb-4 leading-tight">
-                    Vous aussi, vous avez un projet tech qui mérite d&apos;être propulsé ?
+                    {t('ctaTitle')}
                   </p>
-                  <p className="text-white/90 leading-relaxed mb-6">
-                    Découvrez notre programme d&apos;incubation et déposez votre candidature en
-                    quelques minutes.
-                  </p>
+                  <p className="text-white/90 leading-relaxed mb-6">{t('ctaText')}</p>
                   <Link
                     href="/programme-incubation"
                     className="inline-flex items-center gap-2 rounded-btn bg-white px-6 py-3 text-sm font-semibold uppercase tracking-wide text-cauris-orange transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
                   >
-                    Candidater au programme
+                    {t('ctaButton')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -346,17 +348,17 @@ export default async function ArticlePage({ params }: PageProps) {
             <div className="flex items-end justify-between mb-10 max-w-6xl mx-auto">
               <div>
                 <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange mb-2">
-                  Pour aller plus loin
+                  {t('relatedEyebrow')}
                 </p>
                 <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black">
-                  Articles liés
+                  {t('relatedTitle')}
                 </h2>
               </div>
               <Link
                 href="/actualites"
                 className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-cauris-orange hover:underline"
               >
-                Voir toutes les actualités
+                {t('viewAllNews')}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

@@ -1,20 +1,21 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import EventsExplorer from '@/components/sections/EventsExplorer';
 import NewsletterForm from '@/components/forms/NewsletterForm';
 import { Mail } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { mapEvent } from '@/lib/content-mappers';
 
-export const metadata: Metadata = {
-  title: 'Événements CAURIS DIGITAL — Conférences, Demo Days, Ateliers tech Afrique',
-  description:
-    'Retrouvez tous les événements de CAURIS DIGITAL : Demo Days, ateliers, conférences tech, hackathons et webinaires en ligne accessibles depuis partout.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('EventsPage');
+  return { title: t('metaTitle'), description: t('metaDescription') };
+}
 
 // CDC V2 §4.3.1 : liste publique en cache ISR (revalidate 60s).
 export const revalidate = 60;
 
 export default async function EventsPage() {
+  const t = await getTranslations('EventsPage');
   const records = await prisma.event.findMany({
     where: { isPublished: true },
     orderBy: { startDate: 'desc' },
@@ -27,15 +28,12 @@ export default async function EventsPage() {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Agenda
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Événements
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Demo Days, ateliers, conférences et webinaires. En présentiel à Yaoundé et en ligne
-              partout dans le monde.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
           </div>
         </div>
       </section>
@@ -54,14 +52,13 @@ export default async function EventsPage() {
               <Mail className="w-7 h-7" aria-hidden="true" />
             </div>
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Newsletter événements
+              {t('newsletterEyebrow')}
             </p>
             <h2 className="font-heading font-bold text-3xl sm:text-h2 leading-tight text-white mb-4">
-              Ne manquez aucun événement CAURIS DIGITAL
+              {t('newsletterTitle')}
             </h2>
             <p className="text-base sm:text-lg text-white/80 leading-relaxed">
-              Inscrivez-vous à notre newsletter pour recevoir en priorité les annonces de nos Demo
-              Days, ateliers et conférences — en ligne ou à Yaoundé.
+              {t('newsletterText')}
             </p>
             <div className="mt-8 max-w-md mx-auto">
               <NewsletterForm />

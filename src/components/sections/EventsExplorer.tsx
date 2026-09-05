@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { Calendar, MapPin, Clock, ArrowRight, Tag } from 'lucide-react';
+import type { EventType as PrismaEventType } from '@prisma/client';
 
-export type EventType =
-  'Demo Day' | 'Atelier' | 'Conférence' | 'Hackathon' | 'Webinaire' | 'Networking';
+export type EventType = PrismaEventType;
 
 export interface Event {
   id: string;
@@ -21,17 +22,17 @@ export interface Event {
 }
 
 const TYPE_COLORS: Record<EventType, string> = {
-  'Demo Day': 'bg-cauris-orange text-white',
-  Atelier: 'bg-cauris-success/15 text-cauris-success-text',
-  Conférence: 'bg-cauris-black text-white',
-  Hackathon: 'bg-purple-100 text-purple-700',
-  Webinaire: 'bg-blue-100 text-blue-700',
-  Networking: 'bg-pink-100 text-pink-700',
+  DEMO_DAY: 'bg-cauris-orange text-white',
+  ATELIER: 'bg-cauris-success/15 text-cauris-success-text',
+  CONFERENCE: 'bg-cauris-black text-white',
+  HACKATHON: 'bg-purple-100 text-purple-700',
+  WEBINAIRE: 'bg-blue-100 text-blue-700',
+  NETWORKING: 'bg-pink-100 text-pink-700',
 };
 
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string): string {
   const date = new Date(iso + 'T00:00:00');
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleDateString(locale, {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
@@ -39,6 +40,9 @@ function formatDate(iso: string): string {
 }
 
 export default function EventsExplorer({ events }: { events: Event[] }) {
+  const t = useTranslations('EventsExplorer');
+  const tEnum = useTranslations('Enums');
+  const locale = useLocale();
   const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming');
 
   const today = new Date().toISOString().slice(0, 10);
@@ -63,7 +67,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
         {/* Onglets */}
         <div
           role="tablist"
-          aria-label="Filtrer les événements"
+          aria-label={t('tabsAriaLabel')}
           className="inline-flex bg-cauris-cream rounded-btn p-1 mb-10"
         >
           <button
@@ -77,7 +81,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                 : 'text-cauris-gray-secondary hover:text-cauris-black'
             }`}
           >
-            À venir <span className="ml-1">({upcoming.length})</span>
+            {t('upcoming')} <span className="ml-1">({upcoming.length})</span>
           </button>
           <button
             type="button"
@@ -90,7 +94,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                 : 'text-cauris-gray-secondary hover:text-cauris-black'
             }`}
           >
-            Passés <span className="ml-1">({past.length})</span>
+            {t('past')} <span className="ml-1">({past.length})</span>
           </button>
         </div>
 
@@ -101,12 +105,10 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
               <Calendar className="w-7 h-7" aria-hidden="true" />
             </div>
             <h3 className="font-heading font-bold text-xl text-cauris-black mb-2">
-              {tab === 'upcoming' ? 'Aucun événement à venir' : 'Aucun événement passé'}
+              {tab === 'upcoming' ? t('emptyUpcomingTitle') : t('emptyPastTitle')}
             </h3>
             <p className="text-cauris-gray-text">
-              {tab === 'upcoming'
-                ? 'Revenez bientôt — de nouveaux événements sont publiés régulièrement.'
-                : 'Les premiers événements seront bientôt archivés ici.'}
+              {tab === 'upcoming' ? t('emptyUpcomingText') : t('emptyPastText')}
             </p>
           </div>
         ) : (
@@ -126,11 +128,11 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                       className={`inline-flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full ${typeColor}`}
                     >
                       <Tag className="w-3 h-3" aria-hidden="true" />
-                      {event.type}
+                      {tEnum(`eventType.${event.type}`)}
                     </span>
                     {!event.free && (
                       <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full bg-cauris-cream text-cauris-orange">
-                        Payant
+                        {t('paidBadge')}
                       </span>
                     )}
                   </div>
@@ -146,7 +148,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                   <div className="space-y-2 text-sm text-cauris-gray-secondary mb-5 pt-4 border-t border-gray-100">
                     <p className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                      {formatDate(event.date)}
+                      {formatDate(event.date, locale)}
                     </p>
                     <p className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
@@ -154,7 +156,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                     </p>
                     <p className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                      {event.place}
+                      {event.online ? t('online') : event.place}
                     </p>
                     {event.price && <p className="text-xs italic">{event.price}</p>}
                   </div>
@@ -166,7 +168,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 self-start text-cauris-orange font-semibold text-sm hover:underline"
                     >
-                      S&apos;inscrire
+                      {t('register')}
                       <ArrowRight className="w-3.5 h-3.5" />
                     </a>
                   )}

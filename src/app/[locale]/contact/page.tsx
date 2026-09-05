@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { Mail, MapPin, Phone, Clock } from 'lucide-react';
 import ContactForm from '@/components/forms/ContactForm';
 import SectionTitle from '@/components/ui/SectionTitle';
 import { SITE_CONFIG } from '@/lib/constants';
 
-export const metadata: Metadata = {
-  title: 'Contactez CAURIS DIGITAL — Yaoundé, Cameroun | Incubateur numérique africain',
-  description:
-    "Contactez l'équipe de CAURIS DIGITAL pour une candidature, un partenariat ou toute question. Basés à Yaoundé, nous répondons dans les plus brefs délais.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('ContactPage');
+  return { title: t('metaTitle'), description: t('metaDescription') };
+}
 
 interface PageProps {
   searchParams: Promise<{ objet?: string }>;
@@ -16,6 +16,7 @@ interface PageProps {
 
 export default async function ContactPage({ searchParams }: PageProps) {
   const { objet } = await searchParams;
+  const t = await getTranslations('ContactPage');
   return (
     <>
       {/* Hero */}
@@ -23,15 +24,12 @@ export default async function ContactPage({ searchParams }: PageProps) {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Contact
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Contactez-nous
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Une question sur nos programmes ? Un projet de partenariat ? Une idée à partager ?
-              Notre équipe répond dans les plus brefs délais.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
           </div>
         </div>
       </section>
@@ -42,7 +40,11 @@ export default async function ContactPage({ searchParams }: PageProps) {
           <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Formulaire — 2/3 */}
             <div className="lg:col-span-2">
-              <SectionTitle eyebrow="Écrivez-nous" title="Formulaire de contact" align="left" />
+              <SectionTitle
+                eyebrow={t('formEyebrow')}
+                title={t('formTitle')}
+                align="left"
+              />
               <div className="mt-8">
                 <ContactForm defaultSubject={objet ?? ''} />
               </div>
@@ -51,8 +53,8 @@ export default async function ContactPage({ searchParams }: PageProps) {
             {/* Coordonnées — 1/3 */}
             <aside className="lg:col-span-1">
               <SectionTitle
-                eyebrow="Nos coordonnées"
-                title="Autres moyens de nous joindre"
+                eyebrow={t('infoEyebrow')}
+                title={t('infoTitle')}
                 align="left"
               />
 
@@ -64,7 +66,7 @@ export default async function ContactPage({ searchParams }: PageProps) {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-1">
-                        Email
+                        {t('emailLabel')}
                       </p>
                       <a
                         href={`mailto:${SITE_CONFIG.email}`}
@@ -83,7 +85,7 @@ export default async function ContactPage({ searchParams }: PageProps) {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-1">
-                        Téléphone
+                        {t('phoneLabel')}
                       </p>
                       <a
                         href={`tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`}
@@ -102,7 +104,7 @@ export default async function ContactPage({ searchParams }: PageProps) {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-1">
-                        Siège social
+                        {t('addressLabel')}
                       </p>
                       <p className="text-cauris-black font-medium">{SITE_CONFIG.address}</p>
                     </div>
@@ -116,10 +118,10 @@ export default async function ContactPage({ searchParams }: PageProps) {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange-light mb-1">
-                        Horaires
+                        {t('hoursLabel')}
                       </p>
-                      <p className="font-medium">Lun. — Ven.</p>
-                      <p className="text-sm text-white/70">8h00 — 18h00 (UTC+1)</p>
+                      <p className="font-medium">{t('hoursDays')}</p>
+                      <p className="text-sm text-white/70">{t('hoursTime')}</p>
                     </div>
                   </div>
                 </div>
@@ -134,7 +136,7 @@ export default async function ContactPage({ searchParams }: PageProps) {
         <div className="container-cauris">
           <div className="rounded-card overflow-hidden shadow-card aspect-[16/9] sm:aspect-[21/9] bg-gray-200 relative">
             <iframe
-              title="Localisation CAURIS DIGITAL — Yaoundé, Cameroun"
+              title={t('mapTitle')}
               src="https://www.openstreetmap.org/export/embed.html?bbox=11.45%2C3.80%2C11.60%2C3.92&amp;layer=mapnik&amp;marker=3.848%2C11.502"
               className="w-full h-full border-0"
               loading="lazy"
@@ -146,7 +148,7 @@ export default async function ContactPage({ searchParams }: PageProps) {
               rel="noopener noreferrer"
               className="absolute bottom-3 right-3 bg-white/95 backdrop-blur px-3 py-1.5 rounded-btn text-xs font-medium text-cauris-black hover:bg-white shadow-card transition-colors"
             >
-              Voir en grand →
+              {t('mapViewLarger')}
             </a>
           </div>
         </div>

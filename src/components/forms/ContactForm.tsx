@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, type FormEvent } from 'react';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Send, Check, AlertCircle, Loader2, ShieldCheck, Paperclip, X } from 'lucide-react';
 import { useRecaptcha } from '@/lib/hooks/useRecaptcha';
@@ -11,16 +12,16 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
  * Objets du formulaire (Textes_Site_v1)
  * Note : 'candidature' (depuis le bouton Hero) mappe sur 'Candidature à un programme'.
  */
-const SUBJECTS = [
-  { value: 'candidature', label: 'Candidature à un programme' },
-  { value: 'candidature-incubation', label: 'Candidature programme Incubation' },
-  { value: 'candidature-acceleration', label: 'Candidature programme Accélération' },
-  { value: 'partenariat-corporate', label: 'Partenariat corporate' },
-  { value: 'mentorat', label: 'Demande de mentorat' },
-  { value: 'presse', label: 'Presse et médias' },
-  { value: 'evenement', label: 'Invitation à un événement' },
-  { value: 'autre', label: 'Autre' },
-];
+const SUBJECT_IDS = [
+  'candidature',
+  'candidature-incubation',
+  'candidature-acceleration',
+  'partenariat-corporate',
+  'mentorat',
+  'presse',
+  'evenement',
+  'autre',
+] as const;
 
 // Sujets qui déclenchent les champs additionnels "Candidature startup" (CDC §6.1)
 const STARTUP_APPLICATION_SUBJECTS = new Set([
@@ -30,47 +31,10 @@ const STARTUP_APPLICATION_SUBJECTS = new Set([
 ]);
 const CORPORATE_SUBJECT = 'partenariat-corporate';
 
-const STARTUP_SECTORS = ['Agritech', 'Fintech', 'Edtech', 'Healthtech', 'Smart Cities', 'Autre'];
-
-const STARTUP_STAGES = [
-  'Idée / Concept',
-  'Prototype',
-  'MVP avec premiers utilisateurs',
-  'Déjà lancé — génère des revenus',
-];
-
 const MAX_PITCH_DECK_MB = 5;
 
-/**
- * Pays prioritaires en haut, puis liste alphabétique courte (FR/Afrique).
- */
-const COUNTRIES = [
-  'Cameroun',
-  "Côte d'Ivoire",
-  'Sénégal',
-  'République Démocratique du Congo',
-  'République du Congo',
-  'Gabon',
-  'Tchad',
-  'Centrafrique',
-  'Bénin',
-  'Burkina Faso',
-  'Mali',
-  'Niger',
-  'Togo',
-  'Guinée',
-  'Madagascar',
-  'France',
-  'Belgique',
-  'Suisse',
-  'Canada',
-  'Maroc',
-  'Tunisie',
-  'Algérie',
-  'Autre',
-];
-
 export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: string }) {
+  const t = useTranslations('ContactForm');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [subject, setSubject] = useState(defaultSubject);
@@ -78,19 +42,23 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
   const [pitchDeckName, setPitchDeckName] = useState('');
   const { getToken: getRecaptchaToken, isEnabled: recaptchaEnabled } = useRecaptcha();
 
+  const startupSectors = t.raw('startupSectors') as string[];
+  const startupStages = t.raw('startupStages') as string[];
+  const countries = t.raw('countries') as string[];
+
   const isStartupApplication = STARTUP_APPLICATION_SUBJECTS.has(subject);
   const isCorporate = subject === CORPORATE_SUBJECT;
 
   const messageLabel = useMemo(() => {
-    if (isStartupApplication) return 'Pitch de votre projet';
-    return 'Message';
-  }, [isStartupApplication]);
+    if (isStartupApplication) return t('pitchLabel');
+    return t('messageLabel');
+  }, [isStartupApplication, t]);
 
   const validatePitchDeck = (file: File | undefined): string => {
     if (!file || file.size === 0) return '';
-    if (file.type !== 'application/pdf') return 'Le fichier doit être un PDF.';
+    if (file.type !== 'application/pdf') return t('pitchDeckMustBePdf');
     if (file.size > MAX_PITCH_DECK_MB * 1024 * 1024) {
-      return `Le fichier dépasse ${MAX_PITCH_DECK_MB} Mo.`;
+      return t('pitchDeckTooLarge', { max: MAX_PITCH_DECK_MB });
     }
     return '';
   };
@@ -137,14 +105,14 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
         body: formData,
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Erreur lors de l'envoi.");
+      if (!res.ok) throw new Error(data.error ?? t('sendError'));
       setStatus('success');
       formEl.reset();
       setSubject(defaultSubject);
       setPitchDeckName('');
     } catch (err) {
       setStatus('error');
-      setErrorMessage(err instanceof Error ? err.message : 'Une erreur est survenue.');
+      setErrorMessage(err instanceof Error ? err.message : t('genericError'));
     }
   };
 
@@ -155,24 +123,22 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           <Check className="w-8 h-8 text-cauris-success" />
         </div>
         <h3 className="font-heading font-bold text-xl text-cauris-black mb-2">
-          Merci pour votre message !
+          {t('successTitle')}
         </h3>
-        <p className="text-cauris-gray-text mb-2">
-          Notre équipe vous répondra dans les plus brefs délais.
-        </p>
+        <p className="text-cauris-gray-text mb-2">{t('successText')}</p>
         <p className="text-sm text-cauris-gray-secondary">
-          En attendant, découvrez{' '}
+          {t('successMeanwhileStart')}{' '}
           <Link href="/programme-incubation" className="text-cauris-orange hover:underline">
-            nos programmes
+            {t('successProgramsLink')}
           </Link>{' '}
-          ou abonnez-vous à notre newsletter pour rester informé de nos actualités.
+          {t('successMeanwhileEnd')}
         </p>
         <button
           type="button"
           onClick={() => setStatus('idle')}
           className="mt-6 text-cauris-orange font-semibold hover:underline"
         >
-          Envoyer un autre message
+          {t('sendAnother')}
         </button>
       </div>
     );
@@ -193,7 +159,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="firstName" className="block text-sm font-medium text-cauris-black mb-2">
-            Prénom <span className="text-cauris-error">*</span>
+            {t('firstName')} <span className="text-cauris-error">*</span>
           </label>
           <input
             id="firstName"
@@ -206,7 +172,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
         </div>
         <div>
           <label htmlFor="lastName" className="block text-sm font-medium text-cauris-black mb-2">
-            Nom <span className="text-cauris-error">*</span>
+            {t('lastName')} <span className="text-cauris-error">*</span>
           </label>
           <input
             id="lastName"
@@ -222,7 +188,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-cauris-black mb-2">
-            Email <span className="text-cauris-error">*</span>
+            {t('email')} <span className="text-cauris-error">*</span>
           </label>
           <input
             id="email"
@@ -235,7 +201,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
         </div>
         <div>
           <label htmlFor="country" className="block text-sm font-medium text-cauris-black mb-2">
-            Pays <span className="text-cauris-error">*</span>
+            {t('country')} <span className="text-cauris-error">*</span>
           </label>
           <select
             id="country"
@@ -246,9 +212,9 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
             className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
           >
             <option value="" disabled>
-              Sélectionnez un pays…
+              {t('countryPlaceholder')}
             </option>
-            {COUNTRIES.map((c) => (
+            {countries.map((c) => (
               <option key={c} value={c}>
                 {c}
               </option>
@@ -259,7 +225,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
 
       <div>
         <label htmlFor="subject" className="block text-sm font-medium text-cauris-black mb-2">
-          Objet <span className="text-cauris-error">*</span>
+          {t('subject')} <span className="text-cauris-error">*</span>
         </label>
         <select
           id="subject"
@@ -269,10 +235,10 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           onChange={(e) => setSubject(e.target.value)}
           className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
         >
-          <option value="">Sélectionnez un objet…</option>
-          {SUBJECTS.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
+          <option value="">{t('subjectPlaceholder')}</option>
+          {SUBJECT_IDS.map((id) => (
+            <option key={id} value={id}>
+              {t(`subjects.${id}`)}
             </option>
           ))}
         </select>
@@ -282,14 +248,14 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
       {isStartupApplication && (
         <div className="space-y-5 p-5 rounded-card bg-cauris-cream/40 border border-cauris-orange/20">
           <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange">
-            Votre projet
+            {t('yourProject')}
           </p>
           <div>
             <label
               htmlFor="startupName"
               className="block text-sm font-medium text-cauris-black mb-2"
             >
-              Nom de la startup <span className="text-cauris-error">*</span>
+              {t('startupName')} <span className="text-cauris-error">*</span>
             </label>
             <input
               id="startupName"
@@ -302,7 +268,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
               <label htmlFor="sector" className="block text-sm font-medium text-cauris-black mb-2">
-                Secteur <span className="text-cauris-error">*</span>
+                {t('sector')} <span className="text-cauris-error">*</span>
               </label>
               <select
                 id="sector"
@@ -312,9 +278,9 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
                 className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
               >
                 <option value="" disabled>
-                  Sélectionnez…
+                  {t('selectPlaceholder')}
                 </option>
-                {STARTUP_SECTORS.map((s) => (
+                {startupSectors.map((s) => (
                   <option key={s} value={s}>
                     {s}
                   </option>
@@ -323,7 +289,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
             </div>
             <div>
               <label htmlFor="stage" className="block text-sm font-medium text-cauris-black mb-2">
-                Stade du projet <span className="text-cauris-error">*</span>
+                {t('projectStage')} <span className="text-cauris-error">*</span>
               </label>
               <select
                 id="stage"
@@ -333,9 +299,9 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
                 className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors bg-white"
               >
                 <option value="" disabled>
-                  Sélectionnez…
+                  {t('selectPlaceholder')}
                 </option>
-                {STARTUP_STAGES.map((s) => (
+                {startupStages.map((s) => (
                   <option key={s} value={s}>
                     {s}
                   </option>
@@ -345,16 +311,14 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           </div>
           <div>
             <label htmlFor="pitchDeck" className="block text-sm font-medium text-cauris-black mb-2">
-              Pitch deck (PDF)
+              {t('pitchDeckLabel')}
             </label>
             <label
               htmlFor="pitchDeck"
               className="flex items-center gap-2 w-full px-4 py-3 border border-dashed border-gray-300 rounded-btn bg-white text-sm text-cauris-gray-secondary hover:border-cauris-orange cursor-pointer transition-colors"
             >
               <Paperclip className="w-4 h-4 shrink-0" aria-hidden="true" />
-              <span className="truncate">
-                {pitchDeckName || 'Joindre un fichier PDF (facultatif, max 5 Mo)'}
-              </span>
+              <span className="truncate">{pitchDeckName || t('pitchDeckPlaceholder')}</span>
               {pitchDeckName && (
                 <button
                   type="button"
@@ -366,7 +330,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
                     setPitchDeckError('');
                   }}
                   className="ml-auto text-cauris-gray-secondary hover:text-cauris-error"
-                  aria-label="Retirer le fichier"
+                  aria-label={t('removeFile')}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -393,12 +357,12 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
       {isCorporate && (
         <div className="space-y-5 p-5 rounded-card bg-cauris-cream/40 border border-cauris-orange/20">
           <p className="text-xs font-semibold uppercase tracking-wider text-cauris-orange">
-            Votre entreprise
+            {t('yourCompany')}
           </p>
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
               <label htmlFor="company" className="block text-sm font-medium text-cauris-black mb-2">
-                Société <span className="text-cauris-error">*</span>
+                {t('company')} <span className="text-cauris-error">*</span>
               </label>
               <input
                 id="company"
@@ -410,7 +374,7 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
             </div>
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-cauris-black mb-2">
-                Téléphone <span className="text-cauris-error">*</span>
+                {t('phone')} <span className="text-cauris-error">*</span>
               </label>
               <input
                 id="phone"
@@ -437,12 +401,10 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           minLength={20}
           className="w-full px-4 py-3 border border-gray-200 rounded-btn focus:outline-none focus:border-cauris-orange focus:ring-1 focus:ring-cauris-orange transition-colors resize-y"
           placeholder={
-            isStartupApplication
-              ? 'Problème résolu, solution, marché visé, traction actuelle…'
-              : 'Décrivez votre demande en quelques lignes…'
+            isStartupApplication ? t('pitchPlaceholder') : t('messagePlaceholder')
           }
         />
-        <p className="mt-1 text-xs text-cauris-gray-secondary">Minimum 20 caractères.</p>
+        <p className="mt-1 text-xs text-cauris-gray-secondary">{t('minCharacters')}</p>
       </div>
 
       <div className="flex items-start gap-2">
@@ -454,9 +416,9 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           className="mt-1 w-4 h-4 rounded border-gray-300 text-cauris-orange focus:ring-cauris-orange"
         />
         <label htmlFor="consent" className="text-sm text-cauris-gray-secondary leading-relaxed">
-          J&apos;accepte que mes données soient utilisées pour traiter ma demande, conformément à la{' '}
+          {t('consentStart')}{' '}
           <Link href="/politique-de-confidentialite" className="text-cauris-orange hover:underline">
-            politique de confidentialité
+            {t('consentLink')}
           </Link>
           .
         </label>
@@ -481,11 +443,11 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
           {status === 'loading' ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Envoi en cours…
+              {t('sending')}
             </>
           ) : (
             <>
-              Envoyer le message
+              {t('sendMessage')}
               <Send className="w-4 h-4" />
             </>
           )}
@@ -499,25 +461,25 @@ export default function ContactForm({ defaultSubject = '' }: { defaultSubject?: 
               aria-hidden="true"
             />
             <span>
-              Ce site est protégé par reCAPTCHA et respecte les{' '}
+              {t('recaptchaStart')}{' '}
               <a
                 href="https://policies.google.com/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-cauris-orange"
               >
-                Règles de confidentialité
+                {t('recaptchaPrivacy')}
               </a>{' '}
-              et les{' '}
+              {t('recaptchaAnd')}{' '}
               <a
                 href="https://policies.google.com/terms"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-cauris-orange"
               >
-                Conditions d&apos;utilisation
+                {t('recaptchaTerms')}
               </a>{' '}
-              de Google.
+              {t('recaptchaGoogle')}
             </span>
           </p>
         )}

@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { MailX } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
-export const metadata: Metadata = {
-  title: 'Désinscription confirmée',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('NewsletterUnsubscribedPage');
+  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+}
 
-export default function NewsletterUnsubscribedPage() {
+export default async function NewsletterUnsubscribedPage() {
+  const t = await getTranslations('NewsletterUnsubscribedPage');
   return (
     <section className="min-h-[80vh] flex items-center pt-32 pb-20">
       <div className="container-cauris text-center">
@@ -15,14 +17,11 @@ export default function NewsletterUnsubscribedPage() {
           <MailX className="w-8 h-8" aria-hidden="true" />
         </div>
         <h1 className="font-heading font-bold text-2xl sm:text-3xl text-cauris-black mb-4">
-          Vous êtes désinscrit·e
+          {t('title')}
         </h1>
-        <p className="text-cauris-gray-text max-w-md mx-auto mb-8">
-          Vous ne recevrez plus la newsletter CAURIS DIGITAL. Vous pouvez vous réinscrire à tout
-          moment depuis le pied de page du site.
-        </p>
+        <p className="text-cauris-gray-text max-w-md mx-auto mb-8">{t('text')}</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button href="/">Retour à l&apos;accueil</Button>
+          <Button href="/">{t('backHome')}</Button>
         </div>
       </div>
     </section>

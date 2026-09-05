@@ -1,16 +1,19 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
 import { Linkedin, Trophy, Users, Target, Handshake, Globe2, Globe } from 'lucide-react';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Reveal from '@/components/ui/Reveal';
 import FinalCTA from '@/components/sections/FinalCTA';
 import { VALUES, TEAM_PHOTOS, BRAND_IMAGES } from '@/lib/constants';
 
-export const metadata: Metadata = {
-  title: 'À propos de CAURIS DIGITAL — Incubateur numérique, Yaoundé, Cameroun',
-  description:
-    "Découvrez CAURIS DIGITAL, son histoire, sa mission et l'équipe qui accompagne les entrepreneurs tech africains depuis Yaoundé, avec un mentorat mondial en ligne.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('AboutPage');
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+  };
+}
 
 const VALUE_ICONS = {
   Trophy,
@@ -21,54 +24,19 @@ const VALUE_ICONS = {
   Globe,
 } as const;
 
-/**
- * Équipe (Textes_Site_v1 — bios à personnaliser via CMS)
- * Les noms commençant par "[Prénom NOM]" sont des placeholders à remplacer.
- */
-const TEAM = [
-  {
-    name: '[Prénom NOM]',
-    role: 'Directeur Général & Co-fondateur',
-    photo: TEAM_PHOTOS.directorGeneral,
-    bio: "Entrepreneur numérique avec [X] ans d'expérience dans l'accompagnement de startups africaines. Diplômé en [discipline] de [université]. Passionné par l'impact de la technologie sur les économies émergentes.",
-    linkedin: '#',
-  },
-  {
-    name: '[Prénom NOM]',
-    role: 'Directrice des Programmes',
-    photo: TEAM_PHOTOS.programDirector,
-    bio: "Spécialiste de l'innovation et de l'accompagnement entrepreneurial. [X] ans d'expérience dans le secteur de l'incubation en Afrique centrale. Co-fondatrice de [projet]. Diplômée de [université].",
-    linkedin: '#',
-  },
-  {
-    name: '[Prénom NOM]',
-    role: 'Responsable Mentorat & Communauté',
-    photo: TEAM_PHOTOS.mentorshipLead,
-    bio: 'Construit des ponts entre entrepreneurs et experts. Ancien fondateur de [startup]. Expert en développement communautaire et accompagnement de porteurs de projets tech.',
-    linkedin: '#',
-  },
-  {
-    name: '[Prénom NOM]',
-    role: 'Chargée de Communication & Partenariats',
-    photo: TEAM_PHOTOS.communicationLead,
-    bio: "Experte en communication digitale et en relations institutionnelles. [X] ans d'expérience dans la promotion de l'écosystème tech africain. Passionnée par le storytelling et la visibilité des startups africaines.",
-    linkedin: '#',
-  },
-];
+const TEAM_IDS = ['directorGeneral', 'programDirector', 'mentorshipLead', 'communicationLead'] as const;
+const TEAM_PHOTO_MAP = {
+  directorGeneral: TEAM_PHOTOS.directorGeneral,
+  programDirector: TEAM_PHOTOS.programDirector,
+  mentorshipLead: TEAM_PHOTOS.mentorshipLead,
+  communicationLead: TEAM_PHOTOS.communicationLead,
+} as const;
 
-/**
- * Conseil d'Administration (Textes_Site_v1 — placeholders à remplacer)
- */
-const BOARD = [
-  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
-  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
-  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
-  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
-  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
-  { name: '[Nom du membre]', institution: '[Institution / Titre]' },
-];
+const BOARD_COUNT = 6;
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const t = await getTranslations('AboutPage');
+  const tValues = await getTranslations('ValuesData');
   return (
     <>
       {/* Hero */}
@@ -76,15 +44,12 @@ export default function AboutPage() {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              À propos de CAURIS DIGITAL
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Qui nous sommes
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Un incubateur africain construit par des Africains, pour des Africains — et ouvert au
-              monde entier.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
           </div>
         </div>
       </section>
@@ -95,39 +60,12 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start">
             <div className="lg:col-span-3">
               <Reveal>
-                <SectionTitle
-                  eyebrow="Notre histoire"
-                  title="L'incubateur né d'un constat simple"
-                  align="left"
-                />
+                <SectionTitle eyebrow={t('storyEyebrow')} title={t('storyTitle')} align="left" />
                 <div className="mt-8 space-y-5 text-cauris-gray-text leading-relaxed">
-                  <p>
-                    CAURIS DIGITAL est né d&apos;un constat simple : l&apos;Afrique regorge de
-                    talents technologiques, d&apos;idées brillantes et d&apos;entrepreneurs
-                    courageux. Ce qui manque, c&apos;est un écosystème structuré pour les faire
-                    grandir.
-                  </p>
-                  <p>
-                    Fondé à Yaoundé, au cœur du Cameroun, CAURIS DIGITAL a été créé pour combler ce
-                    vide. Notre nom est un symbole : le cauris, cette petite coquillage qui a servi
-                    de monnaie d&apos;échange à travers toute l&apos;Afrique pendant des siècles,
-                    représente la valeur, la connexion et l&apos;échange — exactement ce que nous
-                    facilitons entre entrepreneurs, mentors, investisseurs et marchés.
-                  </p>
-                  <p>
-                    Depuis notre création, nous avons accompagné des dizaines d&apos;entrepreneurs
-                    dans les secteurs de la Fintech, de l&apos;Agritech, de l&apos;Edtech et de la
-                    Healthtech. Notre modèle hybride — ancrage local à Yaoundé, mentorat accessible
-                    en ligne partout dans le monde — nous permet de toucher des fondateurs à Douala,
-                    Dakar, Abidjan, Kinshasa, Paris ou Montréal, sans compromis sur la qualité de
-                    l&apos;accompagnement.
-                  </p>
-                  <p>
-                    Nous nous inspirons des meilleurs incubateurs mondiaux — Centech à Montréal, Y
-                    Combinator à San Francisco, Station F à Paris — pour construire quelque chose
-                    d&apos;unique : un modèle d&apos;incubation calibré pour les réalités
-                    africaines, avec des solutions conçues pour les marchés africains.
-                  </p>
+                  <p>{t('storyParagraph1')}</p>
+                  <p>{t('storyParagraph2')}</p>
+                  <p>{t('storyParagraph3')}</p>
+                  <p>{t('storyParagraph4')}</p>
                 </div>
               </Reveal>
             </div>
@@ -137,7 +75,7 @@ export default function AboutPage() {
                 <div className="relative aspect-[4/5] rounded-card overflow-hidden shadow-card-hover">
                   <Image
                     src={BRAND_IMAGES.aboutHistory}
-                    alt="Équipe d'entrepreneurs africains en session collaborative"
+                    alt={t('historyImageAlt')}
                     fill
                     sizes="(max-width: 1024px) 100vw, 40vw"
                     className="object-cover"
@@ -145,13 +83,9 @@ export default function AboutPage() {
                 </div>
                 <div className="bg-cauris-black text-white p-6 rounded-card">
                   <p className="text-sm font-semibold uppercase tracking-wider text-cauris-orange-light mb-2">
-                    Notre mission
+                    {t('missionLabel')}
                   </p>
-                  <p className="text-base leading-relaxed">
-                    Stimuler l&apos;entrepreneuriat numérique en Afrique francophone en formant,
-                    incubant et connectant les entrepreneurs tech de demain — de la
-                    conceptualisation jusqu&apos;à la commercialisation de leur produit.
-                  </p>
+                  <p className="text-base leading-relaxed">{t('missionCalloutText')}</p>
                 </div>
               </div>
             </Reveal>
@@ -166,31 +100,23 @@ export default function AboutPage() {
             <Reveal>
               <article className="card bg-white p-8 lg:p-10 h-full border border-gray-100">
                 <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange mb-3">
-                  Notre mission
+                  {t('missionLabel')}
                 </p>
                 <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black mb-4">
-                  Faire éclore les talents tech d&apos;Afrique francophone
+                  {t('missionTitle')}
                 </h2>
-                <p className="text-cauris-gray-text leading-relaxed">
-                  Stimuler l&apos;entrepreneuriat numérique en Afrique francophone en formant,
-                  incubant et connectant les entrepreneurs tech de demain — de la conceptualisation
-                  jusqu&apos;à la commercialisation de leur produit.
-                </p>
+                <p className="text-cauris-gray-text leading-relaxed">{t('missionCalloutText')}</p>
               </article>
             </Reveal>
             <Reveal delay={100}>
               <article className="card bg-cauris-orange text-white p-8 lg:p-10 h-full">
                 <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-white/80 mb-3">
-                  Notre vision
+                  {t('visionLabel')}
                 </p>
                 <h2 className="font-heading font-bold text-2xl lg:text-3xl mb-4">
-                  Une Afrique productrice — pas consommatrice — de tech
+                  {t('visionTitle')}
                 </h2>
-                <p className="leading-relaxed text-white/95">
-                  Faire de l&apos;Afrique francophone un continent producteur de solutions
-                  technologiques mondiales — et non un simple consommateur de technologies
-                  importées.
-                </p>
+                <p className="leading-relaxed text-white/95">{t('visionText')}</p>
               </article>
             </Reveal>
           </div>
@@ -200,13 +126,11 @@ export default function AboutPage() {
       {/* Valeurs */}
       <section className="section bg-cauris-gray-bg">
         <div className="container-cauris">
-          <SectionTitle
-            eyebrow="Nos valeurs fondatrices"
-            title="Six principes qui guident chaque décision"
-          />
+          <SectionTitle eyebrow={t('valuesEyebrow')} title={t('valuesTitle')} />
           <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {VALUES.map((value, i) => {
               const Icon = VALUE_ICONS[value.icon as keyof typeof VALUE_ICONS];
+              const data = tValues.raw(value.id) as { title: string; description: string };
               return (
                 <Reveal key={value.id} delay={i * 80}>
                   <div className="card bg-white p-7 h-full border border-gray-100">
@@ -214,10 +138,10 @@ export default function AboutPage() {
                       {Icon && <Icon className="w-6 h-6" aria-hidden="true" />}
                     </div>
                     <h3 className="font-heading font-bold text-lg text-cauris-black mb-2">
-                      {value.title}
+                      {data.title}
                     </h3>
                     <p className="text-sm text-cauris-gray-text leading-relaxed">
-                      {value.description}
+                      {data.description}
                     </p>
                   </div>
                 </Reveal>
@@ -231,43 +155,46 @@ export default function AboutPage() {
       <section id="equipe" className="section bg-white">
         <div className="container-cauris">
           <SectionTitle
-            eyebrow="Notre équipe"
-            title="L'équipe qui vous accompagne"
-            description="Des professionnels qui ont eux-mêmes entrepris, construit, raté et réussi — avant de se mettre au service des autres."
+            eyebrow={t('teamEyebrow')}
+            title={t('teamTitle')}
+            description={t('teamDescription')}
           />
 
           <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {TEAM.map((member, i) => (
-              <Reveal key={`${member.name}-${i}`} delay={i * 80}>
-                <article className="group">
-                  <div className="relative aspect-square rounded-card overflow-hidden mb-4 shadow-card group-hover:shadow-card-hover transition-shadow">
-                    <Image
-                      src={member.photo}
-                      alt={`Portrait de ${member.name}`}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <h3 className="font-heading font-bold text-lg text-cauris-black">
-                    {member.name}
-                  </h3>
-                  <div className="flex items-center justify-between mt-1 mb-3">
-                    <p className="text-sm text-cauris-orange font-medium">{member.role}</p>
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-cauris-gray-secondary hover:text-cauris-orange transition-colors"
-                      aria-label={`LinkedIn de ${member.name}`}
-                    >
-                      <Linkedin className="w-4 h-4" />
-                    </a>
-                  </div>
-                  <p className="text-xs text-cauris-gray-text leading-relaxed">{member.bio}</p>
-                </article>
-              </Reveal>
-            ))}
+            {TEAM_IDS.map((id, i) => {
+              const member = t.raw(`team.${id}`) as { name: string; role: string; bio: string };
+              return (
+                <Reveal key={id} delay={i * 80}>
+                  <article className="group">
+                    <div className="relative aspect-square rounded-card overflow-hidden mb-4 shadow-card group-hover:shadow-card-hover transition-shadow">
+                      <Image
+                        src={TEAM_PHOTO_MAP[id]}
+                        alt={t('portraitAlt', { name: member.name })}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <h3 className="font-heading font-bold text-lg text-cauris-black">
+                      {member.name}
+                    </h3>
+                    <div className="flex items-center justify-between mt-1 mb-3">
+                      <p className="text-sm text-cauris-orange font-medium">{member.role}</p>
+                      <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cauris-gray-secondary hover:text-cauris-orange transition-colors"
+                        aria-label={t('linkedinAlt', { name: member.name })}
+                      >
+                        <Linkedin className="w-4 h-4" />
+                      </a>
+                    </div>
+                    <p className="text-xs text-cauris-gray-text leading-relaxed">{member.bio}</p>
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
           {/* TODO développeur : remplacer les placeholders [Prénom NOM] par les vraies bios
               via le CMS avant la mise en ligne. Voir Audit §3.3. */}
@@ -278,17 +205,19 @@ export default function AboutPage() {
       <section id="ca" className="section bg-cauris-cream/40">
         <div className="container-cauris">
           <SectionTitle
-            eyebrow="Gouvernance"
-            title="Notre Conseil d'Administration"
-            description="Notre conseil d'administration est composé de personnalités reconnues du monde académique, institutionnel et entrepreneurial — garantes de la gouvernance et de l'orientation stratégique de CAURIS DIGITAL."
+            eyebrow={t('boardEyebrow')}
+            title={t('boardTitle')}
+            description={t('boardDescription')}
           />
 
           <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {BOARD.map((member, i) => (
-              <Reveal key={`${member.name}-${i}`} delay={i * 60}>
+            {Array.from({ length: BOARD_COUNT }, (_, i) => (
+              <Reveal key={i} delay={i * 60}>
                 <div className="bg-white rounded-card p-5 border border-gray-100 hover:border-cauris-orange/30 transition-colors">
-                  <p className="font-semibold text-cauris-black">{member.name}</p>
-                  <p className="text-sm text-cauris-gray-secondary mt-0.5">{member.institution}</p>
+                  <p className="font-semibold text-cauris-black">{t('boardMemberName')}</p>
+                  <p className="text-sm text-cauris-gray-secondary mt-0.5">
+                    {t('boardMemberInstitution')}
+                  </p>
                 </div>
               </Reveal>
             ))}

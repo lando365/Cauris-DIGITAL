@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { CheckCircle2 } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
-export const metadata: Metadata = {
-  title: 'Inscription confirmée',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('NewsletterConfirmedPage');
+  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+}
 
-export default function NewsletterConfirmedPage() {
+export default async function NewsletterConfirmedPage() {
+  const t = await getTranslations('NewsletterConfirmedPage');
   return (
     <section className="min-h-[80vh] flex items-center pt-32 pb-20">
       <div className="container-cauris text-center">
@@ -15,16 +17,13 @@ export default function NewsletterConfirmedPage() {
           <CheckCircle2 className="w-8 h-8" aria-hidden="true" />
         </div>
         <h1 className="font-heading font-bold text-2xl sm:text-3xl text-cauris-black mb-4">
-          Inscription confirmée !
+          {t('title')}
         </h1>
-        <p className="text-cauris-gray-text max-w-md mx-auto mb-8">
-          Merci de rejoindre la communauté CAURIS DIGITAL. Un email de bienvenue vient de vous être
-          envoyé — vous y trouverez aussi le lien pour vous désinscrire à tout moment.
-        </p>
+        <p className="text-cauris-gray-text max-w-md mx-auto mb-8">{t('text')}</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button href="/">Retour à l&apos;accueil</Button>
+          <Button href="/">{t('backHome')}</Button>
           <Button href="/startups" variant="secondary">
-            Découvrir les startups
+            {t('discoverStartups')}
           </Button>
         </div>
       </div>

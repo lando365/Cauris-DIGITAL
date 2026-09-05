@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { ArrowRight, MessageCircleQuestion } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import SectionTitle from '@/components/ui/SectionTitle';
@@ -6,13 +7,13 @@ import Accordion from '@/components/ui/Accordion';
 import Reveal from '@/components/ui/Reveal';
 import { FAQ_ITEMS } from '@/lib/constants';
 
-export const metadata: Metadata = {
-  title: 'FAQ — Questions fréquentes sur CAURIS DIGITAL et nos programmes',
-  description:
-    "Trouvez les réponses à toutes vos questions sur les programmes d'incubation et d'accélération de CAURIS DIGITAL, les candidatures, le mentorat en ligne et les partenariats.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('FAQPage');
+  return { title: t('metaTitle'), description: t('metaDescription') };
+}
 
-export default function FAQPage() {
+export default async function FAQPage() {
+  const t = await getTranslations('FAQPage');
   return (
     <>
       {/* Hero */}
@@ -20,15 +21,12 @@ export default function FAQPage() {
         <div className="container-cauris">
           <div className="max-w-3xl">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-              Questions fréquentes
+              {t('eyebrow')}
             </p>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-cauris-black mb-6">
-              Questions fréquentes
+              {t('h1')}
             </h1>
-            <p className="text-lg text-cauris-gray-text leading-relaxed">
-              Vous avez une question ? La réponse est probablement ici. Sinon, contactez-nous
-              directement.
-            </p>
+            <p className="text-lg text-cauris-gray-text leading-relaxed">{t('heroSubtitle')}</p>
           </div>
         </div>
       </section>
@@ -38,11 +36,11 @@ export default function FAQPage() {
         <div className="container-cauris">
           {/* Navigation thèmes en chips horizontales (mobile/tablet) — visible jusqu'à lg */}
           <nav
-            aria-label="Navigation FAQ par thème (mobile)"
+            aria-label={t('navMobileAriaLabel')}
             className="lg:hidden mb-10 -mx-4 sm:mx-0 px-4 sm:px-0"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cauris-gray-secondary mb-3">
-              Thèmes
+              {t('themesLabel')}
             </p>
             <div className="flex gap-2 overflow-x-auto pb-2 -mb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {FAQ_ITEMS.map((theme, i) => (
@@ -65,9 +63,9 @@ export default function FAQPage() {
             <aside className="hidden lg:block lg:col-span-1">
               <div className="lg:sticky lg:top-28">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cauris-gray-secondary mb-4">
-                  Thèmes
+                  {t('themesLabel')}
                 </p>
-                <nav aria-label="Navigation FAQ par thème (desktop)">
+                <nav aria-label={t('navDesktopAriaLabel')}>
                   <ul className="space-y-2">
                     {FAQ_ITEMS.map((theme, i) => (
                       <li key={theme.theme}>
@@ -114,14 +112,11 @@ export default function FAQPage() {
               <MessageCircleQuestion className="w-8 h-8" aria-hidden="true" />
             </div>
             <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black mb-4">
-              Vous n&apos;avez pas trouvé la réponse à votre question ?
+              {t('ctaTitle')}
             </h2>
-            <p className="text-cauris-gray-text leading-relaxed mb-8">
-              Notre équipe est à votre disposition. Écrivez-nous et nous vous répondrons sous 48h
-              ouvrées.
-            </p>
+            <p className="text-cauris-gray-text leading-relaxed mb-8">{t('ctaText')}</p>
             <Button href="/contact" size="lg">
-              Contactez-nous
+              {t('ctaButton')}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>

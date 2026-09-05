@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Calendar, Clock, User } from 'lucide-react';
 import { ARTICLE_CATEGORY_COLORS, type Article } from '@/lib/constants';
@@ -9,8 +12,8 @@ interface ArticleCardProps {
   compact?: boolean;
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso + 'T00:00:00').toLocaleDateString('fr-FR', {
+function formatDate(iso: string, locale: string): string {
+  return new Date(iso + 'T00:00:00').toLocaleDateString(locale, {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
@@ -21,6 +24,8 @@ function formatDate(iso: string): string {
  * Carte d'article réutilisable (NewsExplorer + Articles liés).
  */
 export default function ArticleCard({ article, compact = false }: ArticleCardProps) {
+  const tEnum = useTranslations('Enums');
+  const locale = useLocale();
   const categoryColor = ARTICLE_CATEGORY_COLORS[article.category];
 
   return (
@@ -44,7 +49,7 @@ export default function ArticleCard({ article, compact = false }: ArticleCardPro
       <span
         className={`inline-flex self-start text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full mb-3 ${categoryColor}`}
       >
-        {article.category}
+        {tEnum(`category.${article.category}`)}
       </span>
 
       <h3
@@ -66,7 +71,7 @@ export default function ArticleCard({ article, compact = false }: ArticleCardPro
       <div className="mt-auto flex items-center gap-3 text-xs text-cauris-gray-secondary flex-wrap">
         <span className="flex items-center gap-1">
           <Calendar className="w-3 h-3" aria-hidden="true" />
-          {formatDate(article.date)}
+          {formatDate(article.date, locale)}
         </span>
         <span aria-hidden>·</span>
         <span className="flex items-center gap-1">

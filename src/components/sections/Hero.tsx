@@ -19,7 +19,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <Image
           src={BRAND_IMAGES.heroBackground}
-          alt="Entrepreneurs africains au travail dans un espace de coworking moderne"
+          alt={t('backgroundAlt')}
           fill
           priority
           quality={80}

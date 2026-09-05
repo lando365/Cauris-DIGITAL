@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
 import { mapPartner } from '@/lib/content-mappers';
 
@@ -8,6 +9,7 @@ import { mapPartner } from '@/lib/content-mappers';
  * bande vide. Défilement marquee automatique.
  */
 export default async function PartnerStrip() {
+  const t = await getTranslations('PartnerStrip');
   const featuredRecords = await prisma.partner.findMany({
     where: { isFeatured: true },
     orderBy: { displayOrder: 'asc' },
@@ -29,11 +31,11 @@ export default async function PartnerStrip() {
   return (
     <section
       className="py-10 lg:py-12 bg-white border-y border-gray-100"
-      aria-label="Nos partenaires"
+      aria-label={t('ariaLabel')}
     >
       <div className="container-cauris mb-6">
         <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-cauris-gray-secondary">
-          Ils nous font confiance
+          {t('trustedBy')}
         </p>
       </div>
       <div className="mask-fade-x overflow-hidden">

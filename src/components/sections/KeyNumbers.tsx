@@ -1,19 +1,25 @@
+import { getTranslations } from 'next-intl/server';
 import CountUp from '@/components/ui/CountUp';
 import Reveal from '@/components/ui/Reveal';
 import { KEY_NUMBERS } from '@/lib/constants';
 
-/**
- * Chiffres clés animés (CDC §2.1 + Textes_Site_v1).
- * Source unique : constants.ts → KEY_NUMBERS
- */
-const NUMBERS = KEY_NUMBERS.map((n) => ({
-  end: n.value,
-  prefix: 'prefix' in n ? n.prefix : undefined,
-  suffix: 'suffix' in n ? n.suffix : undefined,
-  label: n.label,
-}));
+export default async function KeyNumbers() {
+  const t = await getTranslations('KeyNumbers');
+  const tData = await getTranslations('KeyNumbersData');
 
-export default function KeyNumbers() {
+  /**
+   * Chiffres clés animés (CDC §2.1 + Textes_Site_v1).
+   * Source des valeurs : constants.ts → KEY_NUMBERS. Libellés traduits via
+   * le namespace next-intl "KeyNumbersData".
+   */
+  const NUMBERS = KEY_NUMBERS.map((n) => ({
+    id: n.id,
+    end: n.value,
+    prefix: 'prefix' in n ? n.prefix : undefined,
+    suffix: 'suffix' in n ? n.suffix : undefined,
+    label: tData(n.id),
+  }));
+
   return (
     <section className="section relative overflow-hidden bg-cauris-black text-white">
       {/* Motif décoratif */}
@@ -26,17 +32,17 @@ export default function KeyNumbers() {
         <Reveal>
           <div className="text-center mb-14">
             <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange-light">
-              Notre impact en chiffres
+              {t('eyebrow')}
             </p>
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl">
-              Un écosystème qui livre des résultats
+              {t('title')}
             </h2>
           </div>
         </Reveal>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-10 sm:gap-y-12">
           {NUMBERS.map((item, i) => (
-            <Reveal key={item.label} delay={i * 80}>
+            <Reveal key={item.id} delay={i * 80}>
               <div className="text-center group">
                 <p className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gradient-orange mb-2 sm:mb-3 transition-transform group-hover:scale-105 break-words">
                   <CountUp end={item.end} prefix={item.prefix} suffix={item.suffix} />

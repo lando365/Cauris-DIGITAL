@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import {
@@ -53,7 +54,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const record = await prisma.startup.findUnique({ where: { slug } });
   if (!record) {
-    return { title: 'Startup introuvable' };
+    const t = await getTranslations('StartupDetail');
+    return { title: t('notFound') };
   }
   const startup = mapStartup(record);
   return {
@@ -75,10 +77,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 /**
  * Couleur du badge statut.
  */
-function getStatusStyle(status: string): string {
-  if (status === 'Diplômée')
+function getStatusStyle(status: DisplayStartup['status']): string {
+  if (status === 'DIPLOMEE')
     return 'bg-cauris-success/10 text-cauris-success-text border-cauris-success/30';
-  if (status === 'Alumni') return 'bg-cauris-black/5 text-cauris-black border-cauris-black/20';
+  if (status === 'ALUMNI') return 'bg-cauris-black/5 text-cauris-black border-cauris-black/20';
   return 'bg-cauris-orange/10 text-cauris-orange border-cauris-orange/30';
 }
 
@@ -89,6 +91,8 @@ export default async function StartupDetailPage({ params }: PageProps) {
   const startup = mapStartup(record);
 
   const related = await getRelatedStartups(startup, 3);
+  const t = await getTranslations('StartupDetail');
+  const tEnum = await getTranslations('Enums');
 
   return (
     <>
@@ -121,7 +125,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
             className="inline-flex items-center gap-2 text-sm text-cauris-gray-secondary hover:text-cauris-orange mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-            Retour aux startups
+            {t('backToStartups')}
           </Link>
 
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-start max-w-6xl">
@@ -129,12 +133,12 @@ export default async function StartupDetailPage({ params }: PageProps) {
               {/* Sector + status */}
               <div className="flex flex-wrap items-center gap-3 mb-5">
                 <span className="text-xs font-semibold uppercase tracking-[0.18em] text-cauris-orange">
-                  {startup.sector}
+                  {tEnum(`sector.${startup.sector}`)}
                 </span>
                 <span
                   className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${getStatusStyle(startup.status)}`}
                 >
-                  {startup.status}
+                  {tEnum(`status.${startup.status}`)}
                 </span>
               </div>
 
@@ -155,12 +159,12 @@ export default async function StartupDetailPage({ params }: PageProps) {
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                  Promo {startup.year}
+                  {t('cohort', { year: startup.year })}
                 </span>
                 {startup.foundedYear && (
                   <span className="inline-flex items-center gap-1.5">
                     <Award className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                    Fondée en {startup.foundedYear}
+                    {t('foundedIn', { year: startup.foundedYear })}
                   </span>
                 )}
               </div>
@@ -187,7 +191,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                 <Reveal>
                   <div>
                     <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black mb-5">
-                      La startup
+                      {t('theStartup')}
                     </h2>
                     <p className="text-base lg:text-lg text-cauris-gray-text leading-relaxed">
                       {startup.longDescription}
@@ -202,7 +206,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                   <div>
                     <h2 className="flex items-center gap-2 font-heading font-bold text-xl lg:text-2xl text-cauris-black mb-5">
                       <Code className="w-6 h-6 text-cauris-orange" aria-hidden="true" />
-                      Stack technique
+                      {t('techStack')}
                     </h2>
                     <div className="flex flex-wrap gap-2">
                       {startup.technologies.map((tech) => (
@@ -224,7 +228,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                   <div>
                     <h2 className="flex items-center gap-2 font-heading font-bold text-xl lg:text-2xl text-cauris-black mb-5">
                       <Trophy className="w-6 h-6 text-cauris-orange" aria-hidden="true" />
-                      Étapes marquantes
+                      {t('milestones')}
                     </h2>
                     <ul className="space-y-3">
                       {startup.achievements.map((a) => (
@@ -248,7 +252,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                     <div className="bg-cauris-black text-white rounded-card p-6 lg:p-7">
                       <h3 className="flex items-center gap-2 font-heading font-bold text-lg mb-5">
                         <TrendingUp className="w-5 h-5 text-cauris-orange" aria-hidden="true" />
-                        Chiffres-clés
+                        {t('keyMetrics')}
                       </h3>
                       <div className="space-y-4">
                         {startup.metrics.map((m) => (
@@ -271,7 +275,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                     <div className="bg-white border border-gray-100 rounded-card p-6 lg:p-7 shadow-card">
                       <h3 className="flex items-center gap-2 font-heading font-bold text-base text-cauris-black mb-4">
                         <Users className="w-5 h-5 text-cauris-orange" aria-hidden="true" />
-                        {startup.founders.length > 1 ? 'Fondateurs' : 'Fondateur'}
+                        {startup.founders.length > 1 ? t('founders') : t('founder')}
                       </h3>
                       <ul className="space-y-2">
                         {startup.founders.map((f) => (
@@ -286,7 +290,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                   {/* Liens */}
                   <div className="bg-white border border-gray-100 rounded-card p-6 lg:p-7 shadow-card">
                     <h3 className="font-heading font-bold text-base text-cauris-black mb-4">
-                      Liens
+                      {t('links')}
                     </h3>
                     <ul className="space-y-3">
                       {startup.website ? (
@@ -298,13 +302,13 @@ export default async function StartupDetailPage({ params }: PageProps) {
                             className="inline-flex items-center gap-2 text-sm text-cauris-gray-text hover:text-cauris-orange transition-colors"
                           >
                             <Globe className="w-4 h-4 text-cauris-orange" aria-hidden="true" />
-                            Site web
+                            {t('website')}
                           </a>
                         </li>
                       ) : (
                         <li className="inline-flex items-center gap-2 text-sm text-cauris-gray-secondary/60 italic">
                           <Globe className="w-4 h-4" aria-hidden="true" />
-                          Site web à venir
+                          {t('websiteComingSoon')}
                         </li>
                       )}
                       {startup.linkedin ? (
@@ -322,7 +326,7 @@ export default async function StartupDetailPage({ params }: PageProps) {
                       ) : (
                         <li className="inline-flex items-center gap-2 text-sm text-cauris-gray-secondary/60 italic">
                           <Linkedin className="w-4 h-4" aria-hidden="true" />
-                          LinkedIn à venir
+                          {t('linkedinComingSoon')}
                         </li>
                       )}
                     </ul>
@@ -343,18 +347,19 @@ export default async function StartupDetailPage({ params }: PageProps) {
         <div className="container-cauris relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="font-heading font-bold text-3xl sm:text-4xl leading-tight mb-4">
-              Votre startup pourrait être la prochaine.
+              {t('ctaTitle')}
             </h2>
             <p className="text-lg text-white/90 mb-8 leading-relaxed">
-              Comme {startup.name}, rejoignez le programme d&apos;
-              {startup.status === 'Diplômée' ? 'incubation' : 'accompagnement'} de CAURIS DIGITAL
-              pour transformer votre idée en succès.
+              {t('ctaText', {
+                name: startup.name,
+                program: startup.status === 'DIPLOMEE' ? t('incubation') : t('support'),
+              })}
             </p>
             <Link
               href="/contact?objet=candidature"
               className="inline-flex items-center gap-2 rounded-btn bg-white px-8 py-4 text-base font-semibold uppercase tracking-wide text-cauris-orange transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2xl"
             >
-              Déposer ma candidature
+              {t('applyButton')}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -368,17 +373,17 @@ export default async function StartupDetailPage({ params }: PageProps) {
             <div className="flex items-end justify-between mb-10 max-w-6xl">
               <div>
                 <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-cauris-orange mb-2">
-                  Découvrir aussi
+                  {t('discoverAlso')}
                 </p>
                 <h2 className="font-heading font-bold text-2xl lg:text-3xl text-cauris-black">
-                  Startups similaires
+                  {t('similarStartups')}
                 </h2>
               </div>
               <Link
                 href="/startups"
                 className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-cauris-orange hover:underline"
               >
-                Voir toutes nos startups
+                {t('viewAllStartups')}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -398,14 +403,14 @@ export default async function StartupDetailPage({ params }: PageProps) {
                       <span
                         className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full border ${statusStyle}`}
                       >
-                        {s.status}
+                        {tEnum(`status.${s.status}`)}
                       </span>
                     </div>
                     <h3 className="font-heading font-bold text-lg text-cauris-black mb-1 group-hover:text-cauris-orange transition-colors">
                       {s.name} <span className="text-base">{s.country}</span>
                     </h3>
                     <p className="text-xs text-cauris-gray-secondary uppercase tracking-wider mb-3">
-                      {s.sector} · {s.countryName}
+                      {tEnum(`sector.${s.sector}`)} · {s.countryName}
                     </p>
                     <p className="text-sm text-cauris-orange font-medium">{s.tagline}</p>
                   </Link>
