@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import type { Locale } from '@/i18n/config';
@@ -12,54 +12,60 @@ import FAQChatWidget from '@/components/layout/FAQChatWidget';
 import RecaptchaScript from '@/components/layout/RecaptchaScript';
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://caurisdigital.org'),
-  title: {
-    default: "CAURIS DIGITAL — Incubateur numérique d'excellence en Afrique francophone",
-    template: '%s | CAURIS DIGITAL',
-  },
-  description:
-    "CAURIS DIGITAL stimule l'entrepreneuriat tech et forme les entrepreneurs numériques de demain en Afrique francophone. Programmes d'incubation et d'accélération pour startups.",
-  keywords: [
-    'incubateur',
-    'startup',
-    'Afrique francophone',
-    'tech',
-    'innovation',
-    'Cameroun',
-    'CEMAC',
-    'accélération',
-    'entrepreneuriat',
-  ],
-  authors: [{ name: 'CAURIS DIGITAL' }],
-  openGraph: {
-    type: 'website',
-    locale: 'fr_FR',
-    url: 'https://caurisdigital.org',
-    siteName: 'CAURIS DIGITAL',
-    title: "CAURIS DIGITAL — Incubateur numérique d'excellence",
-    description:
-      "Où l'innovation numérique africaine prend son essor. Programmes d'incubation et d'accélération.",
-    // L'image OG est générée dynamiquement par src/app/opengraph-image.tsx
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'CAURIS DIGITAL',
-    description: "Incubateur numérique d'excellence en Afrique francophone.",
-    // L'image Twitter est générée dynamiquement par src/app/twitter-image.tsx
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'RootMetadata' });
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://caurisdigital.org'),
+    title: {
+      default: t('title'),
+      template: '%s | CAURIS DIGITAL',
+    },
+    description: t('description'),
+    keywords: [
+      'incubateur',
+      'startup',
+      'Afrique francophone',
+      'tech',
+      'innovation',
+      'Cameroun',
+      'CEMAC',
+      'accélération',
+      'entrepreneuriat',
+    ],
+    authors: [{ name: 'CAURIS DIGITAL' }],
+    openGraph: {
+      type: 'website',
+      locale: locale === 'en' ? 'en_US' : 'fr_FR',
+      url: 'https://caurisdigital.org',
+      siteName: 'CAURIS DIGITAL',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      // L'image OG est générée dynamiquement par src/app/opengraph-image.tsx
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('twitterTitle'),
+      description: t('twitterDescription'),
+      // L'image Twitter est générée dynamiquement par src/app/twitter-image.tsx
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-};
+  };
+}
 
 /** Génère les 2 locales au build (SSG) — CDC §6.6. */
 export function generateStaticParams() {

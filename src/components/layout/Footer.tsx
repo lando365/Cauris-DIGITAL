@@ -230,7 +230,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container-cauris py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/60">
           <p>{t('copyright', { year })}</p>
-          <p>{t('headOffice', { address: SITE_CONFIG.fullAddress })}</p>
+          <p>{t('headOffice', { address: t('fullAddress') })}</p>
         </div>
       </div>
     </footer>

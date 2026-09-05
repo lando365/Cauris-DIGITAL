@@ -1,4 +1,12 @@
 {
+  "RootMetadata": {
+    "title": "CAURIS DIGITAL — Incubateur numérique d'excellence en Afrique francophone",
+    "description": "CAURIS DIGITAL stimule l'entrepreneuriat tech et forme les entrepreneurs numériques de demain en Afrique francophone. Programmes d'incubation et d'accélération pour startups.",
+    "ogTitle": "CAURIS DIGITAL — Incubateur numérique d'excellence",
+    "ogDescription": "Où l'innovation numérique africaine prend son essor. Programmes d'incubation et d'accélération.",
+    "twitterTitle": "CAURIS DIGITAL",
+    "twitterDescription": "Incubateur numérique d'excellence en Afrique francophone."
+  },
   "Header": {
     "menu": {
       "about": "À propos",
@@ -65,7 +73,8 @@
       "faq": "FAQ"
     },
     "copyright": "© {year} CAURIS DIGITAL — Tous droits réservés",
-    "headOffice": "Siège social : {address}"
+    "headOffice": "Siège social : {address}",
+    "fullAddress": "[Adresse complète], Yaoundé, Cameroun"
   },
   "NewsletterForm": {
     "emailLabel": "Adresse email",
@@ -112,7 +121,15 @@
     "loading": "Chargement…",
     "readMore": "Lire la suite",
     "viewAll": "Voir tout",
-    "backToHome": "Retour à l'accueil"
+    "backToHome": "Retour à l'accueil",
+    "readArticle": "Lire l'article : {title}",
+    "articleIllustration": "Illustration de l'article « {title} »"
+  },
+  "NotFound": {
+    "title": "Cette page n'existe pas",
+    "description": "La page que vous cherchez a peut-être été déplacée ou n'existe plus.",
+    "backHome": "Retour à l'accueil",
+    "contactUs": "Nous contacter"
   },
   "Enums": {
     "sector": {
@@ -619,6 +636,7 @@
     "emailLabel": "Email",
     "phoneLabel": "Téléphone",
     "addressLabel": "Siège social",
+    "address": "Yaoundé, Cameroun",
     "hoursLabel": "Horaires",
     "hoursDays": "Lun. — Ven.",
     "hoursTime": "8h00 — 18h00 (UTC+1)",
@@ -841,6 +859,7 @@
     "publisherTitle": "Éditeur du site",
     "associationLaw": "Association loi [applicable locale]",
     "headOffice": "Siège social :",
+    "fullAddress": "[Adresse complète], Yaoundé, Cameroun",
     "email": "Email :",
     "phone": "Téléphone :",
     "publicationDirector": "Directeur de la publication : [Nom du responsable légal]",

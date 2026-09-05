@@ -17,8 +17,6 @@ export const SITE_CONFIG = {
   url: 'https://caurisdigital.org',
   email: 'hello@caurisdigital.org',
   phone: '+237 6 XX XX XX XX',
-  address: 'Yaoundé, Cameroun',
-  fullAddress: '[Adresse complète], Yaoundé, Cameroun',
   hours: 'Lundi au vendredi, 8h00–18h00 (GMT+1)',
   founded: 2021,
   social: {

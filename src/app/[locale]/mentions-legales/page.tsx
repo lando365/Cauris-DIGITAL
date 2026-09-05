@@ -39,7 +39,7 @@ export default async function MentionsLegalesPage() {
               </p>
               <p>{t('associationLaw')}</p>
               <p>
-                {t('headOffice')} {SITE_CONFIG.fullAddress}
+                {t('headOffice')} {t('fullAddress')}
               </p>
               <p>
                 {t('email')}{' '}

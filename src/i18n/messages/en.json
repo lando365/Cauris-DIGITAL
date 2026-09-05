@@ -1,4 +1,12 @@
 {
+  "RootMetadata": {
+    "title": "CAURIS DIGITAL — Digital Incubator of Excellence in French-Speaking Africa",
+    "description": "CAURIS DIGITAL fosters tech entrepreneurship and trains the digital entrepreneurs of tomorrow in French-speaking Africa. Incubation and acceleration programs for startups.",
+    "ogTitle": "CAURIS DIGITAL — Digital Incubator of Excellence",
+    "ogDescription": "Where African digital innovation takes flight. Incubation and acceleration programs.",
+    "twitterTitle": "CAURIS DIGITAL",
+    "twitterDescription": "Digital incubator of excellence in French-speaking Africa."
+  },
   "Header": {
     "menu": {
       "about": "About",
@@ -65,7 +73,8 @@
       "faq": "FAQ"
     },
     "copyright": "© {year} CAURIS DIGITAL — All rights reserved",
-    "headOffice": "Head office: {address}"
+    "headOffice": "Head office: {address}",
+    "fullAddress": "[Full address], Yaoundé, Cameroon"
   },
   "NewsletterForm": {
     "emailLabel": "Email address",
@@ -112,7 +121,15 @@
     "loading": "Loading…",
     "readMore": "Read more",
     "viewAll": "View all",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+    "readArticle": "Read the article: {title}",
+    "articleIllustration": "Illustration for the article \"{title}\""
+  },
+  "NotFound": {
+    "title": "This page doesn't exist",
+    "description": "The page you're looking for may have been moved or no longer exists.",
+    "backHome": "Back to home",
+    "contactUs": "Contact us"
   },
   "Enums": {
     "sector": {
@@ -619,6 +636,7 @@
     "emailLabel": "Email",
     "phoneLabel": "Phone",
     "addressLabel": "Head office",
+    "address": "Yaoundé, Cameroon",
     "hoursLabel": "Hours",
     "hoursDays": "Mon. — Fri.",
     "hoursTime": "8:00 AM — 6:00 PM (UTC+1)",
@@ -841,6 +859,7 @@
     "publisherTitle": "Site publisher",
     "associationLaw": "Association under [applicable local] law",
     "headOffice": "Head office:",
+    "fullAddress": "[Full address], Yaoundé, Cameroon",
     "email": "Email:",
     "phone": "Phone:",
     "publicationDirector": "Publication director: [Name of legal representative]",

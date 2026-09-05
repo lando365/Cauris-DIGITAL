@@ -106,7 +106,7 @@ export default async function ContactPage({ searchParams }: PageProps) {
                       <p className="text-xs font-semibold uppercase tracking-wider text-cauris-gray-secondary mb-1">
                         {t('addressLabel')}
                       </p>
-                      <p className="text-cauris-black font-medium">{SITE_CONFIG.address}</p>
+                      <p className="text-cauris-black font-medium">{t('address')}</p>
                     </div>
                   </div>
                 </div>

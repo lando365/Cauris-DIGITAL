@@ -24,6 +24,7 @@ function formatDate(iso: string, locale: string): string {
  * Carte d'article réutilisable (NewsExplorer + Articles liés).
  */
 export default function ArticleCard({ article, compact = false }: ArticleCardProps) {
+  const t = useTranslations('Common');
   const tEnum = useTranslations('Enums');
   const locale = useLocale();
   const categoryColor = ARTICLE_CATEGORY_COLORS[article.category];
@@ -34,11 +35,11 @@ export default function ArticleCard({ article, compact = false }: ArticleCardPro
         <Link
           href={`/actualites/${article.slug}`}
           className="relative block overflow-hidden rounded-card mb-4 shadow-card group-hover:shadow-card-hover transition-shadow aspect-[16/10]"
-          aria-label={`Lire l'article : ${article.title}`}
+          aria-label={t('readArticle', { title: article.title })}
         >
           <Image
             src={article.image}
-            alt={`Illustration de l'article « ${article.title} »`}
+            alt={t('articleIllustration', { title: article.title })}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
