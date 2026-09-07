@@ -110,7 +110,7 @@
 
   /* Lien dans le menu */
   .nav-link {
-    @apply text-cauris-black/80 font-medium transition-colors duration-200
+    @apply text-cauris-black/80 font-medium transition-colors duration-200 whitespace-nowrap
            hover:text-cauris-orange focus-visible:text-cauris-orange;
   }
 }

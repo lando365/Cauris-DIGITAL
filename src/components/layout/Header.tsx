@@ -141,7 +141,7 @@ export default function Header() {
 
             {/* Navigation desktop */}
             <nav
-              className="hidden lg:flex items-center gap-6"
+              className="hidden lg:flex items-center gap-3 2xl:gap-6 shrink-0"
               aria-label={
                 tMenu('about') /* Re-utilise un libellé existant ; le aria-label parent suffit */
               }
@@ -152,7 +152,7 @@ export default function Header() {
                   <div key={item.tKey} className="relative group">
                     <Link
                       href={item.href}
-                      className="nav-link inline-flex items-center gap-1 py-2 text-[15px]"
+                      className="nav-link inline-flex items-center gap-1 py-2 text-[14px] 2xl:text-[15px]"
                     >
                       {tMenu(item.tKey)}
                       {hasSubmenu && <ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />}
@@ -178,7 +178,7 @@ export default function Header() {
             </nav>
 
             {/* Sélecteur de langue + CTA + hamburger */}
-            <div className="flex items-center gap-3 lg:gap-4">
+            <div className="flex items-center gap-2 lg:gap-3 shrink-0">
               {/* Sélecteur de langue desktop (inline) */}
               <div className="hidden lg:block">
                 <LanguageSwitcher variant="inline" />
