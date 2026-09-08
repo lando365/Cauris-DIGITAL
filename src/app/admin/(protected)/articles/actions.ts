@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
 import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
+import { revalidatePublicArticles } from '@/lib/revalidate-public';
 import { articleSchema } from '@/lib/validations/article';
 import { computeReadingTime } from '@/lib/reading-time';
 
@@ -62,6 +63,7 @@ export async function createArticle(
   });
 
   revalidatePath('/admin/articles');
+  revalidatePublicArticles(created.slug);
   redirect('/admin/articles');
 }
 
@@ -85,7 +87,7 @@ export async function updateArticle(
   const { publishedAt, ...rest } = parsed.data;
   const before = await prisma.article.findUnique({
     where: { id },
-    select: { coverImageUrl: true },
+    select: { coverImageUrl: true, slug: true },
   });
   await prisma.article.update({
     where: { id },
@@ -98,6 +100,7 @@ export async function updateArticle(
   await deleteReplacedBlob(before?.coverImageUrl, parsed.data.coverImageUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/articles');
+  revalidatePublicArticles(before?.slug, parsed.data.slug);
   redirect('/admin/articles');
 }
 
@@ -116,4 +119,5 @@ export async function deleteArticle(id: string) {
   });
 
   revalidatePath('/admin/articles');
+  revalidatePublicArticles(deleted.slug);
 }

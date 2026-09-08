@@ -12,6 +12,7 @@ const config = [
       'playwright-report/**',
       'test-results/**',
       'k6/**',
+      '.claude/**',
     ],
   },
 ];

@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
 import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
+import { revalidatePublicPartners } from '@/lib/revalidate-public';
 import { partnerSchema } from '@/lib/validations/partner';
 
 function extractInput(formData: FormData) {
@@ -43,6 +44,7 @@ export async function createPartner(
   });
 
   revalidatePath('/admin/partners');
+  revalidatePublicPartners();
   redirect('/admin/partners');
 }
 
@@ -63,6 +65,7 @@ export async function updatePartner(
   await deleteReplacedBlob(before?.logoUrl, parsed.data.logoUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/partners');
+  revalidatePublicPartners();
   redirect('/admin/partners');
 }
 
@@ -80,4 +83,5 @@ export async function deletePartner(id: string) {
   });
 
   revalidatePath('/admin/partners');
+  revalidatePublicPartners();
 }

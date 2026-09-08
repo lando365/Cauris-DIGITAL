@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
 import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
+import { revalidatePublicEvents } from '@/lib/revalidate-public';
 import { eventSchema } from '@/lib/validations/event';
 
 function extractInput(formData: FormData) {
@@ -65,6 +66,7 @@ export async function createEvent(
   });
 
   revalidatePath('/admin/events');
+  revalidatePublicEvents();
   redirect('/admin/events');
 }
 
@@ -98,6 +100,7 @@ export async function updateEvent(
   await deleteReplacedBlob(before?.imageUrl, parsed.data.imageUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/events');
+  revalidatePublicEvents();
   redirect('/admin/events');
 }
 
@@ -115,4 +118,5 @@ export async function deleteEvent(id: string) {
   });
 
   revalidatePath('/admin/events');
+  revalidatePublicEvents();
 }

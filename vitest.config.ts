@@ -9,7 +9,12 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
-      include: ['src/lib/validations/**', 'src/lib/reading-time.ts', 'src/lib/event-status.ts'],
+      include: [
+        'src/lib/validations/**',
+        'src/lib/reading-time.ts',
+        'src/lib/event-status.ts',
+        'src/app/api/**/route.ts',
+      ],
     },
   },
 });

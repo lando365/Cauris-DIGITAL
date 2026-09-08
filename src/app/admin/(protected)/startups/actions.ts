@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { logAudit } from '@/lib/audit-log';
 import { deleteReplacedBlob, deleteBlobIfManaged } from '@/lib/blob-cleanup';
+import { revalidatePublicStartups } from '@/lib/revalidate-public';
 import { startupSchema, parseListField } from '@/lib/validations/startup';
 
 function extractInput(formData: FormData) {
@@ -68,6 +69,7 @@ export async function createStartup(
   });
 
   revalidatePath('/admin/startups');
+  revalidatePublicStartups(created.slug);
   redirect('/admin/startups');
 }
 
@@ -88,11 +90,15 @@ export async function updateStartup(
     return { error: 'Un slug identique existe déjà.' }; // RM-S01
   }
 
-  const before = await prisma.startup.findUnique({ where: { id }, select: { logoUrl: true } });
+  const before = await prisma.startup.findUnique({
+    where: { id },
+    select: { logoUrl: true, slug: true },
+  });
   await prisma.startup.update({ where: { id }, data: parsed.data });
   await deleteReplacedBlob(before?.logoUrl, parsed.data.logoUrl); // CDC V2 §5.5
 
   revalidatePath('/admin/startups');
+  revalidatePublicStartups(before?.slug, parsed.data.slug);
   redirect('/admin/startups');
 }
 
@@ -111,4 +117,5 @@ export async function deleteStartup(id: string) {
   });
 
   revalidatePath('/admin/startups');
+  revalidatePublicStartups(deleted.slug);
 }
