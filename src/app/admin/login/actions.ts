@@ -6,6 +6,11 @@ import { signIn } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { isLocked } from '@/lib/login-rate-limit';
 
+/**
+ * Server Action du formulaire de connexion admin (useFormState) : vérifie le
+ * verrouillage du compte avant tentative, authentifie via NextAuth, puis
+ * redirige vers /admin. Retourne un message d'erreur en cas d'échec.
+ */
 export async function loginAction(
   _prevState: string | undefined,
   formData: FormData
