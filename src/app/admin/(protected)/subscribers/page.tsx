@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAdminUser } from '@/lib/require-admin';
 import { getSubscriptionGrowth } from '@/lib/newsletter-stats';
 import { GrowthChart } from '@/components/admin/GrowthChart';
-import { UnsubscribeButton } from './UnsubscribeButton';
+import { SubscriberRowActions } from './SubscriberRowActions';
 
 export default async function AdminSubscribersPage({
   searchParams,
@@ -88,8 +88,8 @@ export default async function AdminSubscribersPage({
                 <td className="px-4 py-2">{s.source ?? '—'}</td>
                 <td className="px-4 py-2">{s.createdAt.toLocaleDateString('fr-FR')}</td>
                 <td className="px-4 py-2">
-                  {user.role === 'ADMIN' && s.status === 'ACTIVE' && (
-                    <UnsubscribeButton id={s.id} email={s.email} />
+                  {user.role === 'ADMIN' && (
+                    <SubscriberRowActions id={s.id} email={s.email} status={s.status} />
                   )}
                 </td>
               </tr>
