@@ -73,6 +73,12 @@ test.describe('Upload malveillant', () => {
         },
       },
     });
+    // Sur Vercel, la limite plateforme des Serverless Functions Node.js
+    // (~4,5 Mo, non configurable) intercepte ce fichier avant le code de
+    // l'app pour un fichier juste au-dessus de 5 Mo : elle répond alors par
+    // un 413 générique au lieu du 400 structuré ci-dessous. Dans les deux
+    // cas l'exigence métier (rejeter >5 Mo) est respectée.
+    if (res.status() === 413) return;
     expect(res.status()).toBe(400);
     const json = await res.json();
     expect(json.error.code).toBe('FILE_TOO_LARGE');
