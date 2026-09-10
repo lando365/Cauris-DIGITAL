@@ -18,6 +18,20 @@ name: Tests E2E sur preview Vercel
 #       ADMIN qui existe réellement dans la base pointée par le déploiement
 #       preview (généralement la même base que le développement, sauf
 #       variables d'environnement Vercel spécifiques par branche).
+#       DATABASE_URL — certains specs (export CSV, RBAC, reset mot de passe)
+#       préparent/nettoient des données via Prisma directement depuis ce
+#       runner CI, indépendamment de la base utilisée par le déploiement
+#       Vercel lui-même. Doit pointer vers la même base que ce déploiement.
+#       VERCEL_AUTOMATION_BYPASS_SECRET — nécessaire si "Vercel Authentication"
+#       (Deployment Protection) est actif sur les Preview : Project Settings
+#       > Deployment Protection > Protection Bypass for Automation.
+#       BLOB_READ_WRITE_TOKEN — certains specs appellent le SDK Vercel Blob
+#       directement depuis ce runner CI pour nettoyer les fichiers uploadés
+#       pendant le test (même valeur que celle configurée sur Vercel).
+#       AUTH_SECRET — utilisé par ce runner CI pour signer un jeton de
+#       réinitialisation de mot de passe de test ; doit être IDENTIQUE à
+#       l'AUTH_SECRET du déploiement Preview, sinon le jeton signé ici serait
+#       rejeté comme invalide par l'API qui tourne sur Vercel.
 #
 # Déclenchement manuel possible (onglet Actions > Run workflow) en fournissant
 # une URL de preview directement, utile pour rejouer la suite sans repousser
@@ -69,6 +83,10 @@ jobs:
           PLAYWRIGHT_BASE_URL: ${{ steps.target.outputs.url }}
           SEED_ADMIN_EMAIL: ${{ secrets.SEED_ADMIN_EMAIL }}
           SEED_ADMIN_PASSWORD: ${{ secrets.SEED_ADMIN_PASSWORD }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
         run: npx playwright test
 
       - name: Publier les traces Playwright (en cas d'échec)
