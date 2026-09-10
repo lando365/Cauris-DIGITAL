@@ -179,6 +179,10 @@ model Article {
   readingTime   Int
   status        ArticleStatus   @default(DRAFT)
   publishedAt   DateTime?
+  // Renseigné uniquement quand publishedAt a été fixé dans le futur au moment
+  // de la sauvegarde (publication programmée) ; reste inchangé une fois cette
+  // date passée, comme trace que l'article a bien été programmé à l'avance.
+  scheduledAt   DateTime?
   authorId      String
   author        User            @relation(fields: [authorId], references: [id], onDelete: Restrict)
   createdAt     DateTime        @default(now())

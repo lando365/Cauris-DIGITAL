@@ -8,6 +8,7 @@ const STATUSES: StartupStatus[] = ['EN_INCUBATION', 'DIPLOMEE', 'ALUMNI'];
 // GET /api/startups — CDC V2 §6.2. Liste publique, filtrable et paginée.
 // L'entité Startup n'a pas de champ de publication (§5.3.2) : toutes les
 // startups créées sont publiques, contrairement à Article/Event.
+/** Liste paginée des startups, filtrable par secteur, pays et statut. */
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
 

@@ -8,6 +8,11 @@ import { passwordSchema } from '@/lib/validations/user';
 
 export type ResetPasswordFormState = { error?: string } | undefined;
 
+/**
+ * Server Action du formulaire de réinitialisation de mot de passe : valide le
+ * nouveau mot de passe, vérifie le jeton (usage unique, 1h) puis met à jour
+ * le hash en base avant de rediriger vers la connexion.
+ */
 export async function resetPasswordWithToken(
   token: string,
   _prevState: ResetPasswordFormState,

@@ -10,6 +10,13 @@ import { revalidatePublicArticles } from '@/lib/revalidate-public';
 import { articleSchema } from '@/lib/validations/article';
 import { computeReadingTime } from '@/lib/reading-time';
 
+/** Distingue une publication immédiate d'une publication programmée dans le futur. */
+function resolvePublicationDates(status: string, publishedAt: string | undefined) {
+  if (status !== 'PUBLISHED') return { publishedAt: null, scheduledAt: null };
+  const date = new Date(publishedAt ?? Date.now());
+  return { publishedAt: date, scheduledAt: date > new Date() ? date : null };
+}
+
 function extractInput(formData: FormData) {
   return {
     slug: formData.get('slug'),
@@ -28,6 +35,11 @@ function extractInput(formData: FormData) {
 
 export type ArticleFormState = { error?: string } | undefined;
 
+/**
+ * Crée un article (slug unique — RM-A01), calcule le temps de lecture et
+ * fixe `publishedAt` si publié directement. Journalise l'action et invalide
+ * les caches admin/public.
+ */
 export async function createArticle(
   _prevState: ArticleFormState,
   formData: FormData
@@ -50,7 +62,7 @@ export async function createArticle(
       ...rest,
       readingTime: computeReadingTime(parsed.data.content),
       authorId: user.id,
-      publishedAt: parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
+      ...resolvePublicationDates(parsed.data.status, publishedAt),
     },
   });
 
@@ -67,6 +79,11 @@ export async function createArticle(
   redirect('/admin/articles');
 }
 
+/**
+ * Met à jour un article (unicité de slug re-vérifiée — RM-A01), recalcule le
+ * temps de lecture, supprime l'ancienne image de couverture si remplacée, et
+ * invalide les caches admin/public (y compris l'ancien slug si changé).
+ */
 export async function updateArticle(
   id: string,
   _prevState: ArticleFormState,
@@ -94,7 +111,7 @@ export async function updateArticle(
     data: {
       ...rest,
       readingTime: computeReadingTime(parsed.data.content),
-      publishedAt: parsed.data.status === 'PUBLISHED' ? new Date(publishedAt ?? Date.now()) : null,
+      ...resolvePublicationDates(parsed.data.status, publishedAt),
     },
   });
   await deleteReplacedBlob(before?.coverImageUrl, parsed.data.coverImageUrl); // CDC V2 §5.5
@@ -104,6 +121,7 @@ export async function updateArticle(
   redirect('/admin/articles');
 }
 
+/** Supprime un article et son image de couverture (RM-A05 : ADMIN uniquement), journalise l'action. */
 export async function deleteArticle(id: string) {
   // RM-A05 : seul un ADMIN peut supprimer
   const user = await requireAdminUser('ADMIN');

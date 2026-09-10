@@ -35,6 +35,7 @@ function fingerprint(passwordHash: string): string {
   return createHash('sha256').update(passwordHash).digest('base64url').slice(0, 16);
 }
 
+/** Crée un jeton de réinitialisation signé, valable 1h et lié à l'empreinte du hash de mot de passe actuel. */
 export function createPasswordResetToken(userId: string, currentPasswordHash: string): string {
   const expiresAt = Math.floor(Date.now() / 1000) + RESET_TOKEN_TTL_SECONDS;
   const payload = `${userId}|${expiresAt}|${fingerprint(currentPasswordHash)}`;
@@ -49,6 +50,11 @@ interface VerifyResult {
   reason?: 'malformed' | 'signature' | 'expired' | 'already-used';
 }
 
+/**
+ * Vérifie la signature, l'expiration et l'usage unique d'un jeton de reset :
+ * `currentPasswordHash` doit correspondre au hash présent au moment de l'émission,
+ * sinon le jeton est considéré comme déjà utilisé.
+ */
 export function verifyPasswordResetToken(token: string, currentPasswordHash: string): VerifyResult {
   const parts = token.split('.');
   if (parts.length !== 2) return { valid: false, reason: 'malformed' };

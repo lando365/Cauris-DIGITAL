@@ -4,6 +4,7 @@ import { prisma } from './prisma';
 // CDC V2 §7.1 : durée de session 24h, prolongée à chaque action active.
 const SESSION_DURATION_MS = 24 * 60 * 60 * 1000;
 
+/** Crée une session en base (durée 24h, CDC V2 §7.1) et retourne son jeton et son expiration. */
 export async function createDbSession(userId: string) {
   const sessionToken = randomUUID();
   const expires = new Date(Date.now() + SESSION_DURATION_MS);
@@ -41,6 +42,7 @@ export async function validateDbSession(sessionToken: string) {
   return session.user;
 }
 
+/** Révoque immédiatement une session en supprimant sa ligne en base (déconnexion). */
 export async function revokeDbSession(sessionToken: string) {
   await prisma.session.deleteMany({ where: { sessionToken } });
 }

@@ -22,6 +22,7 @@ function extractInput(formData: FormData) {
 
 export type PartnerFormState = { error?: string } | undefined;
 
+/** Crée un partenaire, journalise l'action et invalide les caches admin/public. */
 export async function createPartner(
   _prevState: PartnerFormState,
   formData: FormData
@@ -48,6 +49,7 @@ export async function createPartner(
   redirect('/admin/partners');
 }
 
+/** Met à jour un partenaire, supprime l'ancien logo s'il a été remplacé, et invalide les caches. */
 export async function updatePartner(
   id: string,
   _prevState: PartnerFormState,
@@ -69,6 +71,7 @@ export async function updatePartner(
   redirect('/admin/partners');
 }
 
+/** Supprime un partenaire et son logo associé (ADMIN uniquement), journalise l'action. */
 export async function deletePartner(id: string) {
   const user = await requireAdminUser('ADMIN');
   const deleted = await prisma.partner.delete({ where: { id } });

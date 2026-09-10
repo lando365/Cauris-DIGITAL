@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 // GET /api/articles/:slug — CDC V2 §6.2. Un brouillon ou une publication
 // programmée dans le futur n'est pas visible publiquement (même par slug direct).
+/** Retourne un article publié par son slug, ou 404 si absent/brouillon/programmé. */
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await prisma.article.findUnique({ where: { slug } });

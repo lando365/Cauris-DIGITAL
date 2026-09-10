@@ -90,6 +90,7 @@ export const startupSchema = z.object({
 export type StartupInput = z.infer<typeof startupSchema>;
 
 // Aide pour convertir les champs "liste" saisis en formulaire (une valeur par ligne)
+/** Convertit un champ formulaire multi-lignes en tableau de chaînes (une entrée par ligne, non vides). */
 export function parseListField(raw: FormDataEntryValue | null): string[] {
   if (typeof raw !== 'string') return [];
   return raw

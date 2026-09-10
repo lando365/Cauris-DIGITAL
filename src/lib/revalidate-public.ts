@@ -9,6 +9,7 @@ import { LOCALES } from '@/i18n/config';
  * revalidatePath('/admin/...') déjà appelé dans chaque Server Action.
  */
 
+/** Invalide immédiatement le cache public des pages startups (liste + détail) pour toutes les locales. */
 export function revalidatePublicStartups(...slugs: (string | null | undefined)[]) {
   for (const locale of LOCALES) {
     revalidatePath(`/${locale}`);
@@ -19,6 +20,7 @@ export function revalidatePublicStartups(...slugs: (string | null | undefined)[]
   }
 }
 
+/** Invalide immédiatement le cache public des pages articles (liste + détail) pour toutes les locales. */
 export function revalidatePublicArticles(...slugs: (string | null | undefined)[]) {
   for (const locale of LOCALES) {
     revalidatePath(`/${locale}/actualites`);
@@ -28,12 +30,14 @@ export function revalidatePublicArticles(...slugs: (string | null | undefined)[]
   }
 }
 
+/** Invalide immédiatement le cache public de la page événements pour toutes les locales. */
 export function revalidatePublicEvents() {
   for (const locale of LOCALES) {
     revalidatePath(`/${locale}/evenements`);
   }
 }
 
+/** Invalide immédiatement le cache public de l'accueil et de la page partenaires pour toutes les locales. */
 export function revalidatePublicPartners() {
   for (const locale of LOCALES) {
     revalidatePath(`/${locale}`);

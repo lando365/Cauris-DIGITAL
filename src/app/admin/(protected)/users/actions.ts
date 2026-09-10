@@ -75,6 +75,11 @@ async function sendInvitationEmail(user: {
 
 export type UserFormState = { error?: string } | undefined;
 
+/**
+ * Crée un compte admin/éditeur (ADMIN uniquement — RM-U03), envoie un email
+ * d'invitation permettant de définir le mot de passe (jamais transmis en
+ * clair) et journalise l'action.
+ */
 export async function createUser(
   _prevState: UserFormState,
   formData: FormData
@@ -121,6 +126,10 @@ export async function createUser(
   redirect('/admin/users');
 }
 
+/**
+ * Met à jour un utilisateur (ADMIN uniquement — RM-U03) ; interdit à un admin
+ * de modifier son propre rôle (RM-U04) et journalise tout changement de rôle.
+ */
 export async function updateUser(
   id: string,
   _prevState: UserFormState,
@@ -173,6 +182,11 @@ function generateTempPassword(): string {
   return `${base}Ax9!`;
 }
 
+/**
+ * Réinitialise le mot de passe d'un utilisateur avec un mot de passe temporaire
+ * conforme à RM-U01, et retourne ce mot de passe en clair pour communication
+ * hors-bande par l'admin (ADMIN uniquement — RM-U03).
+ */
 export async function resetUserPassword(
   id: string,
   _prevState: ResetPasswordState

@@ -10,9 +10,9 @@ const STATUSES: StartupStatus[] = ['EN_INCUBATION', 'DIPLOMEE', 'ALUMNI'];
 export default async function AdminStartupsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; sector?: string; status?: string }>;
+  searchParams: Promise<{ q?: string; sector?: string; status?: string; country?: string }>;
 }) {
-  const { q, sector, status } = await searchParams;
+  const { q, sector, status, country } = await searchParams;
   const user = await requireAdminUser();
 
   const where: Prisma.StartupWhereInput = {};
@@ -25,8 +25,18 @@ export default async function AdminStartupsPage({
   if (status && STATUSES.includes(status as StartupStatus)) {
     where.status = status as StartupStatus;
   }
+  if (country) {
+    where.countryCode = country;
+  }
 
-  const startups = await prisma.startup.findMany({ where, orderBy: { createdAt: 'desc' } });
+  const [startups, countries] = await Promise.all([
+    prisma.startup.findMany({ where, orderBy: { createdAt: 'desc' } }),
+    prisma.startup.findMany({
+      select: { countryCode: true, countryName: true },
+      distinct: ['countryCode'],
+      orderBy: { countryName: 'asc' },
+    }),
+  ]);
 
   return (
     <div>
@@ -72,6 +82,18 @@ export default async function AdminStartupsPage({
             </option>
           ))}
         </select>
+        <select
+          name="country"
+          defaultValue={country ?? ''}
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
+        >
+          <option value="">Tous pays</option>
+          {countries.map((c) => (
+            <option key={c.countryCode} value={c.countryCode}>
+              {c.countryName}
+            </option>
+          ))}
+        </select>
         <button
           type="submit"
           className="rounded-md border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
@@ -86,6 +108,7 @@ export default async function AdminStartupsPage({
             <tr>
               <th className="px-4 py-2">Nom</th>
               <th className="px-4 py-2">Secteur</th>
+              <th className="px-4 py-2">Pays</th>
               <th className="px-4 py-2">Statut</th>
               <th className="px-4 py-2">En vedette</th>
               <th className="px-4 py-2">Actions</th>
@@ -96,6 +119,7 @@ export default async function AdminStartupsPage({
               <tr key={s.id} className="border-b border-gray-100 last:border-0">
                 <td className="px-4 py-2 font-medium text-cauris-black">{s.name}</td>
                 <td className="px-4 py-2">{s.sector}</td>
+                <td className="px-4 py-2">{s.countryName}</td>
                 <td className="px-4 py-2">{s.status}</td>
                 <td className="px-4 py-2">{s.isFeatured ? 'Oui' : 'Non'}</td>
                 <td className="px-4 py-2">
@@ -113,7 +137,7 @@ export default async function AdminStartupsPage({
             ))}
             {startups.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-cauris-gray-secondary">
+                <td colSpan={6} className="px-4 py-8 text-center text-cauris-gray-secondary">
                   Aucune startup pour l&apos;instant.
                 </td>
               </tr>

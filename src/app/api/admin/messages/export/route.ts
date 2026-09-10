@@ -10,6 +10,7 @@ function csvEscape(value: string): string {
 }
 
 // GET /api/admin/messages/export — CDC V2 §6.3.7, ADMIN uniquement.
+/** Exporte les messages de contact au format CSV (réservé aux ADMIN). */
 export async function GET() {
   const user = await getAuthenticatedAdmin('ADMIN');
   if (!user) {
