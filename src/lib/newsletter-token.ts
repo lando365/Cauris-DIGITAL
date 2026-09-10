@@ -33,6 +33,7 @@ function sign(payload: string): string {
   return createHmac('sha256', getSecret()).update(payload).digest('base64url');
 }
 
+/** Crée un jeton signé encodant l'email, l'usage et une expiration (48h pour confirm, ~13 mois pour unsubscribe). */
 export function createToken(email: string, purpose: TokenPurpose): string {
   const ttl = purpose === 'confirm' ? CONFIRM_TOKEN_TTL_SECONDS : UNSUBSCRIBE_TOKEN_TTL_SECONDS;
   const expiresAt = Math.floor(Date.now() / 1000) + ttl;
@@ -48,6 +49,7 @@ interface VerifyResult {
   reason?: 'malformed' | 'signature' | 'expired' | 'purpose';
 }
 
+/** Vérifie la signature, l'usage attendu et l'expiration d'un jeton créé par `createToken`. */
 export function verifyToken(token: string, expectedPurpose: TokenPurpose): VerifyResult {
   const parts = token.split('.');
   if (parts.length !== 2) return { valid: false, reason: 'malformed' };

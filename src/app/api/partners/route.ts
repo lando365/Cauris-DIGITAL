@@ -7,6 +7,7 @@ const CATEGORIES: PartnerCategory[] = ['INSTITUTIONNEL', 'FINANCIER', 'ACADEMIQU
 // GET /api/partners — CDC V2 §6.2. Liste des partenaires par catégorie.
 // Comme Startup, l'entité Partner n'a pas de champ de publication (§5.3.5) :
 // tous les partenaires créés sont publics.
+/** Liste les partenaires, filtrable par catégorie via `?category=`. */
 export async function GET(req: NextRequest) {
   const category = req.nextUrl.searchParams.get('category');
   const where =

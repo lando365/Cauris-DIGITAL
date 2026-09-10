@@ -37,6 +37,7 @@ function str(value: FormDataEntryValue | null): string {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+/** Traite une soumission du formulaire de contact — voir la documentation du fichier pour le flow complet. */
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();

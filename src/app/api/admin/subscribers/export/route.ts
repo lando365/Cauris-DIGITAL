@@ -11,6 +11,7 @@ function csvEscape(value: string): string {
 
 // GET /api/admin/subscribers/export — CDC V2 §6.3.7, ADMIN uniquement.
 // Format pensé pour un ré-import Mailchimp/Brevo (CDC §3.3.5).
+/** Exporte les abonnés newsletter au format CSV (réservé aux ADMIN). */
 export async function GET() {
   const user = await getAuthenticatedAdmin('ADMIN');
   if (!user) {

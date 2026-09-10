@@ -31,6 +31,7 @@ function extractInput(formData: FormData) {
 
 export type EventFormState = { error?: string } | undefined;
 
+/** Crée un événement (slug unique) et invalide les caches admin/public. */
 export async function createEvent(
   _prevState: EventFormState,
   formData: FormData
@@ -70,6 +71,10 @@ export async function createEvent(
   redirect('/admin/events');
 }
 
+/**
+ * Met à jour un événement (unicité de slug re-vérifiée), supprime l'ancienne
+ * image si remplacée, et invalide les caches admin/public.
+ */
 export async function updateEvent(
   id: string,
   _prevState: EventFormState,
@@ -104,6 +109,7 @@ export async function updateEvent(
   redirect('/admin/events');
 }
 
+/** Supprime un événement et son image associée (ADMIN uniquement), journalise l'action. */
 export async function deleteEvent(id: string) {
   const user = await requireAdminUser('ADMIN');
   const deleted = await prisma.event.delete({ where: { id } });

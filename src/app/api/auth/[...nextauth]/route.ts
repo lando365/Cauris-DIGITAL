@@ -3,4 +3,5 @@
    déconnexion (admin-startup-crud.spec.ts, admin-rbac.spec.ts). */
 import { handlers } from '@/auth';
 
+/** Handlers GET/POST NextAuth (connexion, callback, déconnexion) — voir `@/auth` pour la config. */
 export const { GET, POST } = handlers;

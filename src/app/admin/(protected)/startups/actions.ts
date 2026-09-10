@@ -39,6 +39,7 @@ function extractInput(formData: FormData) {
 
 export type StartupFormState = { error?: string } | undefined;
 
+/** Crée une startup (slug unique — RM-S01), ADMIN ou EDITOR, invalide les caches admin/public. */
 export async function createStartup(
   _prevState: StartupFormState,
   formData: FormData
@@ -73,6 +74,10 @@ export async function createStartup(
   redirect('/admin/startups');
 }
 
+/**
+ * Met à jour une startup (unicité de slug re-vérifiée — RM-S01), supprime
+ * l'ancien logo si remplacé, et invalide les caches admin/public.
+ */
 export async function updateStartup(
   id: string,
   _prevState: StartupFormState,
@@ -102,6 +107,7 @@ export async function updateStartup(
   redirect('/admin/startups');
 }
 
+/** Supprime une startup et son logo associé (RM-S06 : ADMIN uniquement), journalise l'action. */
 export async function deleteStartup(id: string) {
   // RM-S06 : seul un ADMIN peut supprimer
   const user = await requireAdminUser('ADMIN');

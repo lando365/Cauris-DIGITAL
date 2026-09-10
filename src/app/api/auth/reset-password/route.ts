@@ -7,6 +7,7 @@ import { SITE_CONFIG } from '@/lib/constants';
 // POST /api/auth/reset-password — CDC V2 §6.3.1 : "Demande de
 // réinitialisation du mot de passe". Réponse volontairement identique que
 // l'email existe ou non (anti-énumération de comptes, CDC §9.3 OWASP).
+/** Envoie un email de réinitialisation de mot de passe si le compte existe et est actif. */
 export async function POST(request: Request) {
   const GENERIC_RESPONSE = NextResponse.json({
     message: 'Si un compte existe pour cet email, un lien de réinitialisation a été envoyé.',

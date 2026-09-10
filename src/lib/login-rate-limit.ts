@@ -4,6 +4,7 @@ import { prisma } from './prisma';
 const MAX_ATTEMPTS = 5;
 const LOCK_DURATION_MS = 15 * 60 * 1000;
 
+/** Indique si le compte est actuellement verrouillé suite à des échecs de connexion. */
 export async function isLocked(userId: string): Promise<boolean> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -12,6 +13,10 @@ export async function isLocked(userId: string): Promise<boolean> {
   return !!user?.lockedUntil && user.lockedUntil > new Date();
 }
 
+/**
+ * Incrémente le compteur d'échecs de connexion et verrouille le compte
+ * (15 minutes) une fois MAX_ATTEMPTS atteint, en réinitialisant le compteur.
+ */
 export async function recordFailedLogin(userId: string): Promise<void> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -31,6 +36,7 @@ export async function recordFailedLogin(userId: string): Promise<void> {
   });
 }
 
+/** Réinitialise le compteur d'échecs et le verrou après une connexion réussie. */
 export async function resetFailedLogins(userId: string): Promise<void> {
   await prisma.user.update({
     where: { id: userId },

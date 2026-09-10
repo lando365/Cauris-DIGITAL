@@ -38,6 +38,7 @@ interface UseRecaptchaReturn {
   isReady: boolean;
 }
 
+/** Hook reCAPTCHA v3 — voir la documentation du fichier pour l'usage et le mode no-op. */
 export function useRecaptcha(): UseRecaptchaReturn {
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   const isEnabled = !!siteKey;

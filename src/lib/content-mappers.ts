@@ -17,6 +17,7 @@ export type Locale = 'fr' | 'en';
 
 // Convertit un code pays ISO 3166-1 alpha-2 (ex: "CM") en emoji drapeau.
 // Les données V1 codaient le drapeau en dur ; côté base, seul countryCode existe.
+/** Convertit un code pays ISO 3166-1 alpha-2 (ex: "CM") en emoji drapeau. */
 export function countryCodeToFlag(code: string): string {
   return code
     .toUpperCase()
@@ -97,6 +98,10 @@ function contentToSections(content: string): ArticleSection[] {
 
 type ArticleWithAuthor = PrismaArticle & { author: { name: string } };
 
+/**
+ * Convertit un Article Prisma (+ auteur) vers le format d'affichage attendu
+ * par les composants existants, en sélectionnant la locale demandée.
+ */
 export function mapArticle(a: ArticleWithAuthor, locale: Locale = 'fr'): DisplayArticle {
   const content = pick(a.content, a.contentEn, locale);
   return {
@@ -114,6 +119,10 @@ export function mapArticle(a: ArticleWithAuthor, locale: Locale = 'fr'): Display
   };
 }
 
+/**
+ * Convertit un Event Prisma vers le format d'affichage EventsExplorer,
+ * en sélectionnant la locale demandée.
+ */
 export function mapEvent(e: PrismaEvent, locale: Locale = 'fr'): DisplayEvent {
   return {
     id: e.slug,
@@ -133,6 +142,7 @@ export function mapEvent(e: PrismaEvent, locale: Locale = 'fr'): DisplayEvent {
   };
 }
 
+/** Convertit un Partner Prisma vers le format PartnerLogo attendu à l'affichage. */
 export function mapPartner(p: PrismaPartner): PartnerLogo {
   return {
     name: p.name,

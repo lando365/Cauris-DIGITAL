@@ -46,6 +46,10 @@ function extensionMatchesMime(filename: string, expectedExt: string): boolean {
   return actualExt === expectedExt;
 }
 
+/**
+ * Upload un fichier vers Vercel Blob après validation du type d'entité, de la
+ * taille et du format MIME/extension (CDC V2 §5.5). Réservé aux admins/éditeurs.
+ */
 export async function POST(request: Request) {
   const user = await getAuthenticatedAdmin();
   if (!user) {

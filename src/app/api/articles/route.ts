@@ -13,6 +13,7 @@ const CATEGORIES: ArticleCategory[] = [
 // GET /api/articles — CDC V2 §6.2. Liste publique, paginée, filtrable par catégorie.
 // Seuls les articles PUBLISHED dont publishedAt est passé sont retournés
 // (les brouillons et publications programmées dans le futur restent invisibles).
+/** Liste paginée des articles publiés, filtrable par catégorie via `?category=`. */
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
 
