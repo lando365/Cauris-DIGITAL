@@ -16,7 +16,7 @@ export interface Event {
   place: string;
   online: boolean;
   description: string;
-  registerUrl: string;
+  registerUrl?: string;
   free: boolean;
   price?: string;
 }
@@ -161,7 +161,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                     {event.price && <p className="text-xs italic">{event.price}</p>}
                   </div>
 
-                  {!isPast && (
+                  {!isPast && event.registerUrl && (
                     <a
                       href={event.registerUrl}
                       target="_blank"

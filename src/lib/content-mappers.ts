@@ -136,7 +136,7 @@ export function mapEvent(e: PrismaEvent, locale: Locale = 'fr'): DisplayEvent {
     place: e.location,
     online: e.isOnline,
     description: pick(e.description, e.descriptionEn, locale),
-    registerUrl: e.registerUrl ?? '#',
+    registerUrl: e.registerUrl ?? undefined,
     free: e.isFree,
     price: e.price ?? undefined,
   };
