@@ -21,6 +21,15 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
+function RequiredMark() {
+  return (
+    <span className="text-cauris-error" aria-hidden="true">
+      {' '}
+      *
+    </span>
+  );
+}
+
 function Field({
   label,
   name,
@@ -38,6 +47,7 @@ function Field({
     <div>
       <label htmlFor={name} className="mb-1 block text-sm font-medium text-cauris-gray-text">
         {label}
+        {required && <RequiredMark />}
       </label>
       <input
         id={name}
@@ -64,6 +74,10 @@ export function StartupForm({
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
+      <p className="text-xs text-cauris-gray-secondary">
+        <span className="text-cauris-error">*</span> Champs obligatoires
+      </p>
+
       {startup?.slug && (
         <a
           href={`/fr/startups/${startup.slug}`}
@@ -94,6 +108,7 @@ export function StartupForm({
             className="mb-1 block text-sm font-medium text-cauris-gray-text"
           >
             Description courte
+            <RequiredMark />
           </label>
           <textarea
             id="description"

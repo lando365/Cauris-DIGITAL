@@ -27,6 +27,15 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
+function RequiredMark() {
+  return (
+    <span className="text-cauris-error" aria-hidden="true">
+      {' '}
+      *
+    </span>
+  );
+}
+
 function toDatetimeLocal(date: Date | null | undefined): string {
   if (!date) return '';
   const d = new Date(date);
@@ -47,9 +56,14 @@ export function EventForm({
 
   return (
     <form action={formAction} className="max-w-2xl space-y-4">
+      <p className="text-xs text-cauris-gray-secondary">
+        <span className="text-cauris-error">*</span> Champs obligatoires
+      </p>
+
       <div>
         <label htmlFor="slug" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Slug (URL)
+          <RequiredMark />
         </label>
         <input
           id="slug"
@@ -62,6 +76,7 @@ export function EventForm({
       <div>
         <label htmlFor="title" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Titre
+          <RequiredMark />
         </label>
         <input
           id="title"
@@ -77,6 +92,7 @@ export function EventForm({
           className="mb-1 block text-sm font-medium text-cauris-gray-text"
         >
           Description
+          <RequiredMark />
         </label>
         <textarea
           id="description"
@@ -147,6 +163,7 @@ export function EventForm({
             className="mb-1 block text-sm font-medium text-cauris-gray-text"
           >
             Lieu (ou « En ligne »)
+            <RequiredMark />
           </label>
           <input
             id="location"
@@ -162,6 +179,7 @@ export function EventForm({
             className="mb-1 block text-sm font-medium text-cauris-gray-text"
           >
             Date et heure de début
+            <RequiredMark />
           </label>
           <input
             id="startDate"

@@ -23,6 +23,15 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
+function RequiredMark() {
+  return (
+    <span className="text-cauris-error" aria-hidden="true">
+      {' '}
+      *
+    </span>
+  );
+}
+
 function toDatetimeLocal(date: Date | null | undefined): string {
   if (!date) return '';
   const d = new Date(date);
@@ -45,9 +54,14 @@ export function ArticleForm({
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
+      <p className="text-xs text-cauris-gray-secondary">
+        <span className="text-cauris-error">*</span> Champs obligatoires
+      </p>
+
       <div>
         <label htmlFor="slug" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Slug (URL)
+          <RequiredMark />
         </label>
         <input
           id="slug"
@@ -61,6 +75,7 @@ export function ArticleForm({
       <div>
         <label htmlFor="title" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Titre
+          <RequiredMark />
         </label>
         <input
           id="title"
@@ -74,6 +89,7 @@ export function ArticleForm({
       <div>
         <label htmlFor="excerpt" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Extrait (160 caractères)
+          <RequiredMark />
         </label>
         <textarea
           id="excerpt"
@@ -89,6 +105,7 @@ export function ArticleForm({
       <div>
         <label htmlFor="content" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Contenu (Markdown)
+          <RequiredMark />
         </label>
         <div className="grid gap-3 md:grid-cols-2">
           <textarea

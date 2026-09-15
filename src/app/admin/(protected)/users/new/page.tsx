@@ -16,6 +16,15 @@ function SubmitButton() {
   );
 }
 
+function RequiredMark() {
+  return (
+    <span className="text-cauris-error" aria-hidden="true">
+      {' '}
+      *
+    </span>
+  );
+}
+
 export default function NewUserPage() {
   const [state, formAction] = useFormState(createUser, undefined);
 
@@ -25,9 +34,14 @@ export default function NewUserPage() {
         Nouvel utilisateur
       </h1>
       <form action={formAction} className="max-w-md space-y-4">
+        <p className="text-xs text-cauris-gray-secondary">
+          <span className="text-cauris-error">*</span> Champs obligatoires
+        </p>
+
         <div>
           <label htmlFor="name" className="mb-1 block text-sm font-medium text-cauris-gray-text">
             Nom
+            <RequiredMark />
           </label>
           <input
             id="name"
@@ -39,6 +53,7 @@ export default function NewUserPage() {
         <div>
           <label htmlFor="email" className="mb-1 block text-sm font-medium text-cauris-gray-text">
             Email
+            <RequiredMark />
           </label>
           <input
             id="email"
@@ -68,6 +83,7 @@ export default function NewUserPage() {
             className="mb-1 block text-sm font-medium text-cauris-gray-text"
           >
             Mot de passe initial
+            <RequiredMark />
           </label>
           <input
             id="password"

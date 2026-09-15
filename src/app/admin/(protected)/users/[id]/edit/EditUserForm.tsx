@@ -17,6 +17,15 @@ function SubmitButton() {
   );
 }
 
+function RequiredMark() {
+  return (
+    <span className="text-cauris-error" aria-hidden="true">
+      {' '}
+      *
+    </span>
+  );
+}
+
 export function EditUserForm({
   user,
   isSelf,
@@ -30,9 +39,14 @@ export function EditUserForm({
 
   return (
     <form action={formAction} className="max-w-md space-y-4">
+      <p className="text-xs text-cauris-gray-secondary">
+        <span className="text-cauris-error">*</span> Champs obligatoires
+      </p>
+
       <div>
         <label htmlFor="name" className="mb-1 block text-sm font-medium text-cauris-gray-text">
           Nom
+          <RequiredMark />
         </label>
         <input
           id="name"
