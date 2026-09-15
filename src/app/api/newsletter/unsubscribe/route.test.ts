@@ -10,14 +10,25 @@ vi.mock('resend', () => ({
   }),
 }));
 
-import { GET } from './route';
+import { GET, POST } from './route';
 
 const TEST_EMAIL = 'itest-newsletter-unsubscribe@example.com';
+const TEST_EMAIL_POST = 'itest-newsletter-unsubscribe-post@example.com';
 
 function unsubscribe(token: string) {
   const url = new URL('http://localhost:3000/api/newsletter/unsubscribe');
   url.searchParams.set('token', token);
   return GET(new Request(url));
+}
+
+function unsubscribeWithReason(body: Record<string, unknown>) {
+  return POST(
+    new Request('http://localhost:3000/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+  );
 }
 
 describe('GET /api/newsletter/unsubscribe (intégration)', () => {
@@ -29,7 +40,6 @@ describe('GET /api/newsletter/unsubscribe (intégration)', () => {
 
   afterAll(async () => {
     await prisma.newsletterSubscriber.deleteMany({ where: { email: TEST_EMAIL } });
-    await prisma.$disconnect();
   });
 
   it('sans jeton : redirige vers la page erreur (raison=manquant)', async () => {
@@ -57,5 +67,60 @@ describe('GET /api/newsletter/unsubscribe (intégration)', () => {
     expect(subscriber?.status).toBe('UNSUBSCRIBED');
     expect(subscriber?.unsubscribedAt).not.toBeNull();
     expect(updateContactMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('POST /api/newsletter/unsubscribe (intégration)', () => {
+  beforeAll(async () => {
+    await prisma.newsletterSubscriber.create({
+      data: {
+        email: TEST_EMAIL_POST,
+        status: 'ACTIVE',
+        consentGiven: true,
+        consentDate: new Date(),
+      },
+    });
+  });
+
+  afterAll(async () => {
+    await prisma.newsletterSubscriber.deleteMany({ where: { email: TEST_EMAIL_POST } });
+    await prisma.$disconnect();
+  });
+
+  it('sans jeton : renvoie une erreur 400', async () => {
+    const res = await unsubscribeWithReason({ message: 'Trop de mails' });
+    expect(res.status).toBe(400);
+  });
+
+  it('jeton invalide : renvoie une erreur 400', async () => {
+    const res = await unsubscribeWithReason({ token: 'jeton-invalide' });
+    expect(res.status).toBe(400);
+  });
+
+  it("jeton valide avec message : désinscrit l'abonné et enregistre le message", async () => {
+    const token = createToken(TEST_EMAIL_POST, 'unsubscribe');
+    const res = await unsubscribeWithReason({ token, message: '  Trop de mails, merci !  ' });
+
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.success).toBe(true);
+
+    const subscriber = await prisma.newsletterSubscriber.findUnique({
+      where: { email: TEST_EMAIL_POST },
+    });
+    expect(subscriber?.status).toBe('UNSUBSCRIBED');
+    expect(subscriber?.unsubscribedAt).not.toBeNull();
+    expect(subscriber?.unsubscribeReason).toBe('Trop de mails, merci !');
+  });
+
+  it('jeton valide sans message : désinscrit sans enregistrer de message', async () => {
+    const token = createToken(TEST_EMAIL_POST, 'unsubscribe');
+    await unsubscribeWithReason({ token });
+
+    const subscriber = await prisma.newsletterSubscriber.findUnique({
+      where: { email: TEST_EMAIL_POST },
+    });
+    expect(subscriber?.status).toBe('UNSUBSCRIBED');
+    expect(subscriber?.unsubscribeReason).toBeNull();
   });
 });

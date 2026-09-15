@@ -82,9 +82,12 @@ export async function GET(request: Request) {
   console.log('[newsletter/confirm] Inscription confirmée ✓', email);
 
   // Email de bienvenue, avec lien de désinscription automatique (CDC §6.5 — un clic).
+  // Le lien pointe vers une page (pas directement l'API) pour éviter qu'un scanner
+  // de sécurité email ou un aperçu de lien ne déclenche la désinscription tout seul,
+  // et pour laisser l'abonné laisser un petit mot avant de partir.
   const from = process.env.CONTACT_EMAIL_FROM ?? 'CAURIS DIGITAL <onboarding@resend.dev>';
   const unsubscribeToken = createToken(email, 'unsubscribe');
-  const unsubscribeUrl = new URL('/api/newsletter/unsubscribe', siteUrl);
+  const unsubscribeUrl = new URL(`/${L}/newsletter/desinscription`, siteUrl);
   unsubscribeUrl.searchParams.set('token', unsubscribeToken);
 
   const welcomeHtml = `

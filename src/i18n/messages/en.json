@@ -729,6 +729,15 @@
       "Other"
     ]
   },
+  "NewsletterUnsubscribePage": {
+    "metaTitle": "Unsubscribe",
+    "title": "Before you go…",
+    "text": "A quick note on why you're leaving would really help us improve (optional).",
+    "reasonLabel": "Your message (optional)",
+    "reasonPlaceholder": "Tell us why you're leaving…",
+    "confirmButton": "Confirm unsubscription",
+    "genericError": "Server error. Please try again later."
+  },
   "NewsletterConfirmedPage": {
     "metaTitle": "Subscription confirmed",
     "title": "Subscription confirmed!",

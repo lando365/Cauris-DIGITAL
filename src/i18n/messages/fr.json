@@ -729,6 +729,15 @@
       "Autre"
     ]
   },
+  "NewsletterUnsubscribePage": {
+    "metaTitle": "Se désinscrire",
+    "title": "Avant de partir…",
+    "text": "Un petit mot sur la raison de votre départ nous aiderait beaucoup à nous améliorer (facultatif).",
+    "reasonLabel": "Votre message (facultatif)",
+    "reasonPlaceholder": "Dites-nous pourquoi vous partez…",
+    "confirmButton": "Confirmer la désinscription",
+    "genericError": "Erreur serveur. Réessayez plus tard."
+  },
   "NewsletterConfirmedPage": {
     "metaTitle": "Inscription confirmée",
     "title": "Inscription confirmée !",

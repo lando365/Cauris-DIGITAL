@@ -370,11 +370,13 @@ paths:
     get:
       operationId: unsubscribeNewsletter
       tags: [Newsletter]
-      summary: Désinscription en un clic
+      summary: Désinscription en un clic (variante historique)
       description: |
-        Lien inclus dans chaque email de bienvenue/newsletter. Jeton auto-porteur
-        dédié (usage `unsubscribe`, distinct du jeton de confirmation), valable
-        environ 13 mois.
+        Conservée pour les emails de bienvenue déjà envoyés avec un lien pointant
+        directement ici. Les nouveaux emails renvoient plutôt vers la page
+        `/newsletter/desinscription` (qui appelle POST ci-dessous après un
+        formulaire), pour éviter qu'un simple GET automatique (scanner de sécurité
+        email, aperçu de lien) ne désinscrive quelqu'un sans action humaine.
       parameters:
         - name: token
           in: query
@@ -387,6 +389,38 @@ paths:
             `/newsletter/erreur?raison={manquant|invalide|serveur}` sinon.
           headers:
             Location: { schema: { type: string } }
+    post:
+      operationId: unsubscribeNewsletterWithReason
+      tags: [Newsletter]
+      summary: Désinscription avec message optionnel
+      description: |
+        Appelée par le formulaire de la page `/newsletter/desinscription`. Même
+        jeton (usage `unsubscribe`) que la variante GET ci-dessus ; le message,
+        s'il est renseigné, est tronqué à 500 caractères et stocké sur l'abonné
+        (visible côté admin) pour comprendre les raisons de départ.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token: { type: string }
+                message: { type: string, maxLength: 500 }
+      responses:
+        '200':
+          description: Désinscription effectuée.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
 
   /api/auth/reset-password:
     post:

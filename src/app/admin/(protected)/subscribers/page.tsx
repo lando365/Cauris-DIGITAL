@@ -74,6 +74,7 @@ export default async function AdminSubscribersPage({
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Prénom</th>
               <th className="px-4 py-2">Statut</th>
+              <th className="px-4 py-2">Message</th>
               <th className="px-4 py-2">Source</th>
               <th className="px-4 py-2">Date d&apos;inscription</th>
               <th className="px-4 py-2">Actions</th>
@@ -85,6 +86,9 @@ export default async function AdminSubscribersPage({
                 <td className="px-4 py-2 font-medium text-cauris-black">{s.email}</td>
                 <td className="px-4 py-2">{s.firstName ?? '—'}</td>
                 <td className="px-4 py-2">{s.status}</td>
+                <td className="px-4 py-2 max-w-[220px] truncate" title={s.unsubscribeReason ?? undefined}>
+                  {s.unsubscribeReason ?? '—'}
+                </td>
                 <td className="px-4 py-2">{s.source ?? '—'}</td>
                 <td className="px-4 py-2">{s.createdAt.toLocaleDateString('fr-FR')}</td>
                 <td className="px-4 py-2">
@@ -96,7 +100,7 @@ export default async function AdminSubscribersPage({
             ))}
             {subscribers.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-cauris-gray-secondary">
+                <td colSpan={7} className="px-4 py-8 text-center text-cauris-gray-secondary">
                   Aucun inscrit pour l&apos;instant.
                 </td>
               </tr>
