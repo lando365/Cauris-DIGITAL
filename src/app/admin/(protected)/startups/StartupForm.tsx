@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import type { Startup } from '@prisma/client';
 import type { StartupFormState } from './actions';
 import { FileUploadField } from '@/components/admin/FileUploadField';
+import { AFRICAN_COUNTRIES, africanCountryCode } from '@/lib/african-countries';
 
 const SECTORS = ['AGRITECH', 'FINTECH', 'EDTECH', 'HEALTHTECH', 'SMART_CITIES'] as const;
 const STATUSES = ['EN_INCUBATION', 'DIPLOMEE', 'ALUMNI'] as const;
@@ -71,6 +73,12 @@ export function StartupForm({
   submitLabel: string;
 }) {
   const [state, formAction] = useFormState(action, undefined);
+
+  const initialCountry = africanCountryCode(startup?.countryName ?? '')
+    ? startup!.countryName
+    : AFRICAN_COUNTRIES[0].name;
+  const [countryName, setCountryName] = useState(initialCountry);
+  const countryCode = africanCountryCode(countryName) ?? AFRICAN_COUNTRIES[0].code;
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
@@ -214,13 +222,49 @@ export function StartupForm({
             ))}
           </select>
         </div>
-        <Field label="Pays" name="countryName" defaultValue={startup?.countryName} required />
-        <Field
-          label="Code pays (ISO, ex: CM)"
-          name="countryCode"
-          defaultValue={startup?.countryCode}
-          required
-        />
+        <div>
+          <label
+            htmlFor="countryName"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Pays
+            <RequiredMark />
+          </label>
+          <select
+            id="countryName"
+            name="countryName"
+            required
+            value={countryName}
+            onChange={(e) => setCountryName(e.target.value)}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          >
+            {AFRICAN_COUNTRIES.map((c) => (
+              <option key={c.code} value={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label
+            htmlFor="countryCode"
+            className="mb-1 block text-sm font-medium text-cauris-gray-text"
+          >
+            Code pays (ISO)
+            <RequiredMark />
+          </label>
+          <input
+            id="countryCode"
+            name="countryCode"
+            required
+            readOnly
+            value={countryCode}
+            className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-cauris-gray-secondary"
+          />
+          <p className="mt-1 text-xs text-cauris-gray-secondary">
+            Rempli automatiquement selon le pays choisi.
+          </p>
+        </div>
         <Field label="Ville" name="city" defaultValue={startup?.city ?? ''} />
         <Field
           label="Année d'entrée au programme"
