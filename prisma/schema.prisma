@@ -241,6 +241,7 @@ model EventRegistration {
   message     String?  @db.Text
   createdAt   DateTime @default(now())
 
+  @@unique([eventId, email])
   @@index([eventId])
   @@map("event_registrations")
 }

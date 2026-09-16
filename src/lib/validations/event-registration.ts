@@ -4,7 +4,11 @@ import { z } from 'zod';
 export const eventRegistrationSchema = z.object({
   firstName: z.string().trim().min(1, 'Le prénom est requis.').max(80),
   lastName: z.string().trim().min(1, 'Le nom est requis.').max(80),
-  email: z.string().trim().email('Adresse email invalide.'),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email('Adresse email invalide.'),
   phone: z
     .string()
     .trim()

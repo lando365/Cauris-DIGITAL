@@ -49,6 +49,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
 
   const { firstName, lastName, email, phone, guestsCount, message } = parsed.data;
 
+  const existing = await prisma.eventRegistration.findUnique({
+    where: { eventId_email: { eventId: event.id, email } },
+  });
+  if (existing) {
+    return NextResponse.json(
+      { error: 'Vous êtes déjà inscrit·e à cet événement avec cette adresse email.' },
+      { status: 409 }
+    );
+  }
+
   const registration = await prisma.eventRegistration.create({
     data: { eventId: event.id, firstName, lastName, email, phone, guestsCount, message },
   });

@@ -124,4 +124,19 @@ describe('POST /api/events/[slug]/register (intégration)', () => {
     expect(registration?.firstName).toBe('Jean');
     expect(registration?.guestsCount).toBe(2);
   });
+
+  it('email déjà inscrit à cet événement : renvoie 409 sans dupliquer', async () => {
+    const res = await register(TEST_SLUG, {
+      firstName: 'Jean',
+      lastName: 'Dupont',
+      email: 'JEAN.DUPONT@example.com', // casse différente : doit quand même être détecté
+    });
+
+    expect(res.status).toBe(409);
+
+    const rows = await prisma.eventRegistration.findMany({
+      where: { email: 'jean.dupont@example.com', eventId },
+    });
+    expect(rows).toHaveLength(1);
+  });
 });
