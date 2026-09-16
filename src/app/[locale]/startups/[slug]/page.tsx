@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import {
@@ -174,10 +175,20 @@ export default async function StartupDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Logo placeholder */}
+            {/* Logo, avec repli sur un badge à initiale si aucun n'a été uploadé */}
             <div className="lg:col-span-2">
-              <div className="aspect-square max-w-sm mx-auto rounded-card bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-extrabold text-8xl shadow-card-hover">
-                {startup.name.charAt(0)}
+              <div className="relative aspect-square max-w-sm mx-auto rounded-card overflow-hidden bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-extrabold text-8xl shadow-card-hover">
+                {startup.logo ? (
+                  <Image
+                    src={startup.logo}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 384px, 60vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  startup.name.charAt(0)
+                )}
               </div>
             </div>
           </div>
@@ -401,8 +412,12 @@ export default async function StartupDetailPage({ params }: PageProps) {
                     className="card group p-6 border border-gray-100 h-full flex flex-col bg-white hover:border-cauris-orange/30 transition-all"
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-lg">
-                        {s.name.charAt(0)}
+                      <div className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-lg">
+                        {s.logo ? (
+                          <Image src={s.logo} alt="" fill sizes="48px" className="object-cover" />
+                        ) : (
+                          s.name.charAt(0)
+                        )}
                       </div>
                       <span
                         className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full border ${statusStyle}`}

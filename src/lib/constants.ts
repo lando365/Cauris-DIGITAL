@@ -80,6 +80,7 @@ export const TESTIMONIALS = [
 export interface Startup {
   slug: string;
   name: string;
+  logo?: string; // URL du logo uploadé — repli sur un badge à initiale si absent
   sector: Sector;
   country: string; // Drapeau emoji
   countryName: string; // Nom du pays

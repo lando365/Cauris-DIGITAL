@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { Search, X, ArrowRight } from 'lucide-react';
 import type { Startup } from '@/lib/constants';
@@ -229,8 +230,12 @@ export default function StartupsExplorer({ startups }: { startups: Startup[] }) 
                   className="card group p-6 lg:p-7 border border-gray-100 h-full flex flex-col bg-white hover:border-cauris-orange/30 transition-all"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-xl">
-                      {s.name.charAt(0)}
+                    <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-xl">
+                      {s.logo ? (
+                        <Image src={s.logo} alt="" fill sizes="56px" className="object-cover" />
+                      ) : (
+                        s.name.charAt(0)
+                      )}
                     </div>
                     <span
                       className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full ${statusColor}`}

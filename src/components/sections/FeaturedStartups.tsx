@@ -1,4 +1,5 @@
 import { getTranslations, getLocale } from 'next-intl/server';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -60,8 +61,12 @@ export default async function FeaturedStartups() {
                   className="card group p-6 border border-gray-100 h-full flex flex-col bg-white hover:border-cauris-orange/30 transition-all"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-lg">
-                      {s.name.charAt(0)}
+                    <div className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cauris-orange to-cauris-orange-light flex items-center justify-center text-white font-heading font-bold text-lg">
+                      {s.logo ? (
+                        <Image src={s.logo} alt="" fill sizes="48px" className="object-cover" />
+                      ) : (
+                        s.name.charAt(0)
+                      )}
                     </div>
                     <span
                       className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full ${statusColor}`}

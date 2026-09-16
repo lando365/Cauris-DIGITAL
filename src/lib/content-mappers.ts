@@ -62,6 +62,7 @@ export function mapStartup(s: PrismaStartup, locale: Locale = 'fr'): DisplayStar
   return {
     slug: s.slug,
     name: s.name,
+    logo: s.logoUrl ?? undefined,
     sector: s.sector,
     country: countryCodeToFlag(s.countryCode),
     countryName: s.countryName,
