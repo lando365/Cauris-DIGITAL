@@ -198,29 +198,51 @@ model Article {
 // ---------------------------------------------------------------------------
 
 model Event {
-  id            String    @id @default(cuid())
-  slug          String    @unique
+  id            String               @id @default(cuid())
+  slug          String               @unique
   title         String
   titleEn       String?
-  description   String    @db.Text
-  descriptionEn String?   @db.Text
+  description   String               @db.Text
+  descriptionEn String?              @db.Text
   type          EventType
   startDate     DateTime
   endDate       DateTime?
   location      String
-  isOnline      Boolean   @default(false)
-  isFree        Boolean   @default(true)
+  isOnline      Boolean              @default(false)
+  isFree        Boolean              @default(true)
   price         String?
   registerUrl   String?
   imageUrl      String?
-  isPublished   Boolean   @default(false)
+  isPublished   Boolean              @default(false)
   createdBy     String?
-  creator       User?     @relation(fields: [createdBy], references: [id], onDelete: SetNull)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  creator       User?                @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+  registrations EventRegistration[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
 
   @@index([startDate(sort: Desc)])
   @@map("events")
+}
+
+// ---------------------------------------------------------------------------
+// EventRegistration — formulaire d'inscription dédié par événement (distinct
+// du formulaire de contact générique) ; visible dans un module admin dédié.
+// ---------------------------------------------------------------------------
+
+model EventRegistration {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  firstName   String
+  lastName    String
+  email       String
+  phone       String?
+  guestsCount Int      @default(1)
+  message     String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  @@index([eventId])
+  @@map("event_registrations")
 }
 
 // ---------------------------------------------------------------------------

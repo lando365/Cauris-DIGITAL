@@ -1027,5 +1027,23 @@
     "paidBadge": "Paid",
     "online": "Online",
     "register": "Register"
+  },
+  "EventRegistrationPage": {
+    "metaTitle": "Registration — {event}",
+    "metaTitleFallback": "Event registration",
+    "backToEvents": "Back to events",
+    "title": "Register for {event}",
+    "online": "Online",
+    "closed": "Registration for this event is closed.",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone (optional)",
+    "guestsLabel": "Number of attendees",
+    "messageLabel": "Message (optional)",
+    "submitButton": "Confirm my registration",
+    "successTitle": "Registration confirmed!",
+    "successText": "Thank you, your registration has been recorded. You'll receive practical details by email.",
+    "genericError": "Server error. Please try again later."
   }
 }

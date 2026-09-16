@@ -1027,5 +1027,23 @@
     "paidBadge": "Payant",
     "online": "En ligne",
     "register": "S'inscrire"
+  },
+  "EventRegistrationPage": {
+    "metaTitle": "Inscription — {event}",
+    "metaTitleFallback": "Inscription à un événement",
+    "backToEvents": "Retour aux événements",
+    "title": "S'inscrire à {event}",
+    "online": "En ligne",
+    "closed": "Les inscriptions pour cet événement sont closes.",
+    "firstNameLabel": "Prénom",
+    "lastNameLabel": "Nom",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone (facultatif)",
+    "guestsLabel": "Nombre de participants",
+    "messageLabel": "Message (facultatif)",
+    "submitButton": "Confirmer mon inscription",
+    "successTitle": "Inscription confirmée !",
+    "successText": "Merci, votre inscription a bien été enregistrée. Vous recevrez les informations pratiques par email.",
+    "genericError": "Erreur serveur. Réessayez plus tard."
   }
 }

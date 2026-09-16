@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { Link } from '@/i18n/navigation';
 import { Calendar, MapPin, Clock, ArrowRight, Tag } from 'lucide-react';
 import type { EventType as PrismaEventType } from '@prisma/client';
 
@@ -175,17 +176,26 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                     {event.price && <p className="text-xs italic">{event.price}</p>}
                   </div>
 
-                  {!isPast && event.registerUrl && (
-                    <a
-                      href={event.registerUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 self-start text-cauris-orange font-semibold text-sm hover:underline"
-                    >
-                      {t('register')}
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </a>
-                  )}
+                  {!isPast &&
+                    (event.registerUrl ? (
+                      <a
+                        href={event.registerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 self-start text-cauris-orange font-semibold text-sm hover:underline"
+                      >
+                        {t('register')}
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </a>
+                    ) : (
+                      <Link
+                        href={`/evenements/${event.id}/inscription`}
+                        className="inline-flex items-center gap-1.5 self-start text-cauris-orange font-semibold text-sm hover:underline"
+                      >
+                        {t('register')}
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    ))}
                   </div>
                 </article>
               );

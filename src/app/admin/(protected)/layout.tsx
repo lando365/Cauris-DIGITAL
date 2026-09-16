@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { label: 'Startups', href: '/admin/startups' },
   { label: 'Articles', href: '/admin/articles' },
   { label: 'Événements', href: '/admin/events' },
+  { label: 'Inscriptions', href: '/admin/registrations' },
   { label: 'Partenaires', href: '/admin/partners' },
   { label: 'Messages', href: '/admin/messages' },
   { label: 'Newsletter', href: '/admin/subscribers' },
