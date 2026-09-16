@@ -86,20 +86,60 @@ async function notifyTeam(
   const to = process.env.CONTACT_EMAIL_TO;
   if (!to) return;
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url;
   const fullName = `${reg.firstName} ${reg.lastName}`.trim();
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="fr">
+      <body style="font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #E8640A; margin-bottom: 8px;">Nouvelle inscription — ${escape(eventTitle)}</h2>
+        <p style="color: #6C757D; font-size: 14px; margin-top: 0;">Site CAURIS DIGITAL — ${siteUrl}</p>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr><td style="padding: 6px 0; color: #6C757D; width: 140px;">Nom</td><td style="padding: 6px 0; font-weight: 600;">${escape(fullName)}</td></tr>
+          <tr><td style="padding: 6px 0; color: #6C757D;">Email</td><td style="padding: 6px 0;"><a href="mailto:${escape(reg.email)}" style="color: #E8640A;">${escape(reg.email)}</a></td></tr>
+          ${reg.phone ? `<tr><td style="padding: 6px 0; color: #6C757D;">Téléphone</td><td style="padding: 6px 0; font-weight: 600;">${escape(reg.phone)}</td></tr>` : ''}
+          <tr><td style="padding: 6px 0; color: #6C757D;">Participants</td><td style="padding: 6px 0; font-weight: 600;">${reg.guestsCount}</td></tr>
+        </table>
+
+        ${
+          reg.message
+            ? `
+        <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+        <h3 style="color: #1A1A2E; font-size: 16px;">Message :</h3>
+        <div style="background: #FFF5EE; border-left: 4px solid #E8640A; padding: 16px 20px; border-radius: 6px; white-space: pre-wrap;">${escape(reg.message)}</div>
+        `
+            : ''
+        }
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+
+        <p style="color: #6C757D; font-size: 12px;">
+          Cet email a été envoyé automatiquement depuis le site CAURIS DIGITAL.<br />
+          Pour répondre, utilisez directement l'adresse : <a href="mailto:${escape(reg.email)}" style="color: #E8640A;">${escape(reg.email)}</a>
+        </p>
+      </body>
+    </html>
+  `;
+
   const text =
     `Nouvelle inscription — ${eventTitle}\n\n` +
     `Nom : ${fullName}\n` +
     `Email : ${reg.email}\n` +
     `${reg.phone ? `Téléphone : ${reg.phone}\n` : ''}` +
     `Participants : ${reg.guestsCount}\n` +
-    `${reg.message ? `\nMessage :\n${reg.message}\n` : ''}`;
+    `${reg.message ? `\nMessage :\n${reg.message}\n` : ''}` +
+    `\n---\nRépondre directement à : ${reg.email}`;
 
   const { error } = await resend.emails.send({
     from,
     to: [to],
     replyTo: reg.email,
     subject: `[CAURIS] Inscription — ${eventTitle} — ${fullName}`,
+    html,
     text,
   });
 
