@@ -128,6 +128,7 @@ export function mapEvent(e: PrismaEvent, locale: Locale = 'fr'): DisplayEvent {
   return {
     id: e.slug,
     title: pick(e.title, e.titleEn, locale),
+    image: e.imageUrl ?? undefined,
     type: e.type,
     date: e.startDate.toISOString().slice(0, 10),
     time:

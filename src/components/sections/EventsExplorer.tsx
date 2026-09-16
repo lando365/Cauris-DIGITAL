@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Calendar, MapPin, Clock, ArrowRight, Tag } from 'lucide-react';
 import type { EventType as PrismaEventType } from '@prisma/client';
 
@@ -10,6 +11,7 @@ export type EventType = PrismaEventType;
 export interface Event {
   id: string;
   title: string;
+  image?: string;
   type: EventType;
   date: string; // ISO YYYY-MM-DD
   time: string;
@@ -119,10 +121,22 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
               return (
                 <article
                   key={event.id}
-                  className={`card p-6 lg:p-7 border border-gray-100 bg-white h-full flex flex-col ${
+                  className={`card border border-gray-100 bg-white h-full flex flex-col overflow-hidden ${
                     isPast ? 'opacity-90' : ''
                   }`}
                 >
+                  {event.image && (
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={event.image}
+                        alt=""
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6 lg:p-7 flex flex-col flex-1">
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <span
                       className={`inline-flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full ${typeColor}`}
@@ -172,6 +186,7 @@ export default function EventsExplorer({ events }: { events: Event[] }) {
                       <ArrowRight className="w-3.5 h-3.5" />
                     </a>
                   )}
+                  </div>
                 </article>
               );
             })}
