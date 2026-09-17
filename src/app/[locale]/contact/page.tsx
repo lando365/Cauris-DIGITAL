@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { Mail, MapPin, Phone, Clock } from 'lucide-react';
+import { Mail, MapPin, Phone, Clock, Calendar, ArrowRight } from 'lucide-react';
 import ContactForm from '@/components/forms/ContactForm';
 import SectionTitle from '@/components/ui/SectionTitle';
 import { SITE_CONFIG } from '@/lib/constants';
@@ -59,6 +59,29 @@ export default async function ContactPage({ searchParams }: PageProps) {
               />
 
               <div className="mt-8 space-y-5">
+                <div className="card bg-cauris-orange p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-white/20 text-white flex items-center justify-center shrink-0">
+                      <Calendar className="w-5 h-5" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-white/80 mb-1">
+                        {t('calendlyLabel')}
+                      </p>
+                      <p className="text-white font-medium mb-3">{t('calendlyText')}</p>
+                      <a
+                        href="https://calendly.com/kamteflorentin3"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-white hover:underline"
+                      >
+                        {t('calendlyButton')}
+                        <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="card bg-white p-5 border border-gray-100">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg bg-cauris-orange/10 text-cauris-orange flex items-center justify-center shrink-0">
