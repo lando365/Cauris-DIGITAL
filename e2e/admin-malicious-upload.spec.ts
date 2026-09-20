@@ -44,6 +44,24 @@ test.describe('Upload malveillant', () => {
     expect(json.error.code).toBe('UNSUPPORTED_FORMAT');
   });
 
+  test('rejette un fichier .jpg dont le contenu est un exécutable (magic bytes)', async ({
+    page,
+  }) => {
+    const res = await page.request.post('/api/admin/upload', {
+      multipart: {
+        entityType: 'startup',
+        file: {
+          name: 'logo.jpg',
+          mimeType: 'image/jpeg',
+          buffer: Buffer.from('MZ fake executable content'),
+        },
+      },
+    });
+    expect(res.status()).toBe(400);
+    const json = await res.json();
+    expect(json.error.code).toBe('UNSUPPORTED_FORMAT');
+  });
+
   test('rejette un logo startup > 2 Mo (RM-S05)', async ({ page }) => {
     const oversized = Buffer.alloc(2 * 1024 * 1024 + 1, 'a');
     const res = await page.request.post('/api/admin/upload', {
@@ -109,7 +127,10 @@ test.describe('Upload malveillant', () => {
         file: {
           name: 'logo.jpg',
           mimeType: 'image/jpeg',
-          buffer: Buffer.from('fake but valid-looking jpeg bytes'),
+          buffer: Buffer.concat([
+            Buffer.from([0xff, 0xd8, 0xff, 0xe0]),
+            Buffer.from('valid-looking jpeg body'),
+          ]),
         },
       },
     });

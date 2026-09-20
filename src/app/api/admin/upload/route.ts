@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 import { getAuthenticatedAdmin } from '@/lib/require-admin';
+import { detectFileType } from '@/lib/file-signature';
 
 // CDC V2 §5.5 — Stratégie de gestion des fichiers (Upload).
 type EntityKind = 'startup' | 'partner' | 'article' | 'event';
@@ -48,7 +49,7 @@ function extensionMatchesMime(filename: string, expectedExt: string): boolean {
 
 /**
  * Upload un fichier vers Vercel Blob après validation du type d'entité, de la
- * taille et du format MIME/extension (CDC V2 §5.5). Réservé aux admins/éditeurs.
+ * taille, du format MIME/extension et de la signature réelle du contenu (CDC V2 §5.5). Réservé aux admins/éditeurs.
  */
 export async function POST(request: Request) {
   const user = await getAuthenticatedAdmin();
@@ -82,6 +83,17 @@ export async function POST(request: Request) {
     return errorResponse(
       'UNSUPPORTED_FORMAT',
       `Format non supporté. Formats acceptés : ${[...new Set(Object.values(rule.mimeToExt))].join(', ').toUpperCase()}.`,
+      400
+    );
+  }
+
+  // Le type MIME et l'extension sont déclarés par le client : on vérifie donc aussi
+  // les premiers octets du fichier (signature) pour confirmer le format réel.
+  const detectedType = detectFileType(new Uint8Array(await file.arrayBuffer()));
+  if (detectedType !== file.type) {
+    return errorResponse(
+      'UNSUPPORTED_FORMAT',
+      'Le contenu du fichier ne correspond pas au format déclaré.',
       400
     );
   }
