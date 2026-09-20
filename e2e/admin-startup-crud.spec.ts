@@ -17,8 +17,7 @@ test('un admin se connecte, crée une startup visible publiquement, puis se déc
   await page.fill('#name', 'E2E Demo Day Startup');
   await page.fill('#tagline', 'Une startup créée par un test E2E.');
   await page.fill('#description', 'Description de test générée par Playwright.');
-  await page.fill('#countryName', 'Cameroun');
-  await page.fill('#countryCode', 'CM');
+  await page.selectOption('#countryName', 'Cameroun'); // le code ISO (CM) se remplit automatiquement
   await page.fill('#year', String(new Date().getFullYear()));
   await page.getByRole('button', { name: /créer la startup/i }).click();
 
