@@ -166,6 +166,15 @@ export async function POST(request: Request) {
       console.log(`[contact] reCAPTCHA OK (score: ${recaptchaResult.score})`);
     } else if (recaptchaSecret && !recaptchaToken) {
       console.warn('[contact] RECAPTCHA_SECRET_KEY configurée mais aucun token reçu du client.');
+      // En production, le jeton est obligatoire : sinon un bot contournerait la vérification
+      // en n'envoyant simplement pas de jeton. En développement local et sur les déploiements
+      // Preview, le domaine n'est pas enregistré auprès de Google : on tolère l'absence de jeton.
+      if (isProductionDeployment()) {
+        return NextResponse.json(
+          { error: 'Vérification anti-spam indisponible. Rechargez la page et réessayez.' },
+          { status: 400 }
+        );
+      }
     }
 
     // 2quinquies. Persistance en base (CDC §5.3.6) — les champs spécifiques
@@ -343,6 +352,13 @@ function escape(str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+/** Vrai uniquement pour le déploiement de production (Vercel Production, ou build de production hors Vercel). */
+function isProductionDeployment(): boolean {
+  return process.env.VERCEL_ENV
+    ? process.env.VERCEL_ENV === 'production'
+    : process.env.NODE_ENV === 'production';
 }
 
 /**

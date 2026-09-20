@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from 'vitest';
 import { prisma } from '@/lib/prisma';
 
 const sendMock = vi.fn().mockResolvedValue({ data: { id: 'test-email-id' }, error: null });
@@ -35,6 +35,12 @@ function postForm(fields: Record<string, string>) {
 describe('POST /api/contact (intégration)', () => {
   beforeEach(() => {
     sendMock.mockClear();
+    // Isole les tests de la clé reCAPTCHA éventuellement définie dans .env locale.
+    vi.stubEnv('RECAPTCHA_SECRET_KEY', '');
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   afterAll(async () => {
@@ -85,6 +91,24 @@ describe('POST /api/contact (intégration)', () => {
     expect(res.status).toBe(400);
   });
 
+  it('reCAPTCHA configuré mais jeton absent : refuse (400) sans persister', async () => {
+    vi.stubEnv('RECAPTCHA_SECRET_KEY', 'secret-de-test');
+    vi.stubEnv('VERCEL_ENV', 'production');
+    const res = await postForm(baseFields());
+    expect(res.status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+
+    const rows = await prisma.contactMessage.findMany({ where: { email: TEST_EMAIL } });
+    expect(rows).toHaveLength(0);
+  });
+
+  it('reCAPTCHA configuré, jeton absent, hors production (dev/preview) : toléré', async () => {
+    vi.stubEnv('RECAPTCHA_SECRET_KEY', 'secret-de-test');
+    vi.stubEnv('VERCEL_ENV', 'preview');
+    const res = await postForm(baseFields());
+    expect(res.status).toBe(200);
+  });
+
   it("pitch deck déclaré PDF mais dont le contenu n'est pas un PDF : refuse (400)", async () => {
     const formData = new FormData();
     for (const [key, value] of Object.entries(baseFields())) formData.append(key, value);
@@ -99,7 +123,7 @@ describe('POST /api/contact (intégration)', () => {
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it('soumission valide : envoie l\'email et persiste le message en base', async () => {
+  it("soumission valide : envoie l'email et persiste le message en base", async () => {
     const res = await postForm(baseFields());
     const json = await res.json();
 
