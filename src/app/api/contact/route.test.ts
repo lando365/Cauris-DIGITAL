@@ -85,6 +85,20 @@ describe('POST /api/contact (intégration)', () => {
     expect(res.status).toBe(400);
   });
 
+  it("pitch deck déclaré PDF mais dont le contenu n'est pas un PDF : refuse (400)", async () => {
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(baseFields())) formData.append(key, value);
+    formData.append(
+      'pitchDeck',
+      new File(['MZ fake executable content'], 'deck.pdf', { type: 'application/pdf' })
+    );
+    const res = await POST(
+      new Request('http://localhost:3000/api/contact', { method: 'POST', body: formData })
+    );
+    expect(res.status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
   it('soumission valide : envoie l\'email et persiste le message en base', async () => {
     const res = await postForm(baseFields());
     const json = await res.json();

@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { detectFileType } from '@/lib/file-signature';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { SITE_CONFIG } from '@/lib/constants';
@@ -118,6 +119,14 @@ export async function POST(request: Request) {
       }
       if (pitchDeck.size > MAX_PITCH_DECK_BYTES) {
         return NextResponse.json({ error: 'Le pitch deck dépasse 5 Mo.' }, { status: 400 });
+      }
+      // Le type déclaré est falsifiable : on vérifie la signature réelle (%PDF-).
+      const deckType = detectFileType(new Uint8Array(await pitchDeck.arrayBuffer()));
+      if (deckType !== 'application/pdf') {
+        return NextResponse.json(
+          { error: 'Le pitch deck doit être un fichier PDF valide.' },
+          { status: 400 }
+        );
       }
     }
 
