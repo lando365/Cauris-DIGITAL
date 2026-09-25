@@ -66,7 +66,7 @@ export function EditUserForm({
         </label>
         <select
           id="role"
-          name={isSelf ? undefined : 'role'}
+          name="role"
           defaultValue={user.role}
           disabled={isSelf}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100"
@@ -74,9 +74,6 @@ export function EditUserForm({
           <option value="EDITOR">EDITOR</option>
           <option value="ADMIN">ADMIN</option>
         </select>
-        {/* Un <select> désactivé n'envoie aucune valeur au submit : on la fixe via un champ
-            caché, sinon la validation serveur (rôle requis) échoue pour son propre compte. */}
-        {isSelf && <input type="hidden" name="role" value={user.role} />}
         {isSelf && (
           <p className="mt-1 text-xs text-cauris-gray-secondary">
             Vous ne pouvez pas modifier votre propre rôle.
@@ -84,16 +81,9 @@ export function EditUserForm({
         )}
       </div>
       <label className="flex items-center gap-2 text-sm text-cauris-gray-text">
-        <input
-          type="checkbox"
-          name={isSelf ? undefined : 'isActive'}
-          defaultChecked={user.isActive}
-          disabled={isSelf}
-        />
+        <input type="checkbox" name="isActive" defaultChecked={user.isActive} disabled={isSelf} />
         Compte actif
       </label>
-      {/* Idem pour la case à cocher : un input désactivé ne soumet rien du tout. */}
-      {isSelf && user.isActive && <input type="hidden" name="isActive" value="on" />}
 
       {state?.error && (
         <p role="alert" className="text-sm text-red-600">
