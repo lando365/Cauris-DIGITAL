@@ -225,7 +225,7 @@ export async function POST(request: Request) {
       <html lang="fr">
         <body style="font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 24px;">
           <h2 style="color: #E8640A; margin-bottom: 8px;">${escape(subjectLabel)}</h2>
-          <p style="color: #6C757D; font-size: 14px; margin-top: 0;">Site CAURIS DIGITAL — ${SITE_CONFIG.url}</p>
+          <p style="color: #6C757D; font-size: 14px; margin-top: 0;">Site CAURIS DIGITAL — ${process.env.NEXT_PUBLIC_SITE_URL ?? SITE_CONFIG.url}</p>
 
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
 
